@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="view_generic_sync_job_tree" model="ir.ui.view">
+        <field name="name">generic.sync.job.tree</field>
+        <field name="model">generic.sync.job</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="backend_id"/>
+                <field name="model_id"/>
+                <field name="source_model"/>
+                <field name="auto_sync"/>
+                <field name="sync_interval_number"/>
+                <field name="sync_interval_unit"/>
+                <field name="next_execution_datetime"/>
+                <field name="last_run_datetime"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_generic_sync_job_form" model="ir.ui.view">
+        <field name="name">generic.sync.job.form</field>
+        <field name="model">generic.sync.job</field>
+        <field name="arch" type="xml">
+            <form string="Sync Job">
+                <header>
+                    <button
+                        name="action_run_manual_sync"
+                        string="Sync Now"
+                        type="object"
+                        class="oe_highlight"/>
+
+                    <button
+                        name="action_generate_field_mappings"
+                        string="Generate Field Mappings"
+                        type="object"
+                        icon="fa-magic"
+                        invisible="backend_id == False or model_id == False"
+                        confirm="This will automatically generate field mappings based on matching fields. Existing mappings will not be modified."/>
+                    <button
+                        name="action_run_post_processes"
+                        string="Run Pending Post-Processes"
+                        type="object"
+                        invisible="pending_post_process_count == 0"/>
+                </header>
+
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" type="object" name="action_view_record_mappings" icon="fa-list" string="Record Mappings">
+                            <field name="record_mapping_count" widget="statinfo" nolabel="1"/>
+                        </button>
+                        <button class="oe_stat_button" type="object" name="action_view_post_processes" icon="fa-clock-o" string="Post-Processes">
+                            <field name="pending_post_process_count" widget="statinfo" nolabel="1"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="active"/>
+                            <field name="backend_id"/>
+                            <field name="model_id"/>
+                            <field name="source_model"
+                                   placeholder="If empty, uses target model"/>
+                            <field name="domain"
+                                   widget="text"
+                                   placeholder="[('active','=',True)]"/>
+                            <field name="batch_size"/>
+                            <field name="last_source_id"/>
+                            <field name="import_translation"/>
+                            <field name="translation_post_process" invisible="import_translation == False"/>
+                            <field name="import_chatter"/>
+                        </group>
+
+                        <group string="Scheduling">
+                            <field name="auto_sync"/>
+                            <field name="sync_interval_number"/>
+                            <field name="sync_interval_unit"/>
+                            <field name="next_execution_datetime" readonly="1"/>
+                            <field name="last_run_datetime" readonly="1"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+
+                        <page string="Field Mappings">
+                            <field name="field_ids">
+                                <list editable="bottom" limit="200">
+                                    <field name="sequence"/>
+                                    <field name="source_field"/>
+                                    <field name="target_field"/>
+                                    <field name="transform"/>
+                                    <field name="missing_m2o_policy"
+                                           invisible="transform not in ('m2o_name','m2o_self_hierarchy','x2many_map')"/>
+                                    <field name="create_job_id"/>
+                                    <field name="post_process"
+                                           invisible="missing_m2o_policy != 'create' or transform not in ('m2o_name','m2o_self_hierarchy','x2many_map')"/>
+                                    <field name="post_process_priority" invisible="missing_m2o_policy != 'create' or transform not in ('m2o_name','m2o_self_hierarchy','x2many_map')"/>
+                                    <field name="required"/>
+                                </list>
+
+                                <form string="Field Mapping">
+                                    <group>
+                                        <field name="sequence"/>
+                                        <field name="source_field"/>
+                                        <field name="target_field"/>
+                                        <field name="transform"/>
+                                        <field name="missing_m2o_policy"
+                                               attrs="{'invisible': [('transform','not in',('m2o_name','m2o_self_hierarchy','x2many_map'))]}"/>
+                                        <field name="create_job_id"
+                                               attrs="{'invisible': [('missing_m2o_policy','!=','create')]}"/>
+                                        <field name="post_process"
+                                               attrs="{'invisible': ['|', ('missing_m2o_policy','!=','create'), ('transform','not in',('m2o_name','m2o_self_hierarchy','x2many_map'))]}"/>
+                                        <field name="required"/>
+                                        <field name="python_expr"
+                                               widget="text"
+                                               attrs="{'invisible': [('transform','!=','eval')]}"/>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+
+                        <page string="Deferred Post-Processing">
+                            <group>
+                                <field name="pending_post_process_count" readonly="1"/>
+                                <field name="post_process_count" readonly="1"/>
+                            </group>
+                            <field name="post_process_ids" nolabel="1">
+                                <list create="0" delete="0">
+                                    <field name="type"/>
+                                    <field name="process_job_id"/>
+                                    <field name="field_id"/>
+                                    <field name="source_record_id"/>
+                                    <field name="res_ids"/>
+                                    <field name="state"/>
+                                    <field name="attempt_count"/>
+                                    <field name="date_done"/>
+                                    <field name="error_message"/>
+                                </list>
+                            </field>
+                        </page>
+
+                        <page string="Before Write Hook">
+                            <field name="post_process_python"
+                                   widget="code" options="{'mode': 'python'}"
+                                   placeholder="Runs after field mapping and before create/write.\n\nExample:\n\nif source_vals.get('type') == 'special':\n    result_vals['active'] = False\n"/>
+                        </page>
+
+                        <page string="Logs">
+                            <field name="last_message"
+                                   nolabel="1"
+                                   widget="text"/>
+                        </page>
+
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_generic_sync_post_process_tree" model="ir.ui.view">
+        <field name="name">generic.sync.post.process.tree</field>
+        <field name="model">generic.sync.post.process</field>
+        <field name="arch" type="xml">
+            <list create="0" delete="1">
+                <field name="job_id"/>
+                <field name="type"/>
+                <field name="process_job_id"/>
+                <field name="field_id"/>
+                <field name="source_record_id"/>
+                <field name="res_ids"/>
+                <field name="state"/>
+                <field name="attempt_count"/>
+                <field name="date_done"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_generic_sync_post_process_form" model="ir.ui.view">
+        <field name="name">generic.sync.post.process.form</field>
+        <field name="model">generic.sync.post.process</field>
+        <field name="arch" type="xml">
+            <form string="Post Process">
+                <header>
+                    <button name="action_run_now" string="Run Now" type="object" invisible="state == 'done'"/>
+                    <button name="action_retry" string="Retry" type="object" invisible="state != 'failed'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="pending,running,done,failed" readonly="1"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="job_id" readonly="1"/>
+                            <field name="type" readonly="1"/>
+                            <field name="process_job_id" readonly="1"/>
+                            <field name="field_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="source_model" readonly="1"/>
+                            <field name="source_record_id" readonly="1"/>
+                            <field name="res_ids" readonly="1"/>
+                            <field name="attempt_count" readonly="1"/>
+                            <field name="date_done" readonly="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="error_message" readonly="1" widget="text"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_generic_sync_job" model="ir.actions.act_window">
+        <field name="name">Sync Jobs</field>
+        <field name="res_model">generic.sync.job</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem
+        id="menu_generic_sync_job"
+        name="Sync Jobs"
+        parent="menu_generic_sync_root"
+        action="action_generic_sync_job"
+        sequence="20"/>
+
+</odoo>

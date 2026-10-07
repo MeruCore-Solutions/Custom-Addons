@@ -1,0 +1,668 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* merucore_data_sync
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-01 15:51+0000\n"
+"PO-Revision-Date: 2026-03-01 15:51+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: merucore_data_sync
+#. odoo-python
+#: code:addons/merucore_data_sync/models/sync_job.py:0
+msgid "%s field mappings generated."
+msgstr "%s Feldzuordnungen generiert."
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_backend__active
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_job__active
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_record_map__active
+msgid "Active"
+msgstr "Aktiv"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields.selection,name:merucore_data_sync.selection__generic_sync_field__transform__attachment
+msgid "Attachment (binary via HTTP)"
+msgstr "Anhang (Binar uber HTTP)"
+
+#. module: merucore_data_sync
+#. odoo-python
+#: code:addons/merucore_data_sync/models/sync_field.py:0
+msgid ""
+"Attachment fields do not support missing-record policies. Use 'Skip Field'."
+msgstr "Anhangfelder unterstutzen keine Richtlinien fur fehlende Datensatze. Verwenden Sie 'Feld uberspringen'."
+
+#. module: merucore_data_sync
+#. odoo-python
+#: code:addons/merucore_data_sync/models/sync_backend.py:0
+msgid "Authentication failed for backend %s"
+msgstr "Authentifizierung fur Backend %s fehlgeschlagen"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_job__auto_sync
+msgid "Auto Sync"
+msgstr "Automatische Synchronisierung"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_job__backend_id
+msgid "Backend"
+msgstr "Backend"
+
+#. module: merucore_data_sync
+#. odoo-python
+#: code:addons/merucore_data_sync/models/sync_job.py:0
+msgid "Backend required for job %s"
+msgstr "Backend fur Job %s erforderlich"
+
+#. module: merucore_data_sync
+#: model:ir.ui.menu,name:merucore_data_sync.menu_generic_sync_backend
+msgid "Backends"
+msgstr "Backends"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,help:merucore_data_sync.field_generic_sync_backend__url
+msgid "Base URL of the remote Odoo, e.g. https://v16.example.com"
+msgstr "Basis-URL des entfernten Odoo, z. B. https://v16.example.com"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_job__batch_size
+msgid "Batch Size"
+msgstr "Stapelgröße"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields.selection,name:merucore_data_sync.selection__generic_sync_field__transform__binary
+msgid "Binary / Image"
+msgstr "Binar / Bild"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields.selection,name:merucore_data_sync.selection__generic_sync_field__transform__bool
+msgid "Cast to Boolean"
+msgstr "In Boolean umwandeln"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields.selection,name:merucore_data_sync.selection__generic_sync_field__transform__float
+msgid "Cast to Float"
+msgstr "In Float umwandeln"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields.selection,name:merucore_data_sync.selection__generic_sync_field__transform__int
+msgid "Cast to Integer"
+msgstr "In Integer umwandeln"
+
+#. module: merucore_data_sync
+#: model_terms:ir.ui.view,arch_db:merucore_data_sync.view_generic_sync_backend_form
+msgid "Connection"
+msgstr "Verbindung"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields.selection,name:merucore_data_sync.selection__generic_sync_field__transform__copy
+msgid "Copy as-is"
+msgstr "Unverandert kopieren"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields.selection,name:merucore_data_sync.selection__generic_sync_field__missing_m2o_policy__create
+msgid "Create Related Record"
+msgstr "Zugehorigen Datensatz erstellen"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_backend__create_uid
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_field__create_uid
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_job__create_uid
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_record_map__create_uid
+msgid "Created by"
+msgstr "Erstellt von"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_backend__create_date
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_field__create_date
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_job__create_date
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_record_map__create_date
+msgid "Created on"
+msgstr "Erstellt am"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_backend__db_name
+msgid "Database"
+msgstr "Datenbank"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields.selection,name:merucore_data_sync.selection__generic_sync_job__sync_interval_unit__day
+msgid "Day"
+msgstr "Tag"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,help:merucore_data_sync.field_generic_sync_field__missing_m2o_policy
+msgid ""
+"Defines what happens if a related many2one record does not exist during "
+"synchronization."
+msgstr "Legt fest, was passiert, wenn ein zugehoriger many2one-Datensatz wahrend der Synchronisierung nicht existiert."
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_backend__display_name
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_field__display_name
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_job__display_name
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_record_map__display_name
+msgid "Display Name"
+msgstr "Anzeigename"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_job__domain
+msgid "Domain"
+msgstr "Bereich"
+
+#. module: merucore_data_sync
+#. odoo-python
+#: code:addons/merucore_data_sync/models/sync_backend.py:0
+msgid "Error connecting to backend %(name)s: %(error)s"
+msgstr "Fehler beim Verbinden mit Backend %(name)s: %(error)s"
+
+#. module: merucore_data_sync
+#: model_terms:ir.ui.view,arch_db:merucore_data_sync.view_generic_sync_job_form
+msgid ""
+"Example:\\n\\nif source_vals.get('type') == 'special':\\n    "
+"result_vals['active'] = False\\n"
+msgstr ""
+"Beispiel:\\n\\nif source_vals.get('type') == 'special':\\n    "
+"result_vals['active'] = False\\n"
+
+#. module: merucore_data_sync
+#: model:ir.model,name:merucore_data_sync.model_generic_sync_backend
+msgid "External Odoo Backend for Sync"
+msgstr "Externes Odoo-Backend fur Synchronisierung"
+
+#. module: merucore_data_sync
+#. odoo-python
+#: code:addons/merucore_data_sync/models/sync_job.py:0
+msgid "Failed to fetch attachment binary (ID %s): %s"
+msgstr "Anhang-Binardaten konnten nicht abgerufen werden (ID %s): %s"
+
+#. module: merucore_data_sync
+#: model_terms:ir.ui.view,arch_db:merucore_data_sync.view_generic_sync_job_form
+msgid "Field Mapping"
+msgstr "Feldzuordnung"
+
+#. module: merucore_data_sync
+#: model:ir.model,name:merucore_data_sync.model_generic_sync_field
+msgid "Field Mapping for Sync"
+msgstr "Feldzuordnung fur Synchronisierung"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_job__field_ids
+#: model_terms:ir.ui.view,arch_db:merucore_data_sync.view_generic_sync_job_form
+msgid "Field Mappings"
+msgstr "Feldzuordnungen"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,help:merucore_data_sync.field_generic_sync_field__source_field
+msgid "Field name in the *source* Odoo (remote DB)."
+msgstr "Feldname im *Quell*-Odoo (entfernte DB)."
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,help:merucore_data_sync.field_generic_sync_field__target_field
+msgid "Field name in the *target* Odoo (this DB)."
+msgstr "Feldname im *Ziel*-Odoo (diese DB)."
+
+#. module: merucore_data_sync
+#: model_terms:ir.ui.view,arch_db:merucore_data_sync.view_generic_sync_job_form
+msgid "Generate Field Mappings"
+msgstr "Feldzuordnungen generieren"
+
+#. module: merucore_data_sync
+#: model:ir.ui.menu,name:merucore_data_sync.menu_generic_sync_root
+msgid "Generic Sync"
+msgstr "Generische Synchronisierung"
+
+#. module: merucore_data_sync
+#: model:ir.model,name:merucore_data_sync.model_generic_sync_job
+msgid "Generic Sync Job"
+msgstr "Generischer Synchronisierungsjob"
+
+#. module: merucore_data_sync
+#: model:ir.actions.server,name:merucore_data_sync.ir_cron_generic_sync_scheduler_ir_actions_server
+msgid "Generic Sync Scheduler"
+msgstr "Generischer Synchronisierungsplaner"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields.selection,name:merucore_data_sync.selection__generic_sync_job__sync_interval_unit__hour
+msgid "Hour"
+msgstr "Stunde"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,help:merucore_data_sync.field_generic_sync_field__transform
+msgid "How to transform the source value before writing to target."
+msgstr "Wie der Quellwert vor dem Schreiben ins Ziel transformiert werden soll."
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_backend__id
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_field__id
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_job__id
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_record_map__id
+msgid "ID"
+msgstr "ID"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,help:merucore_data_sync.field_generic_sync_record_map__source_record_id
+msgid "ID of the record in SOURCE system (string to support UUIDs)"
+msgstr "ID des Datensatzes im QUELLSYSTEM (String zur Unterstutzung von UUIDs)"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,help:merucore_data_sync.field_generic_sync_record_map__target_record_id
+#: model:ir.model.fields,help:merucore_data_sync.field_generic_sync_record_map__target_record_ref_id
+msgid "ID of the record in TARGET system"
+msgstr "ID des Datensatzes im ZIELSYSTEM"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,help:merucore_data_sync.field_generic_sync_field__required
+msgid "If checked and value is missing, sync will fail for that record."
+msgstr "Wenn aktiviert und der Wert fehlt, schlagt die Synchronisierung fur diesen Datensatz fehl."
+
+#. module: merucore_data_sync
+#: model_terms:ir.ui.view,arch_db:merucore_data_sync.view_generic_sync_job_form
+msgid "If empty, uses target model"
+msgstr "Wenn leer, wird das Zielmodell verwendet"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_job__import_translation
+msgid "Import Translation"
+msgstr "Übersetzung importieren"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_field__job_id
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_record_map__job_id
+msgid "Job"
+msgstr "Stelle"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_job__last_message
+msgid "Last Message"
+msgstr "Letzte Nachricht"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_job__last_run_datetime
+msgid "Last Run Datetime"
+msgstr "Letzte Ausfuhrung (Datum/Uhrzeit)"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_job__last_source_id
+msgid "Last Source"
+msgstr "Letzte Quelle"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_backend__write_uid
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_field__write_uid
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_job__write_uid
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_record_map__write_uid
+msgid "Last Updated by"
+msgstr "Zuletzt aktualisiert von"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_backend__write_date
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_field__write_date
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_job__write_date
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_record_map__write_date
+msgid "Last Updated on"
+msgstr "Zuletzt aktualisiert am"
+
+#. module: merucore_data_sync
+#: model_terms:ir.ui.view,arch_db:merucore_data_sync.view_generic_sync_job_form
+msgid "Logs"
+msgstr "Protokolle"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields.selection,name:merucore_data_sync.selection__generic_sync_field__transform__m2o_name
+msgid "Many2one by Name"
+msgstr "Many2one nach Name"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields.selection,name:merucore_data_sync.selection__generic_sync_job__sync_interval_unit__minute
+msgid "Minute"
+msgstr "Minute"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_field__missing_m2o_policy
+msgid "Missing M2O Policy"
+msgstr "Richtlinie bei fehlendem M2O"
+
+#. module: merucore_data_sync
+#. odoo-python
+#: code:addons/merucore_data_sync/models/sync_job.py:0
+msgid ""
+"Missing related record for field '%s' (source: %s). Execution stopped due to"
+" field policy."
+msgstr "Fehlender zugehoriger Datensatz fur Feld '%s' (Quelle: %s). Ausfuhrung aufgrund der Feldrichtlinie gestoppt."
+
+#. module: merucore_data_sync
+#. odoo-python
+#: code:addons/merucore_data_sync/models/sync_job.py:0
+msgid "Missing related records for x2many field '%s'. Remote IDs: %s"
+msgstr "Fehlende zugehorige Datensatze fur x2many-Feld '%s'. Remote-IDs: %s"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_job__target_model
+msgid "Model"
+msgstr "Modell"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields.selection,name:merucore_data_sync.selection__generic_sync_job__sync_interval_unit__month
+msgid "Month"
+msgstr "Monat"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_backend__name
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_job__name
+msgid "Name"
+msgstr "Name"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_job__next_execution_datetime
+msgid "Next Execution Datetime"
+msgstr "Nachste Ausfuhrung (Datum/Uhrzeit)"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,help:merucore_data_sync.field_generic_sync_job__batch_size
+msgid ""
+"Number of records processed per batch. Set to 0 or negative to disable "
+"batching."
+msgstr "Anzahl der pro Stapel verarbeiteten Datensatze. Auf 0 oder negativ setzen, um Stapelverarbeitung zu deaktivieren."
+
+#. module: merucore_data_sync
+#: model:ir.model.fields.selection,name:merucore_data_sync.selection__generic_sync_field__transform__x2many_map
+msgid "One2many / Many2many via Mapping"
+msgstr "One2many / Many2many uber Zuordnung"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,help:merucore_data_sync.field_generic_sync_job__domain
+msgid "Optional domain in python syntax, e.g. [('active','=',True)]"
+msgstr "Optionaler Domanenausdruck in Python-Syntax, z. B. [('active','=',True)]"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_backend__password
+msgid "Password"
+msgstr "Passwort"
+
+#. module: merucore_data_sync
+#. odoo-python
+#: code:addons/merucore_data_sync/models/sync_job.py:0
+msgid "Please configure a backend on the job first."
+msgstr "Bitte konfigurieren Sie zuerst ein Backend fur den Job."
+
+#. module: merucore_data_sync
+#. odoo-python
+#: code:addons/merucore_data_sync/models/sync_job.py:0
+msgid "Please select a target model first."
+msgstr "Bitte wahlen Sie zuerst ein Zielmodell aus."
+
+#. module: merucore_data_sync
+#. odoo-python
+#: code:addons/merucore_data_sync/models/sync_field.py:0
+msgid ""
+"Policy 'Create Related Record' is not supported for one2many / many2many "
+"fields."
+msgstr "Die Richtlinie 'Zugehorigen Datensatz erstellen' wird fur one2many-/many2many-Felder nicht unterstutzt."
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_job__post_process_python
+msgid "Post Process Python"
+msgstr "Python-Nachverarbeitung"
+
+#. module: merucore_data_sync
+#: model_terms:ir.ui.view,arch_db:merucore_data_sync.view_generic_sync_job_form
+msgid "Post Processing"
+msgstr "Nachverarbeitung"
+
+#. module: merucore_data_sync
+#. odoo-python
+#: code:addons/merucore_data_sync/models/sync_job.py:0
+msgid ""
+"Post-process Python error in job '%s'\n"
+"\n"
+"%s"
+msgstr "Python-Fehler in der Nachverarbeitung im Job '%s'\n\n%s"
+
+#. module: merucore_data_sync
+#. odoo-python
+#: code:addons/merucore_data_sync/models/sync_job.py:0
+msgid "Product template not mapped for source product %s"
+msgstr "Produktvorlage fur Quellprodukt %s nicht zugeordnet"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_field__python_expr
+msgid "Python Expr"
+msgstr "Python-Ausdruck"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields.selection,name:merucore_data_sync.selection__generic_sync_field__transform__eval
+msgid "Python expression"
+msgstr "Python-Ausdruck"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,help:merucore_data_sync.field_generic_sync_field__python_expr
+msgid ""
+"Python expression used when transform = 'eval'.\n"
+"Variables available:\n"
+"- value: source field value\n"
+"- src: full source record (dict)\n"
+"- env: Odoo environment\n"
+"Example: value.upper()"
+msgstr "Python-Ausdruck, der verwendet wird, wenn transform = 'eval'.\nVerfugbare Variablen:\n- value: Quellfeldwert\n- src: vollstandiger Quelldatensatz (dict)\n- env: Odoo-Umgebung\nBeispiel: value.upper()"
+
+#. module: merucore_data_sync
+#. odoo-python
+#: code:addons/merucore_data_sync/models/sync_job.py:0
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_job__record_mapping_count
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_job__record_mapping_ids
+#: model_terms:ir.ui.view,arch_db:merucore_data_sync.view_generic_sync_job_form
+msgid "Record Mappings"
+msgstr "Datensatzzuordnungen"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,help:merucore_data_sync.field_generic_sync_job__source_model
+msgid "Remote model name. If empty, target model is used."
+msgstr "Name des entfernten Modells. Wenn leer, wird das Zielmodell verwendet."
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_field__required
+msgid "Required"
+msgstr "Erforderlich"
+
+#. module: merucore_data_sync
+#: model_terms:ir.ui.view,arch_db:merucore_data_sync.view_generic_sync_job_form
+msgid "Scheduling"
+msgstr "Zeitplanung"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields.selection,name:merucore_data_sync.selection__generic_sync_field__transform__m2o_self_hierarchy
+msgid "Self hierarchy (mapping-based)"
+msgstr "Selbsthierarchie (zuordnungsbasiert)"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_field__sequence
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_job__sequence
+msgid "Sequence"
+msgstr "Sequenz"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields.selection,name:merucore_data_sync.selection__generic_sync_field__missing_m2o_policy__skip
+msgid "Skip Field"
+msgstr "Feld uberspringen"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_field__source_field
+msgid "Source Field"
+msgstr "Quellfeld"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_job__source_model
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_record_map__source_model
+msgid "Source Model"
+msgstr "Quellmodell"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_record_map__source_record_id
+msgid "Source Record"
+msgstr "Quelldatensatz"
+
+#. module: merucore_data_sync
+#: model:ir.model,name:merucore_data_sync.model_generic_sync_record_map
+msgid "Source → Destination Record Mapping"
+msgstr "Zuordnung Quell- zu Zieldatensatz"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,help:merucore_data_sync.field_generic_sync_job__last_source_id
+msgid "Start from Source Id. "
+msgstr "Bei Quell-ID starten. "
+
+#. module: merucore_data_sync
+#: model:ir.model.fields.selection,name:merucore_data_sync.selection__generic_sync_field__missing_m2o_policy__stop
+msgid "Stop Execution"
+msgstr "Ausfuhrung stoppen"
+
+#. module: merucore_data_sync
+#: model_terms:ir.ui.view,arch_db:merucore_data_sync.view_generic_sync_backend_form
+msgid "Sync Backend"
+msgstr "Synchronisierungs-Backend"
+
+#. module: merucore_data_sync
+#: model:ir.actions.act_window,name:merucore_data_sync.action_generic_sync_backend
+msgid "Sync Backends"
+msgstr "Synchronisierungs-Backends"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_job__sync_interval_number
+msgid "Sync Interval Number"
+msgstr "Synchronisierungsintervall (Anzahl)"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_job__sync_interval_unit
+msgid "Sync Interval Unit"
+msgstr "Synchronisierungsintervall (Einheit)"
+
+#. module: merucore_data_sync
+#: model_terms:ir.ui.view,arch_db:merucore_data_sync.view_generic_sync_job_form
+msgid "Sync Job"
+msgstr "Synchronisierungsjob"
+
+#. module: merucore_data_sync
+#: model:ir.actions.act_window,name:merucore_data_sync.action_generic_sync_job
+#: model:ir.ui.menu,name:merucore_data_sync.menu_generic_sync_job
+msgid "Sync Jobs"
+msgstr "Synchronisierungsjobs"
+
+#. module: merucore_data_sync
+#: model_terms:ir.ui.view,arch_db:merucore_data_sync.view_generic_sync_job_form
+msgid "Sync Now"
+msgstr "Jetzt synchronisieren"
+
+#. module: merucore_data_sync
+#. odoo-python
+#: code:addons/merucore_data_sync/models/sync_job.py:0
+msgid "Sync completed successfully."
+msgstr "Synchronisierung erfolgreich abgeschlossen."
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_field__target_field
+msgid "Target Field"
+msgstr "Zielfeld"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_job__model_id
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_record_map__target_model
+msgid "Target Model"
+msgstr "Zielmodell"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_record_map__target_record_id
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_record_map__target_record_ref_id
+msgid "Target Record ID"
+msgstr "Zieldatensatz-ID"
+
+#. module: merucore_data_sync
+#: model_terms:ir.ui.view,arch_db:merucore_data_sync.view_generic_sync_job_form
+msgid ""
+"This will automatically generate field mappings based on matching fields. "
+"Existing mappings will not be modified."
+msgstr "Dadurch werden Feldzuordnungen anhand ubereinstimmender Felder automatisch generiert. Bestehende Zuordnungen werden nicht geandert."
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_backend__timeout
+msgid "Timeout"
+msgstr "Zeituberschreitung"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,help:merucore_data_sync.field_generic_sync_backend__timeout
+msgid "Timeout (in seconds) for XML-RPC calls."
+msgstr "Zeituberschreitung (in Sekunden) fur XML-RPC-Aufrufe."
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_field__transform
+msgid "Transform"
+msgstr "Transformieren"
+
+#. module: merucore_data_sync
+#. odoo-python
+#: code:addons/merucore_data_sync/models/sync_field.py:0
+msgid "Transform 'Attachment' can only be used for ir.attachment.datas."
+msgstr "Transformation 'Anhang' kann nur fur ir.attachment.datas verwendet werden."
+
+#. module: merucore_data_sync
+#. odoo-python
+#: code:addons/merucore_data_sync/models/sync_field.py:0
+msgid ""
+"Transform 'Binary / Image' can only be used with binary fields (field: %s)."
+msgstr "Transformation 'Binar / Bild' kann nur mit Binarfeldern verwendet werden (Feld: %s)."
+
+#. module: merucore_data_sync
+#. odoo-python
+#: code:addons/merucore_data_sync/models/sync_field.py:0
+msgid ""
+"Transform 'm2o_self_hierarchy' can only be used with many2one fields (field:"
+" %s)."
+msgstr "Transformation 'm2o_self_hierarchy' kann nur mit many2one-Feldern verwendet werden (Feld: %s)."
+
+#. module: merucore_data_sync
+#. odoo-python
+#: code:addons/merucore_data_sync/models/sync_field.py:0
+msgid ""
+"Transform 'x2many_map' can only be used with one2many or many2many fields "
+"(field: %s)."
+msgstr "Transformation 'x2many_map' kann nur mit one2many- oder many2many-Feldern verwendet werden (Feld: %s)."
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_backend__url
+msgid "Url"
+msgstr "URL"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields,field_description:merucore_data_sync.field_generic_sync_backend__username
+msgid "Username"
+msgstr "Benutzername"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields.selection,name:merucore_data_sync.selection__generic_sync_job__sync_interval_unit__week
+msgid "Week"
+msgstr "Woche"
+
+#. module: merucore_data_sync
+#: model:ir.model.fields.selection,name:merucore_data_sync.selection__generic_sync_job__sync_interval_unit__year
+msgid "Year"
+msgstr "Jahr"
+
+#. module: merucore_data_sync
+#: model_terms:ir.ui.view,arch_db:merucore_data_sync.view_generic_sync_job_form
+msgid "[('active','=',True)]"
+msgstr "[('active','=',True)]"
+
+#. module: merucore_data_sync
+#. odoo-python
+#: code:addons/merucore_data_sync/models/sync_job.py:0
+msgid "job_id"
+msgstr "job_id"

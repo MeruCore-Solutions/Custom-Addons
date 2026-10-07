@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="view_generic_sync_backend_tree" model="ir.ui.view">
+        <field name="name">generic.sync.backend.tree</field>
+        <field name="model">generic.sync.backend</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="url"/>
+                <field name="db_name"/>
+                <field name="username"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_generic_sync_backend_form" model="ir.ui.view">
+        <field name="name">generic.sync.backend.form</field>
+        <field name="model">generic.sync.backend</field>
+        <field name="arch" type="xml">
+            <form string="Sync Backend">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="active"/>
+                    </group>
+                    <group string="Connection">
+                        <field name="url"/>
+                        <field name="db_name"/>
+                        <field name="username"/>
+                        <field name="password" password="True"/>
+                        <field name="timeout"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_generic_sync_backend" model="ir.actions.act_window">
+        <field name="name">Sync Backends</field>
+        <field name="res_model">generic.sync.backend</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_generic_sync_root"
+              name="Generic Sync"
+              parent="base.menu_custom"
+              sequence="90"/>
+
+    <menuitem id="menu_generic_sync_backend"
+              name="Backends"
+              parent="menu_generic_sync_root"
+              action="action_generic_sync_backend"
+              sequence="10"/>
+</odoo>

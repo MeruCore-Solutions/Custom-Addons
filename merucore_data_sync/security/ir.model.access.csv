@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_generic_sync_backend,access_generic_sync_backend,model_generic_sync_backend,base.group_system,1,1,1,1
+access_generic_sync_job,access_generic_sync_job,model_generic_sync_job,base.group_system,1,1,1,1
+access_generic_sync_record_map,access_generic_sync_record_map,model_generic_sync_record_map,base.group_system,1,1,1,1
+access_generic_sync_field,access_generic_sync_field,model_generic_sync_field,base.group_system,1,1,1,1
+access_generic_sync_post_process,access_generic_sync_post_process,model_generic_sync_post_process,base.group_system,1,1,1,1

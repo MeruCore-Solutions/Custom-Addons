@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="ir_cron_generic_sync_scheduler" model="ir.cron">
+        <field name="name">Generic Sync Scheduler</field>
+        <field name="model_id" ref="model_generic_sync_job"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_run_due_jobs()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">minutes</field>
+        <field name="active">True</field>
+    </record>
+
+    <record id="ir_cron_generic_sync_post_process_scheduler" model="ir.cron">
+        <field name="name">Generic Sync Post-Process Scheduler</field>
+        <field name="model_id" ref="model_generic_sync_post_process"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_run_pending_post_processes()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">minutes</field>
+        <field name="active">True</field>
+    </record>
+</odoo>
