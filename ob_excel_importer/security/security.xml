@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="module_category_excel_importer" model="ir.module.category">
+        <field name="name">Excel Importer</field>
+        <field name="description">Excel importer access rights</field>
+        <field name="sequence">45</field>
+    </record>
+
+    <record id="res_groups_privilege_excel_importer" model="res.groups.privilege">
+        <field name="name">Excel Importer</field>
+        <field name="description">Excel importer roles</field>
+        <field name="sequence">45</field>
+        <field name="category_id" ref="ob_excel_importer.module_category_excel_importer"/>
+    </record>
+
+    <record id="group_excel_import_user" model="res.groups">
+        <field name="name">Excel Import User</field>
+        <field name="privilege_id" ref="ob_excel_importer.res_groups_privilege_excel_importer"/>
+        <field name="implied_ids" eval="[Command.link(ref('base.group_user'))]"/>
+    </record>
+
+    <record id="group_excel_import_manager" model="res.groups">
+        <field name="name">Excel Import Manager</field>
+        <field name="privilege_id" ref="ob_excel_importer.res_groups_privilege_excel_importer"/>
+        <field name="implied_ids" eval="[Command.link(ref('ob_excel_importer.group_excel_import_user'))]"/>
+        <field name="user_ids" eval="[Command.link(ref('base.user_admin'))]"/>
+    </record>
+</odoo>

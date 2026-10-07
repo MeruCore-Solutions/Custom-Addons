@@ -1,0 +1,17 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_ob_excel_import_template_user,ob.excel.import.template user,model_ob_excel_import_template,ob_excel_importer.group_excel_import_user,1,0,0,0
+access_ob_excel_import_template_manager,ob.excel.import.template manager,model_ob_excel_import_template,ob_excel_importer.group_excel_import_manager,1,1,1,1
+access_ob_excel_import_field_user,ob.excel.import.field user,model_ob_excel_import_field,ob_excel_importer.group_excel_import_user,1,0,0,0
+access_ob_excel_import_field_manager,ob.excel.import.field manager,model_ob_excel_import_field,ob_excel_importer.group_excel_import_manager,1,1,1,1
+access_ob_excel_import_log_user,ob.excel.import.log user,model_ob_excel_import_log,ob_excel_importer.group_excel_import_user,1,0,0,0
+access_ob_excel_import_log_manager,ob.excel.import.log manager,model_ob_excel_import_log,ob_excel_importer.group_excel_import_manager,1,1,1,1
+access_ob_excel_import_log_line_user,ob.excel.import.log.line user,model_ob_excel_import_log_line,ob_excel_importer.group_excel_import_user,1,0,0,0
+access_ob_excel_import_log_line_manager,ob.excel.import.log.line manager,model_ob_excel_import_log_line,ob_excel_importer.group_excel_import_manager,1,1,1,1
+access_ob_excel_import_failed_line_user,ob.excel.import.failed.line user,model_ob_excel_import_failed_line,ob_excel_importer.group_excel_import_user,1,1,0,0
+access_ob_excel_import_failed_line_manager,ob.excel.import.failed.line manager,model_ob_excel_import_failed_line,ob_excel_importer.group_excel_import_manager,1,1,1,1
+access_ob_excel_import_post_process_user,ob.excel.import.post.process user,model_ob_excel_import_post_process,ob_excel_importer.group_excel_import_user,1,0,0,0
+access_ob_excel_import_post_process_manager,ob.excel.import.post.process manager,model_ob_excel_import_post_process,ob_excel_importer.group_excel_import_manager,1,1,1,1
+access_ob_excel_import_record_map_user,ob.excel.import.record.map user,model_ob_excel_import_record_map,ob_excel_importer.group_excel_import_user,1,0,0,0
+access_ob_excel_import_record_map_manager,ob.excel.import.record.map manager,model_ob_excel_import_record_map,ob_excel_importer.group_excel_import_manager,1,1,1,1
+access_ob_excel_import_wizard_user,ob.excel.import.wizard user,model_ob_excel_import_wizard,ob_excel_importer.group_excel_import_user,1,1,1,1
+access_ob_excel_import_wizard_manager,ob.excel.import.wizard manager,model_ob_excel_import_wizard,ob_excel_importer.group_excel_import_manager,1,1,1,1

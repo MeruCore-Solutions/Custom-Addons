@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_ob_excel_import_template" model="ir.actions.act_window">
+        <field name="name">Import Templates</field>
+        <field name="res_model">ob.excel.import.template</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_ob_excel_import_log" model="ir.actions.act_window">
+        <field name="name">Import Logs</field>
+        <field name="res_model">ob.excel.import.log</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_ob_excel_import_failed_line" model="ir.actions.act_window">
+        <field name="name">Not Imported Lines</field>
+        <field name="res_model">ob.excel.import.failed.line</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_ob_excel_import_post_process" model="ir.actions.act_window">
+        <field name="name">Post Processes</field>
+        <field name="res_model">ob.excel.import.post.process</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem
+        id="menu_ob_excel_importer_root"
+        name="OB Excel Importer"
+        sequence="10"
+        groups="ob_excel_importer.group_excel_import_user"/>
+
+    <menuitem
+        id="menu_ob_excel_importer_templates"
+        name="Import Templates"
+        parent="menu_ob_excel_importer_root"
+        action="action_ob_excel_import_template"
+        sequence="10"
+        groups="ob_excel_importer.group_excel_import_user"/>
+
+    <menuitem
+        id="menu_ob_excel_importer_logs"
+        name="Import Logs"
+        parent="menu_ob_excel_importer_root"
+        action="action_ob_excel_import_log"
+        sequence="20"
+        groups="ob_excel_importer.group_excel_import_user"/>
+
+    <menuitem
+        id="menu_ob_excel_importer_failed_lines"
+        name="Not Imported Lines"
+        parent="menu_ob_excel_importer_root"
+        action="action_ob_excel_import_failed_line"
+        sequence="30"
+        groups="ob_excel_importer.group_excel_import_user"/>
+
+    <menuitem
+        id="menu_ob_excel_importer_post_processes"
+        name="Post Processes"
+        parent="menu_ob_excel_importer_root"
+        action="action_ob_excel_import_post_process"
+        sequence="40"
+        groups="ob_excel_importer.group_excel_import_manager"/>
+</odoo>

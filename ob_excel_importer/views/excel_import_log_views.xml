@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_ob_excel_import_log_search" model="ir.ui.view">
+        <field name="name">ob.excel.import.log.search</field>
+        <field name="model">ob.excel.import.log</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="template_id"/>
+                <field name="filename"/>
+                <filter string="Running" name="running" domain="[('state', '=', 'running')]"/>
+                <filter string="Done" name="done" domain="[('state', '=', 'done')]"/>
+                <filter string="Partial" name="partial" domain="[('state', '=', 'partial')]"/>
+                <filter string="Failed" name="failed" domain="[('state', '=', 'failed')]"/>
+                <group>
+                    <filter string="Template" name="group_template" context="{'group_by': 'template_id'}"/>
+                    <filter string="State" name="group_state" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_ob_excel_import_log_list" model="ir.ui.view">
+        <field name="name">ob.excel.import.log.list</field>
+        <field name="model">ob.excel.import.log</field>
+        <field name="arch" type="xml">
+            <list default_order="started_at desc">
+                <field name="template_id"/>
+                <field name="filename"/>
+                <field name="state"/>
+                <field name="total_rows"/>
+                <field name="success_count"/>
+                <field name="failed_count"/>
+                <field name="skipped_count"/>
+                <field name="started_at"/>
+                <field name="finished_at"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ob_excel_import_log_form" model="ir.ui.view">
+        <field name="name">ob.excel.import.log.form</field>
+        <field name="model">ob.excel.import.log</field>
+        <field name="arch" type="xml">
+            <form string="Import Log">
+                <header>
+                    <button name="action_view_failed_lines" type="object" string="Not Imported Lines" invisible="failed_line_count == 0"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,running,done,partial,failed"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_failed_lines" type="object" class="oe_stat_button" icon="fa-exclamation-triangle">
+                            <field name="failed_line_count" widget="statinfo" string="Not Imported Lines"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="template_id"/>
+                            <field name="filename"/>
+                            <field name="started_at"/>
+                            <field name="finished_at"/>
+                        </group>
+                        <group>
+                            <field name="total_rows"/>
+                            <field name="success_count"/>
+                            <field name="failed_count"/>
+                            <field name="skipped_count"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="message" widget="text"/>
+                    </group>
+                    <notebook>
+                        <page string="Row Logs">
+                            <field name="line_ids" readonly="1">
+                                <list default_order="row_number asc">
+                                    <field name="row_number"/>
+                                    <field name="state"/>
+                                    <field name="target_model"/>
+                                    <field name="target_record_id"/>
+                                    <field name="message"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Not Imported Lines">
+                            <field name="failed_line_ids" readonly="1">
+                                <list default_order="row_number asc">
+                                    <field name="filename"/>
+                                    <field name="row_number"/>
+                                    <field name="state"/>
+                                    <field name="error_type"/>
+                                    <field name="error_message"/>
+                                    <field name="reimported_at"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+</odoo>

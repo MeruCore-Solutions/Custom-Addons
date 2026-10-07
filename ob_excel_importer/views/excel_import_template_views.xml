@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_ob_excel_import_template_search" model="ir.ui.view">
+        <field name="name">ob.excel.import.template.search</field>
+        <field name="model">ob.excel.import.template</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="model_id"/>
+                <field name="responsible_user_id"/>
+                <filter string="Active" name="active" domain="[('active', '=', True)]"/>
+                <filter string="Auto Import" name="auto_import" domain="[('auto_import', '=', True)]"/>
+                <filter string="FTP Enabled" name="ftp_enabled" domain="[('ftp_enabled', '=', True)]"/>
+                <group>
+                    <filter string="Model" name="group_model" context="{'group_by': 'model_id'}"/>
+                    <filter string="Responsible" name="group_responsible" context="{'group_by': 'responsible_user_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_ob_excel_import_template_list" model="ir.ui.view">
+        <field name="name">ob.excel.import.template.list</field>
+        <field name="model">ob.excel.import.template</field>
+        <field name="arch" type="xml">
+            <list default_order="sequence, id">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="model_id"/>
+                <field name="import_mode"/>
+                <field name="ftp_enabled"/>
+                <field name="auto_import"/>
+                <field name="next_execution_datetime"/>
+                <field name="last_run_datetime"/>
+                <field name="responsible_user_id"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ob_excel_import_template_form" model="ir.ui.view">
+        <field name="name">ob.excel.import.template.form</field>
+        <field name="model">ob.excel.import.template</field>
+        <field name="arch" type="xml">
+            <form string="Excel Import Template">
+                <header>
+                    <button name="action_open_import_wizard" type="object" string="Upload Excel" class="btn-primary"/>
+                    <button name="action_open_test_import_wizard" type="object" string="Test Import"/>
+                    <button name="action_import_from_ftp" type="object" string="Import from FTP" invisible="not ftp_enabled"/>
+                    <button name="action_generate_field_mappings" type="object" string="Generate Field Mappings" groups="ob_excel_importer.group_excel_import_manager"/>
+                    <button name="action_run_pending_post_processes" type="object" string="Run Pending Post Processes" groups="ob_excel_importer.group_excel_import_manager"/>
+                    <button name="action_view_logs" type="object" string="View Logs"/>
+                    <button name="action_view_failed_lines" type="object" string="View Failed Lines"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_logs" type="object" class="oe_stat_button" icon="fa-history">
+                            <field name="log_count" widget="statinfo" string="Logs"/>
+                        </button>
+                        <button name="action_view_failed_lines" type="object" class="oe_stat_button" icon="fa-exclamation-triangle">
+                            <field name="failed_line_count" widget="statinfo" string="Not Imported"/>
+                        </button>
+                        <button name="action_run_pending_post_processes" type="object" class="oe_stat_button" icon="fa-play" groups="ob_excel_importer.group_excel_import_manager">
+                            <field name="pending_post_process_count" widget="statinfo" string="Pending Post Processes"/>
+                        </button>
+                    </div>
+                    <notebook>
+                        <page string="General">
+                            <group>
+                                <group>
+                                    <field name="name"/>
+                                    <field name="active"/>
+                                    <field name="sequence"/>
+                                    <field name="model_id"/>
+                                    <field name="target_model" readonly="1"/>
+                                    <field name="responsible_user_id"/>
+                                </group>
+                                <group>
+                                    <field name="sheet_name"/>
+                                    <field name="header_row"/>
+                                    <field name="data_start_row"/>
+                                    <field name="batch_size"/>
+                                    <field name="stop_on_first_error"/>
+                                </group>
+                            </group>
+                            <group>
+                                <group string="Record Matching">
+                                    <field name="import_mode"/>
+                                    <field name="duplicate_policy"/>
+                                    <field name="external_key_column"/>
+                                    <field name="external_key_field"/>
+                                </group>
+                                <group string="Error Handling">
+                                    <field name="notify_on_error"/>
+                                    <field name="create_activity_on_error"/>
+                                    <field name="activity_type_id"/>
+                                    <field name="last_message" readonly="1" widget="text"/>
+                                </group>
+                            </group>
+                            <group string="Scheduling">
+                                <group>
+                                    <field name="auto_import"/>
+                                    <field name="interval_number"/>
+                                    <field name="interval_unit"/>
+                                </group>
+                                <group>
+                                    <field name="next_execution_datetime" readonly="1"/>
+                                    <field name="last_run_datetime" readonly="1"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Field Mappings">
+                            <field name="field_mapping_ids" context="{'default_template_id': id}">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="excel_column"/>
+                                    <field name="excel_header"/>
+                                    <field name="target_field"/>
+                                    <field name="target_field_type" readonly="1"/>
+                                    <field name="transform"/>
+                                    <field name="required"/>
+                                    <field name="post_process"/>
+                                    <field name="post_process_priority"/>
+                                </list>
+                                <form string="Field Mapping">
+                                    <group>
+                                        <group>
+                                            <field name="sequence"/>
+                                            <field name="excel_column"/>
+                                            <field name="excel_header"/>
+                                            <field name="target_field"/>
+                                            <field name="target_field_type" readonly="1"/>
+                                            <field name="required"/>
+                                        </group>
+                                        <group>
+                                            <field name="transform"/>
+                                            <field name="default_value"/>
+                                            <field name="date_format" invisible="transform not in ('date', 'datetime')"/>
+                                            <field name="m2o_search_field" invisible="transform not in ('many2one_name', 'many2one_ref', 'many2many_names')"/>
+                                            <field name="missing_m2o_policy" invisible="transform not in ('many2one_name', 'many2one_ref', 'many2many_names')"/>
+                                            <field name="x2many_separator" invisible="transform != 'many2many_names'"/>
+                                        </group>
+                                    </group>
+                                    <group>
+                                        <field name="boolean_true_values" invisible="transform != 'boolean'"/>
+                                        <field name="boolean_false_values" invisible="transform != 'boolean'"/>
+                                    </group>
+                                    <group>
+                                        <field name="post_process"/>
+                                        <field name="post_process_priority" invisible="not post_process"/>
+                                    </group>
+                                    <group>
+                                        <field name="python_expr" widget="code" options="{'mode': 'python'}" invisible="transform != 'python'"/>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                        <page string="FTP Configuration">
+                            <group>
+                                <group>
+                                    <field name="ftp_enabled"/>
+                                    <field name="ftp_protocol"/>
+                                    <field name="ftp_host"/>
+                                    <field name="ftp_port"/>
+                                    <field name="ftp_username"/>
+                                    <field name="ftp_password" password="True" groups="ob_excel_importer.group_excel_import_manager"/>
+                                </group>
+                                <group>
+                                    <field name="ftp_path"/>
+                                    <field name="ftp_filename_pattern"/>
+                                    <field name="ftp_archive_path"/>
+                                    <field name="ftp_delete_after_import"/>
+                                    <field name="ftp_passive_mode" invisible="ftp_protocol != 'ftp'"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Python Hooks" groups="ob_excel_importer.group_excel_import_manager">
+                            <group>
+                                <field name="pre_process_python" widget="code" options="{'mode': 'python'}"/>
+                                <field name="row_filter_python" widget="code" options="{'mode': 'python'}"/>
+                                <field name="post_process_python" widget="code" options="{'mode': 'python'}"/>
+                                <field name="post_import_python" widget="code" options="{'mode': 'python'}"/>
+                            </group>
+                        </page>
+                        <page string="Logs">
+                            <field name="log_ids" readonly="1">
+                                <list default_order="started_at desc">
+                                    <field name="filename"/>
+                                    <field name="state"/>
+                                    <field name="total_rows"/>
+                                    <field name="success_count"/>
+                                    <field name="failed_count"/>
+                                    <field name="skipped_count"/>
+                                    <field name="started_at"/>
+                                    <field name="finished_at"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Post Processes">
+                            <field name="post_process_ids" context="{'default_template_id': id}">
+                                <list editable="bottom">
+                                    <field name="priority"/>
+                                    <field name="type"/>
+                                    <field name="state"/>
+                                    <field name="res_model"/>
+                                    <field name="log_id"/>
+                                </list>
+                                <form string="Post Process">
+                                    <group>
+                                        <field name="priority"/>
+                                        <field name="type"/>
+                                        <field name="state"/>
+                                        <field name="res_model"/>
+                                        <field name="res_ids"/>
+                                        <field name="log_id"/>
+                                    </group>
+                                    <group>
+                                        <field name="python_code" widget="code" options="{'mode': 'python'}"/>
+                                        <field name="message" widget="text"/>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_ob_excel_import_wizard_form" model="ir.ui.view">
+        <field name="name">ob.excel.import.wizard.form</field>
+        <field name="model">ob.excel.import.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Excel Import">
+                <sheet>
+                    <group>
+                        <field name="template_id" readonly="1"/>
+                        <field name="file" filename="filename"/>
+                        <field name="filename"/>
+                        <field name="dry_run"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_test_import" type="object" string="Test Import" class="btn-secondary"/>
+                    <button name="action_import_file" type="object" string="Import File" class="btn-primary"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

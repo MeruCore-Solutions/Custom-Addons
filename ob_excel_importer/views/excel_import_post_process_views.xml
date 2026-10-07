@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_ob_excel_import_post_process_search" model="ir.ui.view">
+        <field name="name">ob.excel.import.post.process.search</field>
+        <field name="model">ob.excel.import.post.process</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="template_id"/>
+                <field name="res_model"/>
+                <field name="state"/>
+                <filter string="Pending" name="pending" domain="[('state', '=', 'pending')]"/>
+                <filter string="Done" name="done" domain="[('state', '=', 'done')]"/>
+                <filter string="Failed" name="failed" domain="[('state', '=', 'failed')]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_ob_excel_import_post_process_list" model="ir.ui.view">
+        <field name="name">ob.excel.import.post.process.list</field>
+        <field name="model">ob.excel.import.post.process</field>
+        <field name="arch" type="xml">
+            <list default_order="priority, id">
+                <field name="priority"/>
+                <field name="template_id"/>
+                <field name="type"/>
+                <field name="state"/>
+                <field name="res_model"/>
+                <field name="log_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ob_excel_import_post_process_form" model="ir.ui.view">
+        <field name="name">ob.excel.import.post.process.form</field>
+        <field name="model">ob.excel.import.post.process</field>
+        <field name="arch" type="xml">
+            <form string="Post Process">
+                <header>
+                    <button name="execute" type="object" string="Execute" class="btn-primary" invisible="state == 'done'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="pending,done,failed"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="template_id"/>
+                            <field name="log_id"/>
+                            <field name="type"/>
+                            <field name="priority"/>
+                        </group>
+                        <group>
+                            <field name="res_model"/>
+                            <field name="res_ids"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="python_code" widget="code" options="{'mode': 'python'}"/>
+                        <field name="message" widget="text"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_ob_excel_import_failed_line_search" model="ir.ui.view">
+        <field name="name">ob.excel.import.failed.line.search</field>
+        <field name="model">ob.excel.import.failed.line</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="template_id"/>
+                <field name="filename"/>
+                <field name="state"/>
+                <field name="error_type"/>
+                <filter string="New" name="new" domain="[('state', '=', 'new')]"/>
+                <filter string="Fixed" name="fixed" domain="[('state', '=', 'fixed')]"/>
+                <filter string="Failed Again" name="failed_again" domain="[('state', '=', 'failed_again')]"/>
+                <group>
+                    <filter string="Template" name="group_template" context="{'group_by': 'template_id'}"/>
+                    <filter string="State" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Error Type" name="group_error_type" context="{'group_by': 'error_type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_ob_excel_import_failed_line_list" model="ir.ui.view">
+        <field name="name">ob.excel.import.failed.line.list</field>
+        <field name="model">ob.excel.import.failed.line</field>
+        <field name="arch" type="xml">
+            <list default_order="import_log_id desc, row_number asc">
+                <field name="template_id"/>
+                <field name="filename"/>
+                <field name="row_number"/>
+                <field name="state"/>
+                <field name="error_type"/>
+                <field name="error_message"/>
+                <field name="reimported_at"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ob_excel_import_failed_line_form" model="ir.ui.view">
+        <field name="name">ob.excel.import.failed.line.form</field>
+        <field name="model">ob.excel.import.failed.line</field>
+        <field name="arch" type="xml">
+            <form string="Not Imported Line">
+                <header>
+                    <button name="action_mark_fixed" type="object" string="Mark Fixed" invisible="state in ('reimported', 'ignored')"/>
+                    <button name="action_reimport_line" type="object" string="Re-import Line" class="btn-primary" invisible="state == 'ignored'"/>
+                    <button name="action_reimport_selected_lines" type="object" string="Re-import Selected Lines"/>
+                    <button name="action_ignore" type="object" string="Ignore" invisible="state == 'ignored'"/>
+                    <button name="action_create_activity" type="object" string="Create Activity" invisible="activity_created"/>
+                    <button name="action_open_target_record" type="object" string="Open Target Record" invisible="not target_record_id"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,fixed,reimported,ignored,failed_again"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="template_id" readonly="1"/>
+                            <field name="import_log_id" readonly="1"/>
+                            <field name="filename"/>
+                            <field name="row_number"/>
+                            <field name="target_model" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="error_type"/>
+                            <field name="target_record_id" readonly="1"/>
+                            <field name="target_record_name" readonly="1"/>
+                            <field name="reimported_at" readonly="1"/>
+                            <field name="activity_created" readonly="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="error_message" widget="text"/>
+                        <field name="fix_note" widget="text"/>
+                    </group>
+                    <notebook>
+                        <page string="Original Source Values">
+                            <field name="source_values_text" widget="text" readonly="1"/>
+                        </page>
+                        <page string="Fixed Source Values">
+                            <field name="fixed_source_values_text" widget="text"/>
+                        </page>
+                        <page string="Mapped Values">
+                            <field name="mapped_values_text" widget="text" readonly="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="server_action_reimport_failed_lines" model="ir.actions.server">
+        <field name="name">Re-import Selected Lines</field>
+        <field name="model_id" ref="model_ob_excel_import_failed_line"/>
+        <field name="binding_model_id" ref="model_ob_excel_import_failed_line"/>
+        <field name="state">code</field>
+        <field name="code">records.action_reimport_selected_lines()</field>
+    </record>
+</odoo>
