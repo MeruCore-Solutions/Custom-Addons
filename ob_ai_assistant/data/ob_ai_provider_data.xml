@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="ob_ai_provider_openai" model="ob.ai.provider">
+            <field name="name">ChatGPT (OpenAI)</field>
+            <field name="code">openai_chatgpt</field>
+            <field name="provider_type">openai</field>
+            <field name="endpoint_url">https://api.openai.com/v1/responses</field>
+            <field name="api_key_parameter">ob_ai_assistant.openai_api_key</field>
+            <field name="sequence">10</field>
+            <field name="temperature">0.2</field>
+            <field name="max_output_tokens">1200</field>
+            <field name="note">Uses OpenAI's Responses API for ChatGPT-style assistant interactions inside Odoo.</field>
+        </record>
+
+        <record id="ob_ai_provider_anthropic" model="ob.ai.provider">
+            <field name="name">Claude (Anthropic)</field>
+            <field name="code">anthropic_claude</field>
+            <field name="provider_type">anthropic</field>
+            <field name="endpoint_url">https://api.anthropic.com/v1/messages</field>
+            <field name="api_key_parameter">ob_ai_assistant.anthropic_api_key</field>
+            <field name="sequence">20</field>
+            <field name="temperature">0.2</field>
+            <field name="max_output_tokens">1200</field>
+            <field name="note">Uses Anthropic's Messages API for Claude assistant interactions inside Odoo.</field>
+        </record>
+    </data>
+</odoo>

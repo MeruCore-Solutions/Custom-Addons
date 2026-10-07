@@ -1,0 +1,17 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_ob_ocr_document_user,ob.ocr.document.user,model_ob_ocr_document,ob_ocr_base.group_ocr_user,1,1,1,0
+access_ob_ocr_document_manager,ob.ocr.document.manager,model_ob_ocr_document,ob_ocr_base.group_ocr_manager,1,1,1,1
+access_ob_ocr_document_line_user,ob.ocr.document.line.user,model_ob_ocr_document_line,ob_ocr_base.group_ocr_user,1,1,1,0
+access_ob_ocr_document_line_manager,ob.ocr.document.line.manager,model_ob_ocr_document_line,ob_ocr_base.group_ocr_manager,1,1,1,1
+access_ob_ocr_provider_user,ob.ocr.provider.user,model_ob_ocr_provider,ob_ocr_base.group_ocr_user,1,0,0,0
+access_ob_ocr_provider_manager,ob.ocr.provider.manager,model_ob_ocr_provider,ob_ocr_base.group_ocr_manager,1,1,1,1
+access_ob_ocr_document_type_user,ob.ocr.document.type.user,model_ob_ocr_document_type,ob_ocr_base.group_ocr_user,1,0,0,0
+access_ob_ocr_document_type_manager,ob.ocr.document.type.manager,model_ob_ocr_document_type,ob_ocr_base.group_ocr_manager,1,1,1,1
+access_ob_ocr_mapping_user,ob.ocr.mapping.user,model_ob_ocr_mapping,ob_ocr_base.group_ocr_user,1,0,0,0
+access_ob_ocr_mapping_manager,ob.ocr.mapping.manager,model_ob_ocr_mapping,ob_ocr_base.group_ocr_manager,1,1,1,1
+access_ob_ocr_mapping_field_user,ob.ocr.mapping.field.user,model_ob_ocr_mapping_field,ob_ocr_base.group_ocr_user,1,0,0,0
+access_ob_ocr_mapping_field_manager,ob.ocr.mapping.field.manager,model_ob_ocr_mapping_field,ob_ocr_base.group_ocr_manager,1,1,1,1
+access_ob_ocr_extraction_rule_user,ob.ocr.extraction.rule.user,model_ob_ocr_extraction_rule,ob_ocr_base.group_ocr_user,1,0,0,0
+access_ob_ocr_extraction_rule_manager,ob.ocr.extraction.rule.manager,model_ob_ocr_extraction_rule,ob_ocr_base.group_ocr_manager,1,1,1,1
+access_ob_ocr_log_user,ob.ocr.log.user,model_ob_ocr_log,ob_ocr_base.group_ocr_user,1,0,1,0
+access_ob_ocr_log_manager,ob.ocr.log.manager,model_ob_ocr_log,ob_ocr_base.group_ocr_manager,1,1,1,1

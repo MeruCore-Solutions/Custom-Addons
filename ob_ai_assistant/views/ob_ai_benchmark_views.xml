@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Benchmark Source -->
+    <record id="view_ob_ai_benchmark_source_list" model="ir.ui.view">
+        <field name="name">ob.ai.benchmark.source.list</field>
+        <field name="model">ob.ai.benchmark.source</field>
+        <field name="arch" type="xml">
+            <list string="Benchmark Sources">
+                <field name="name"/>
+                <field name="source_type"/>
+                <field name="refresh_schedule"/>
+                <field name="last_sync"/>
+                <field name="series_count"/>
+                <field name="active" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ob_ai_benchmark_source_form" model="ir.ui.view">
+        <field name="name">ob.ai.benchmark.source.form</field>
+        <field name="model">ob.ai.benchmark.source</field>
+        <field name="arch" type="xml">
+            <form string="Benchmark Source">
+                <header>
+                    <button name="action_sync_now" string="Sync Now" type="object" class="btn-primary"
+                            invisible="source_type not in ('public_api','internal')"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="source_type"/>
+                            <field name="refresh_schedule"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="last_sync" readonly="1"/>
+                            <field name="sync_error" readonly="1" invisible="not sync_error"/>
+                        </group>
+                    </group>
+                    <group string="API Configuration" invisible="source_type != 'public_api'">
+                        <field name="api_url"/>
+                        <field name="auth_type"/>
+                        <field name="api_key_param" invisible="auth_type == 'none'"/>
+                        <field name="auth_header_name" invisible="auth_type not in ('api_key_header','bearer')"/>
+                    </group>
+                    <group string="Scope Filters">
+                        <field name="industry_scope" placeholder="manufacturing,retail (blank = all)"/>
+                        <field name="country_scope" placeholder="US,GB (blank = all)"/>
+                    </group>
+                    <group string="Notes">
+                        <field name="description"/>
+                        <field name="notes"/>
+                    </group>
+                    <notebook>
+                        <page string="Series" name="series">
+                            <field name="series_ids">
+                                <list editable="bottom">
+                                    <field name="name"/>
+                                    <field name="code"/>
+                                    <field name="metric_category"/>
+                                    <field name="kpi_id"/>
+                                    <field name="frequency"/>
+                                    <field name="unit"/>
+                                    <field name="snapshot_count"/>
+                                    <field name="latest_value"/>
+                                    <field name="latest_period"/>
+                                    <field name="active" optional="hide"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ob_ai_benchmark_source" model="ir.actions.act_window">
+        <field name="name">Benchmark Sources</field>
+        <field name="res_model">ob.ai.benchmark.source</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Benchmark Snapshot read-only list -->
+    <record id="view_ob_ai_benchmark_snapshot_list" model="ir.ui.view">
+        <field name="name">ob.ai.benchmark.snapshot.list</field>
+        <field name="model">ob.ai.benchmark.snapshot</field>
+        <field name="arch" type="xml">
+            <list string="Benchmark Snapshots" default_order="series_id,period_date desc">
+                <field name="series_id"/>
+                <field name="source_id"/>
+                <field name="period_date"/>
+                <field name="period_type"/>
+                <field name="value_median"/>
+                <field name="percentile_25"/>
+                <field name="percentile_75"/>
+                <field name="country_code"/>
+                <field name="industry_code"/>
+                <field name="company_size_band"/>
+                <field name="source_label"/>
+                <field name="confidence_level"/>
+                <field name="fetch_date" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_ob_ai_benchmark_snapshot" model="ir.actions.act_window">
+        <field name="name">Benchmark Data</field>
+        <field name="res_model">ob.ai.benchmark.snapshot</field>
+        <field name="view_mode">list</field>
+    </record>
+</odoo>

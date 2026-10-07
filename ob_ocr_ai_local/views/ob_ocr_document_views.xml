@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_ob_ocr_document_form_ai_local" model="ir.ui.view">
+        <field name="name">ob.ocr.document.form.ai.local</field>
+        <field name="model">ob.ocr.document</field>
+        <field name="inherit_id" ref="ob_ocr_base.view_ob_ocr_document_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button
+                    name="action_open_ai_feedback_examples"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-database"
+                    invisible="not document_type_id">
+                    <field name="ai_feedback_example_count" widget="statinfo" string="AI Examples"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>

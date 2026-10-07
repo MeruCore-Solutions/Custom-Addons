@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="ocr_provider_stub_demo" model="ob.ocr.provider">
+        <field name="name">Stub OCR Provider</field>
+        <field name="code">stub_demo</field>
+        <field name="provider_key">stub</field>
+        <field name="service_model">ob.ocr.provider.service</field>
+        <field name="allowed_mimetypes">text/plain,application/pdf,image/png,image/jpeg,image/jpg,image/tiff,image/webp</field>
+        <field name="note">Development and test provider that avoids external OCR binaries.</field>
+    </record>
+</odoo>

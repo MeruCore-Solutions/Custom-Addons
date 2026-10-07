@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- ============================================================== -->
+    <!-- SCHEMA / DISCOVERY TOOLS                                       -->
+    <!-- ============================================================== -->
+    <record id="tool_list_models" model="ob.ai.tool">
+        <field name="code">list_models</field>
+        <field name="name">List Allowed Models</field>
+        <field name="category">schema</field>
+        <field name="handler_method">tool_list_models</field>
+        <field name="sequence">10</field>
+        <field name="description">List the Odoo models the AI is allowed to query. Returns model technical name, business name, and capabilities. Call this when you need to discover what data is available in this Odoo instance. ALWAYS call this if you don't know which model holds the data you need.</field>
+        <field name="parameters_schema">{"type": "object", "properties": {"category": {"type": "string", "description": "Optional category filter (e.g. 'sales', 'finance')."}}, "required": []}</field>
+    </record>
+
+    <record id="tool_describe_model" model="ob.ai.tool">
+        <field name="code">describe_model</field>
+        <field name="name">Describe Model Fields &amp; Semantics</field>
+        <field name="category">schema</field>
+        <field name="handler_method">tool_describe_model</field>
+        <field name="sequence">20</field>
+        <field name="description">Get the full field schema and business semantics for one Odoo model. Returns: field name, type, help text, selection values, relations. Use this BEFORE building a domain or aggregating, to confirm exact field names and field types. Don't guess field names — call this.</field>
+        <field name="parameters_schema">{"type": "object", "properties": {"model_name": {"type": "string", "description": "Technical model name, e.g. 'sale.order', 'account.move', 'crm.lead'."}}, "required": ["model_name"]}</field>
+    </record>
+
+    <record id="tool_get_relationships" model="ob.ai.tool">
+        <field name="code">get_relationships</field>
+        <field name="name">Get Model Relationships</field>
+        <field name="category">schema</field>
+        <field name="handler_method">tool_get_relationships</field>
+        <field name="sequence">30</field>
+        <field name="description">List all business relationships involving a given Odoo model — what other models it links to and how. Use this to understand how to traverse data (e.g. sale.order → res.partner → invoices).</field>
+        <field name="parameters_schema">{"type": "object", "properties": {"model_name": {"type": "string", "description": "Technical model name."}}, "required": ["model_name"]}</field>
+    </record>
+
+    <!-- ============================================================== -->
+    <!-- PRIMITIVE ODOO DATA TOOLS                                      -->
+    <!-- ============================================================== -->
+    <record id="tool_odoo_search_read" model="ob.ai.tool">
+        <field name="code">odoo_search_read</field>
+        <field name="name">Search &amp; Read Odoo Records</field>
+        <field name="category">data_read</field>
+        <field name="handler_method">tool_odoo_search_read</field>
+        <field name="sequence">100</field>
+        <field name="description">Search Odoo records and read specific fields. Returns a list of records. Use this for listing/showing actual records (e.g. "show me overdue invoices", "list our top 10 customers"). Always specify limit. Use 'order' parameter to sort. Domain follows Odoo polish notation: triples of [field, operator, value], with '&amp;' '|' '!' as prefix operators. Allowed operators: =, !=, &gt;, &gt;=, &lt;, &lt;=, in, not in, ilike, like, child_of.</field>
+        <field name="parameters_schema">{"type": "object", "properties": {
+            "model": {"type": "string", "description": "Technical model name."},
+            "domain": {"type": "array", "description": "Odoo domain as array of [field, operator, value] triples."},
+            "fields": {"type": "array", "items": {"type": "string"}, "description": "Field names to return."},
+            "limit": {"type": "integer", "description": "Max records (default 25, max 200)."},
+            "order": {"type": "string", "description": "Sort expression e.g. 'date_order desc, id'."},
+            "offset": {"type": "integer", "description": "Skip first N records."}
+        }, "required": ["model"]}</field>
+    </record>
+
+    <record id="tool_odoo_count" model="ob.ai.tool">
+        <field name="code">odoo_count</field>
+        <field name="name">Count Odoo Records</field>
+        <field name="category">data_read</field>
+        <field name="handler_method">tool_odoo_count</field>
+        <field name="sequence">110</field>
+        <field name="description">Count records matching a domain. Use this for "how many" questions (orders, invoices, customers, etc.) — it's faster and cheaper than fetching all records and counting.</field>
+        <field name="parameters_schema">{"type": "object", "properties": {
+            "model": {"type": "string"},
+            "domain": {"type": "array"}
+        }, "required": ["model"]}</field>
+    </record>
+
+    <record id="tool_odoo_aggregate" model="ob.ai.tool">
+        <field name="code">odoo_aggregate</field>
+        <field name="name">Aggregate Odoo Records</field>
+        <field name="category">data_read</field>
+        <field name="handler_method">tool_odoo_aggregate</field>
+        <field name="sequence">120</field>
+        <field name="description">Compute sum/avg/min/max/count over records matching a domain. Use this for ALL numeric questions: "total sales", "average margin", "total receivables". Returns the scalar value. Cheaper than fetching all records.</field>
+        <field name="parameters_schema">{"type": "object", "properties": {
+            "model": {"type": "string"},
+            "field": {"type": "string", "description": "Numeric field to aggregate."},
+            "operator": {"type": "string", "enum": ["sum", "avg", "min", "max", "count", "count_distinct"], "description": "Aggregation operator."},
+            "domain": {"type": "array"}
+        }, "required": ["model", "field", "operator"]}</field>
+    </record>
+
+    <record id="tool_odoo_group_by" model="ob.ai.tool">
+        <field name="code">odoo_group_by</field>
+        <field name="name">Group By Aggregation</field>
+        <field name="category">data_read</field>
+        <field name="handler_method">tool_odoo_group_by</field>
+        <field name="sequence">130</field>
+        <field name="description">Group records and compute aggregates per group. Use this for breakdowns: "sales by salesperson", "invoices by customer", "orders per month". The 'groupby' parameter can include time qualifiers (e.g. "date_order:month"). aggregate_fields is a list of "field:operator" strings; pass "__count" to get just record counts per group.</field>
+        <field name="parameters_schema">{"type": "object", "properties": {
+            "model": {"type": "string"},
+            "groupby": {"description": "Field name or list of field names to group by.", "oneOf": [{"type": "string"}, {"type": "array", "items": {"type": "string"}}]},
+            "aggregate_fields": {"type": "array", "items": {"type": "string"}, "description": "List of 'field:operator' strings, or ['__count']."},
+            "domain": {"type": "array"},
+            "limit": {"type": "integer"}
+        }, "required": ["model", "groupby"]}</field>
+    </record>
+
+    <record id="tool_odoo_get_record" model="ob.ai.tool">
+        <field name="code">odoo_get_record</field>
+        <field name="name">Get Single Odoo Record</field>
+        <field name="category">data_read</field>
+        <field name="handler_method">tool_odoo_get_record</field>
+        <field name="sequence">140</field>
+        <field name="description">Read the fields of one specific Odoo record by ID. Use when you already know the record ID (e.g. from a previous search) and need its details.</field>
+        <field name="parameters_schema">{"type": "object", "properties": {
+            "model": {"type": "string"},
+            "record_id": {"type": "integer"},
+            "fields": {"type": "array", "items": {"type": "string"}}
+        }, "required": ["model", "record_id"]}</field>
+    </record>
+
+    <record id="tool_search_records" model="ob.ai.tool">
+        <field name="code">search_records</field>
+        <field name="name">Fuzzy Search by Name</field>
+        <field name="category">data_read</field>
+        <field name="handler_method">tool_search_records</field>
+        <field name="sequence">150</field>
+        <field name="description">Find records by approximate name/display-name match. Returns id + display_name pairs. Use this to look up a record when the user gives you a name like "ACME Corp" or "John Smith" and you need the database ID.</field>
+        <field name="parameters_schema">{"type": "object", "properties": {
+            "model": {"type": "string"},
+            "term": {"type": "string", "description": "Search term."},
+            "limit": {"type": "integer"}
+        }, "required": ["model", "term"]}</field>
+    </record>
+
+    <record id="tool_odoo_create_records" model="ob.ai.tool">
+        <field name="code">odoo_create_records</field>
+        <field name="name">Create Odoo Records</field>
+        <field name="category">data_write</field>
+        <field name="handler_method">tool_odoo_create_records</field>
+        <field name="requires_approval">True</field>
+        <field name="auto_approve_for_admin">True</field>
+        <field name="sequence">160</field>
+        <field name="description">Create one or multiple records on an allowed Odoo model. Uses field-level template restrictions and ACL checks. For safety, run with dry_run first, then execute.</field>
+        <field name="parameters_schema">{"type": "object", "properties": {
+            "model": {"type": "string"},
+            "values_list": {"description": "Object or array of objects with target field values.", "oneOf": [{"type": "object"}, {"type": "array"}]},
+            "return_fields": {"type": "array", "items": {"type": "string"}},
+            "dry_run": {"type": "boolean"}
+        }, "required": ["model", "values_list"]}</field>
+    </record>
+
+    <record id="tool_odoo_update_records" model="ob.ai.tool">
+        <field name="code">odoo_update_records</field>
+        <field name="name">Update Odoo Records</field>
+        <field name="category">data_write</field>
+        <field name="handler_method">tool_odoo_update_records</field>
+        <field name="requires_approval">True</field>
+        <field name="auto_approve_for_admin">True</field>
+        <field name="sequence">170</field>
+        <field name="description">Update records on an allowed model using either record_ids or domain. Enforces ACL + template field controls. Always supports dry_run preview before applying writes.</field>
+        <field name="parameters_schema">{"type": "object", "properties": {
+            "model": {"type": "string"},
+            "values": {"type": "object"},
+            "record_ids": {"type": "array", "items": {"type": "integer"}},
+            "domain": {"type": "array"},
+            "limit": {"type": "integer"},
+            "return_fields": {"type": "array", "items": {"type": "string"}},
+            "dry_run": {"type": "boolean"}
+        }, "required": ["model", "values"]}</field>
+    </record>
+
+    <record id="tool_odoo_delete_records" model="ob.ai.tool">
+        <field name="code">odoo_delete_records</field>
+        <field name="name">Delete Odoo Records</field>
+        <field name="category">data_write</field>
+        <field name="handler_method">tool_odoo_delete_records</field>
+        <field name="requires_approval">True</field>
+        <field name="auto_approve_for_admin">False</field>
+        <field name="sequence">180</field>
+        <field name="description">Delete records on an allowed model by record_ids or domain. High-risk operation. Always run with dry_run first, then apply only after explicit approval.</field>
+        <field name="parameters_schema">{"type": "object", "properties": {
+            "model": {"type": "string"},
+            "record_ids": {"type": "array", "items": {"type": "integer"}},
+            "domain": {"type": "array"},
+            "limit": {"type": "integer"},
+            "dry_run": {"type": "boolean"}
+        }, "required": ["model"]}</field>
+    </record>
+
+    <record id="tool_odoo_call_method" model="ob.ai.tool">
+        <field name="code">odoo_call_method</field>
+        <field name="name">Call Odoo Business Method</field>
+        <field name="category">data_write</field>
+        <field name="handler_method">tool_odoo_call_method</field>
+        <field name="requires_approval">True</field>
+        <field name="auto_approve_for_admin">True</field>
+        <field name="sequence">190</field>
+        <field name="description">Call a business method on records (for example action_confirm, action_post, button_validate). Only non-private business methods are allowed. This enables workflow execution similar to button actions in the UI.</field>
+        <field name="parameters_schema">{"type": "object", "properties": {
+            "model": {"type": "string"},
+            "method": {"type": "string"},
+            "record_id": {"type": "integer"},
+            "record_ids": {"type": "array", "items": {"type": "integer"}},
+            "domain": {"type": "array"},
+            "limit": {"type": "integer"},
+            "args": {"type": "array"},
+            "kwargs": {"type": "object"},
+            "call_on_model": {"type": "boolean"},
+            "dry_run": {"type": "boolean"}
+        }, "required": ["model", "method"]}</field>
+    </record>
+
+    <!-- ============================================================== -->
+    <!-- KPI TOOLS                                                      -->
+    <!-- ============================================================== -->
+    <record id="tool_list_kpis" model="ob.ai.tool">
+        <field name="code">list_kpis</field>
+        <field name="name">List Available KPIs</field>
+        <field name="category">kpi</field>
+        <field name="handler_method">tool_list_kpis</field>
+        <field name="sequence">200</field>
+        <field name="description">List the predefined KPI definitions configured in this system. Each KPI has a code, business meaning, default aggregation, and synonyms. Use this to find a canonical KPI for the user's question before reinventing the calculation via odoo_aggregate.</field>
+        <field name="parameters_schema">{"type": "object", "properties": {"category": {"type": "string", "description": "Optional category filter: sales, finance, operations, crm, hr, procurement, inventory, custom."}}, "required": []}</field>
+    </record>
+
+    <record id="tool_compute_kpi" model="ob.ai.tool">
+        <field name="code">compute_kpi</field>
+        <field name="name">Compute KPI Value</field>
+        <field name="category">kpi</field>
+        <field name="handler_method">tool_compute_kpi</field>
+        <field name="sequence">210</field>
+        <field name="description">Compute the value of a named KPI using its predefined formula. Prefer this over hand-rolling odoo_aggregate when a KPI definition exists for what the user is asking — the KPI formula encodes the correct business logic.</field>
+        <field name="parameters_schema">{"type": "object", "properties": {
+            "kpi_code": {"type": "string", "description": "KPI code from list_kpis."},
+            "date_from": {"type": "string", "description": "Optional ISO date (YYYY-MM-DD) to filter create_date from."},
+            "date_to": {"type": "string", "description": "Optional ISO date to filter create_date to."},
+            "extra_domain": {"type": "array", "description": "Optional additional domain triples."}
+        }, "required": ["kpi_code"]}</field>
+    </record>
+
+    <!-- ============================================================== -->
+    <!-- STRATEGIC ANALYTICS TOOLS                                      -->
+    <!-- ============================================================== -->
+    <record id="tool_compute_health_score" model="ob.ai.tool">
+        <field name="code">compute_health_score</field>
+        <field name="name">Compute Business Health Score</field>
+        <field name="category">analytics</field>
+        <field name="handler_method">tool_compute_health_score</field>
+        <field name="sequence">300</field>
+        <field name="description">Compute the 6-domain business health score (liquidity, growth, execution, pipeline, fulfillment, receivables) plus an overall score 0–100 and letter grade. Returns input metrics and early-warning flags. Use this when the user asks about business health, overall status, or risk indicators.</field>
+        <field name="parameters_schema">{"type": "object", "properties": {"with_narrative": {"type": "boolean", "description": "If true, also generate an AI narrative analysis (slower)."}}, "required": []}</field>
+    </record>
+
+    <record id="tool_run_forecast" model="ob.ai.tool">
+        <field name="code">run_forecast</field>
+        <field name="name">Run Forecast</field>
+        <field name="category">analytics</field>
+        <field name="handler_method">tool_run_forecast</field>
+        <field name="sequence">310</field>
+        <field name="description">Project a financial KPI forward using linear-trend regression on the last 12 historical periods. Returns projected values with 95% confidence bands. Use for "what will X be next month / quarter / year" questions.</field>
+        <field name="parameters_schema">{"type": "object", "properties": {
+            "forecast_type": {"type": "string", "enum": ["revenue", "cashflow", "pipeline_conversion", "ar_collections", "inventory_demand", "custom"], "description": "What to forecast."},
+            "periods": {"type": "integer", "description": "Number of future periods (default 3, max 12)."},
+            "period_unit": {"type": "string", "enum": ["month", "quarter", "year"]}
+        }, "required": []}</field>
+    </record>
+
+    <record id="tool_run_scenario" model="ob.ai.tool">
+        <field name="code">run_scenario</field>
+        <field name="name">Run Scenario Simulation</field>
+        <field name="category">analytics</field>
+        <field name="handler_method">tool_run_scenario</field>
+        <field name="sequence">320</field>
+        <field name="description">Simulate the impact of a business change. Returns projected impact per metric vs. current baseline plus a sensitivity table. Use for "what if we…" questions (price changes, volume changes, customer churn, cost changes, headcount changes).</field>
+        <field name="parameters_schema">{"type": "object", "properties": {
+            "scenario_type": {"type": "string", "enum": ["price_change", "volume_change", "cost_change", "customer_churn", "headcount_change", "payment_terms_change", "custom"]},
+            "change_pct": {"type": "number", "description": "Magnitude of change as a percentage, e.g. 10 for 10%."},
+            "direction": {"type": "string", "enum": ["increase", "decrease"]},
+            "extra_params": {"type": "object", "description": "Optional scenario-type-specific extra parameters."}
+        }, "required": ["scenario_type", "change_pct"]}</field>
+    </record>
+
+    <!-- ============================================================== -->
+    <!-- BENCHMARK TOOLS                                                -->
+    <!-- ============================================================== -->
+    <record id="tool_get_benchmark" model="ob.ai.tool">
+        <field name="code">get_benchmark</field>
+        <field name="name">Get Industry Benchmark</field>
+        <field name="category">benchmark</field>
+        <field name="handler_method">tool_get_benchmark</field>
+        <field name="sequence">400</field>
+        <field name="description">Fetch the latest industry/peer benchmark value for a metric category. Returns median + percentile bands when available. Use this when the user asks how something compares to industry, peers, or the market.</field>
+        <field name="parameters_schema">{"type": "object", "properties": {
+            "metric_category": {"type": "string", "enum": ["revenue", "margin", "growth", "ar_days", "ap_days", "inventory_turns", "current_ratio", "employee_count", "revenue_per_employee", "customer_acquisition_cost", "churn_rate", "custom"]},
+            "country_code": {"type": "string", "description": "ISO-3166-1 alpha-2 (e.g. 'US')."},
+            "industry_code": {"type": "string"}
+        }, "required": ["metric_category"]}</field>
+    </record>
+
+    <record id="tool_compare_to_benchmark" model="ob.ai.tool">
+        <field name="code">compare_to_benchmark</field>
+        <field name="name">Compare to Benchmarks</field>
+        <field name="category">benchmark</field>
+        <field name="handler_method">tool_compare_to_benchmark</field>
+        <field name="sequence">410</field>
+        <field name="description">Compare this company's actual metrics to industry benchmarks across multiple categories at once. Returns gap percentages and percentile bands (top quartile, above median, below median, bottom quartile). Use this for comprehensive "how do we compare" answers.</field>
+        <field name="parameters_schema">{"type": "object", "properties": {
+            "metric_categories": {"type": "array", "items": {"type": "string"}, "description": "List of metric categories to compare. Default: revenue, margin, ar_days, inventory_turns."},
+            "country_code": {"type": "string"},
+            "industry_code": {"type": "string"}
+        }, "required": []}</field>
+    </record>
+
+    <!-- ============================================================== -->
+    <!-- DOCUMENT TOOLS                                                 -->
+    <!-- ============================================================== -->
+    <record id="tool_list_record_attachments" model="ob.ai.tool">
+        <field name="code">list_record_attachments</field>
+        <field name="name">List Record Attachments</field>
+        <field name="category">document</field>
+        <field name="handler_method">tool_list_record_attachments</field>
+        <field name="sequence">500</field>
+        <field name="description">List all attachments (files/documents) on a specific Odoo record. Use this before analyzing a document to find the attachment_id you need.</field>
+        <field name="parameters_schema">{"type": "object", "properties": {
+            "model": {"type": "string"},
+            "record_id": {"type": "integer"}
+        }, "required": ["model", "record_id"]}</field>
+    </record>
+
+    <record id="tool_analyze_attachment" model="ob.ai.tool">
+        <field name="code">analyze_attachment</field>
+        <field name="name">Analyze Document</field>
+        <field name="category">document</field>
+        <field name="handler_method">tool_analyze_attachment</field>
+        <field name="sequence">510</field>
+        <field name="description">Extract text and structured data from an attached document (PDF, image, office file). Returns the extracted content. Use when the user asks about the contents of a specific attachment.</field>
+        <field name="parameters_schema">{"type": "object", "properties": {
+            "attachment_id": {"type": "integer"}
+        }, "required": ["attachment_id"]}</field>
+    </record>
+
+    <record id="tool_extract_attachment_data" model="ob.ai.tool">
+        <field name="code">extract_attachment_data</field>
+        <field name="name">Extract Attachment Data</field>
+        <field name="category">document</field>
+        <field name="handler_method">tool_extract_attachment_data</field>
+        <field name="sequence">520</field>
+        <field name="description">Extract tabular/text data from a file attachment (PDF, image OCR, CSV, Excel). Returns the parsed context and table rows so the assistant can reason over document content before import.</field>
+        <field name="parameters_schema">{"type": "object", "properties": {
+            "attachment_id": {"type": "integer"},
+            "sheet_name": {"type": "string", "description": "Optional sheet/table name for Excel or multi-table files."},
+            "max_rows": {"type": "integer", "description": "Maximum number of extracted rows to return (default 100)."}
+        }, "required": ["attachment_id"]}</field>
+    </record>
+
+    <record id="tool_import_attachment_rows" model="ob.ai.tool">
+        <field name="code">import_attachment_rows</field>
+        <field name="name">Import Attachment Rows</field>
+        <field name="category">data_write</field>
+        <field name="handler_method">tool_import_attachment_rows</field>
+        <field name="requires_approval">True</field>
+        <field name="auto_approve_for_admin">False</field>
+        <field name="sequence">530</field>
+        <field name="description">Import structured rows from a document attachment into an Odoo model using an explicit field map. Honors Odoo ACLs and access-template field restrictions. Use dry_run first, then execute after approval.</field>
+        <field name="parameters_schema">{"type": "object", "properties": {
+            "model": {"type": "string"},
+            "attachment_id": {"type": "integer"},
+            "field_map": {"type": "object", "description": "Map of target Odoo field => source column key/index from extracted rows."},
+            "mode": {"type": "string", "enum": ["create", "upsert"]},
+            "key_field": {"type": "string", "description": "Required for upsert mode. Target field used to find existing records."},
+            "sheet_name": {"type": "string"},
+            "max_rows": {"type": "integer"},
+            "dry_run": {"type": "boolean", "description": "If true, validate/preview import without writing records."}
+        }, "required": ["model", "attachment_id", "field_map"]}</field>
+    </record>
+
+    <!-- ============================================================== -->
+    <!-- WRITE TOOLS (approval-gated)                                   -->
+    <!-- ============================================================== -->
+    <record id="tool_propose_reminder" model="ob.ai.tool">
+        <field name="code">propose_reminder</field>
+        <field name="name">Propose Reminder</field>
+        <field name="category">data_write</field>
+        <field name="handler_method">tool_propose_reminder</field>
+        <field name="requires_approval">True</field>
+        <field name="auto_approve_for_admin">False</field>
+        <field name="sequence">600</field>
+        <field name="description">Queue a reminder for the current user. Goes through human approval before execution. Use when the user asks you to remind them about something.</field>
+        <field name="parameters_schema">{"type": "object", "properties": {
+            "text": {"type": "string", "description": "Reminder text (max ~120 chars)."},
+            "due_datetime": {"type": "string", "description": "ISO datetime in UTC, e.g. '2026-05-25 09:00:00'."}
+        }, "required": ["text"]}</field>
+    </record>
+
+    <record id="tool_propose_activity" model="ob.ai.tool">
+        <field name="code">propose_activity</field>
+        <field name="name">Propose Activity</field>
+        <field name="category">data_write</field>
+        <field name="handler_method">tool_propose_activity</field>
+        <field name="requires_approval">True</field>
+        <field name="sequence">610</field>
+        <field name="description">Queue creation of a follow-up activity on an Odoo record. Goes through approval. Use when the user asks to "create a task", "schedule a follow-up", "assign work" on a specific record.</field>
+        <field name="parameters_schema">{"type": "object", "properties": {
+            "model": {"type": "string"},
+            "record_id": {"type": "integer"},
+            "summary": {"type": "string", "description": "Short activity title."},
+            "note": {"type": "string", "description": "Detailed activity note."},
+            "due_date": {"type": "string", "description": "ISO date YYYY-MM-DD."}
+        }, "required": ["model", "record_id", "summary"]}</field>
+    </record>
+
+    <record id="tool_propose_chatter" model="ob.ai.tool">
+        <field name="code">propose_chatter</field>
+        <field name="name">Propose Chatter Post</field>
+        <field name="category">data_write</field>
+        <field name="handler_method">tool_propose_chatter</field>
+        <field name="requires_approval">True</field>
+        <field name="sequence">620</field>
+        <field name="description">Queue a message to be posted on a record's chatter. Goes through approval. Use when the user asks you to "post a note", "leave a comment", "notify on chatter".</field>
+        <field name="parameters_schema">{"type": "object", "properties": {
+            "model": {"type": "string"},
+            "record_id": {"type": "integer"},
+            "body": {"type": "string", "description": "Message body (HTML allowed, max 5000 chars)."}
+        }, "required": ["model", "record_id", "body"]}</field>
+    </record>
+
+    <record id="tool_run_validation" model="ob.ai.tool">
+        <field name="code">run_validation</field>
+        <field name="name">Validate Record</field>
+        <field name="category">data_read</field>
+        <field name="handler_method">tool_run_validation</field>
+        <field name="sequence">630</field>
+        <field name="description">Run the configured validation rules against an Odoo record and return what's missing or invalid. Read-only — does not mutate. Use when the user asks "is this record OK?", "validate this", or "check this".</field>
+        <field name="parameters_schema">{"type": "object", "properties": {
+            "model": {"type": "string"},
+            "record_id": {"type": "integer"}
+        }, "required": ["model", "record_id"]}</field>
+    </record>
+
+</odoo>

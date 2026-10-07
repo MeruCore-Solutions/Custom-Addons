@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- KPI catalog: updates ARE applied on module upgrade so model_id bindings
+     are filled in once the corresponding Odoo apps (sale, crm, account, ...)
+     get installed. User customisations to these records may be overwritten
+     on upgrade — clone the record under a different code to customise. -->
+<odoo>
+    <!-- ===================== Dimension Maps ===================== -->
+    <record id="dim_time_month" model="ob.ai.dimension.map">
+        <field name="name">Month</field>
+        <field name="code">time_month</field>
+        <field name="dimension_type">time</field>
+        <field name="groupby_expression">date_order:month</field>
+    </record>
+    <record id="dim_time_quarter" model="ob.ai.dimension.map">
+        <field name="name">Quarter</field>
+        <field name="code">time_quarter</field>
+        <field name="dimension_type">time</field>
+        <field name="groupby_expression">date_order:quarter</field>
+    </record>
+    <record id="dim_salesperson" model="ob.ai.dimension.map">
+        <field name="name">Salesperson</field>
+        <field name="code">salesperson</field>
+        <field name="dimension_type">entity</field>
+        <field name="model_id" ref="base.model_res_users"/>
+        <field name="field_name">user_id</field>
+        <field name="groupby_expression">user_id</field>
+    </record>
+    <record id="dim_customer" model="ob.ai.dimension.map">
+        <field name="name">Customer</field>
+        <field name="code">customer</field>
+        <field name="dimension_type">entity</field>
+        <field name="model_id" ref="base.model_res_partner"/>
+        <field name="field_name">partner_id</field>
+        <field name="groupby_expression">partner_id</field>
+    </record>
+    <record id="dim_product_category" model="ob.ai.dimension.map">
+        <field name="name">Product Category</field>
+        <field name="code">product_category</field>
+        <field name="dimension_type">product_class</field>
+        <field name="groupby_expression">product_id.categ_id</field>
+    </record>
+    <record id="dim_order_status" model="ob.ai.dimension.map">
+        <field name="name">Order Status</field>
+        <field name="code">order_status</field>
+        <field name="dimension_type">status</field>
+        <field name="field_name">state</field>
+        <field name="groupby_expression">state</field>
+    </record>
+
+    <!-- ===================== KPI Definitions ===================== -->
+    <!-- Sales KPIs — model_id uses search so they remain empty if sale module absent -->
+    <record id="kpi_monthly_revenue" model="ob.ai.kpi.definition">
+        <field name="name">Monthly Revenue (Booked)</field>
+        <field name="code">monthly_revenue</field>
+        <field name="category">sales</field>
+        <field name="field_name">amount_total</field>
+        <field name="aggregation">sum</field>
+        <field name="unit">currency</field>
+        <field name="synonyms">sales this month, current month sales, monthly bookings, revenue mtd, booked revenue</field>
+        <field name="description">Total confirmed sale order value in the current calendar month.</field>
+    </record>
+    <record id="kpi_revenue_ytd" model="ob.ai.kpi.definition">
+        <field name="name">Revenue Year-to-Date</field>
+        <field name="code">revenue_ytd</field>
+        <field name="category">sales</field>
+        <field name="field_name">amount_total</field>
+        <field name="aggregation">sum</field>
+        <field name="unit">currency</field>
+        <field name="synonyms">ytd revenue, year to date sales, annual revenue so far</field>
+        <field name="description">Total confirmed sale order value from the start of the current year.</field>
+    </record>
+    <record id="kpi_open_quotations" model="ob.ai.kpi.definition">
+        <field name="name">Open Quotations Count</field>
+        <field name="code">open_quotations_count</field>
+        <field name="category">sales</field>
+        <field name="field_name">id</field>
+        <field name="aggregation">count</field>
+        <field name="unit">count</field>
+        <field name="synonyms">open quotes, draft orders, pending quotations</field>
+    </record>
+
+    <!-- Finance KPIs -->
+    <record id="kpi_overdue_ar" model="ob.ai.kpi.definition">
+        <field name="name">Overdue Accounts Receivable</field>
+        <field name="code">overdue_ar</field>
+        <field name="category">finance</field>
+        <field name="field_name">amount_residual</field>
+        <field name="aggregation">sum</field>
+        <field name="unit">currency</field>
+        <field name="synonyms">overdue invoices, past due receivables, late payments</field>
+        <field name="description">Total outstanding amount on invoices past their due date.</field>
+    </record>
+    <record id="kpi_ar_days" model="ob.ai.kpi.definition">
+        <field name="name">Average AR Days (DSO)</field>
+        <field name="code">ar_days</field>
+        <field name="category">finance</field>
+        <field name="aggregation">avg</field>
+        <field name="unit">days</field>
+        <field name="synonyms">dso, days sales outstanding, collection days, receivable days</field>
+        <field name="description">Average number of days it takes to collect payment after a sale.</field>
+    </record>
+
+    <!-- Operations KPIs -->
+    <record id="kpi_late_deliveries" model="ob.ai.kpi.definition">
+        <field name="name">Late Deliveries Count</field>
+        <field name="code">late_deliveries</field>
+        <field name="category">operations</field>
+        <field name="field_name">id</field>
+        <field name="aggregation">count</field>
+        <field name="unit">count</field>
+        <field name="synonyms">overdue deliveries, late shipments, delayed orders</field>
+    </record>
+    <record id="kpi_inventory_turns" model="ob.ai.kpi.definition">
+        <field name="name">Inventory Turnover Rate</field>
+        <field name="code">inventory_turns</field>
+        <field name="category">inventory</field>
+        <field name="aggregation">avg</field>
+        <field name="unit">ratio</field>
+        <field name="synonyms">stock turnover, inventory velocity, stock rotation</field>
+        <field name="description">How many times inventory is sold and replaced in a period.</field>
+    </record>
+
+    <!-- CRM KPIs -->
+    <record id="kpi_pipeline_value" model="ob.ai.kpi.definition">
+        <field name="name">Pipeline Expected Revenue</field>
+        <field name="code">pipeline_value</field>
+        <field name="category">crm</field>
+        <field name="field_name">expected_revenue</field>
+        <field name="aggregation">sum</field>
+        <field name="unit">currency</field>
+        <field name="synonyms">pipeline value, expected pipeline, crm value, opportunity value</field>
+    </record>
+    <record id="kpi_open_opportunities" model="ob.ai.kpi.definition">
+        <field name="name">Open Opportunities</field>
+        <field name="code">open_opportunities</field>
+        <field name="category">crm</field>
+        <field name="field_name">id</field>
+        <field name="aggregation">count</field>
+        <field name="unit">count</field>
+        <field name="synonyms">open leads, active opportunities, pipeline count</field>
+    </record>
+
+    <!-- HR KPIs -->
+    <record id="kpi_headcount" model="ob.ai.kpi.definition">
+        <field name="name">Active Headcount</field>
+        <field name="code">headcount</field>
+        <field name="category">hr</field>
+        <field name="field_name">id</field>
+        <field name="aggregation">count</field>
+        <field name="unit">employees</field>
+        <field name="synonyms">employee count, staff count, team size, headcount</field>
+    </record>
+
+    <!-- ===================== Model Relationships ===================== -->
+    <!-- search= finds ir.model records by model name; silently skips if module absent -->
+    <record id="rel_sale_order_partner" model="ob.ai.model.relationship">
+        <field name="name">Sale Order → Customer</field>
+        <field name="source_model_id" search="[('model','=','sale.order')]"/>
+        <field name="target_model_id" search="[('model','=','res.partner')]"/>
+        <field name="relationship_type">many2one</field>
+        <field name="source_field_name">partner_id</field>
+        <field name="is_primary">True</field>
+        <field name="business_meaning">Each sale order is placed by one customer (partner).</field>
+    </record>
+    <record id="rel_sale_order_invoice" model="ob.ai.model.relationship">
+        <field name="name">Sale Order → Invoice</field>
+        <field name="source_model_id" search="[('model','=','sale.order')]"/>
+        <field name="target_model_id" search="[('model','=','account.move')]"/>
+        <field name="relationship_type">one2many</field>
+        <field name="source_field_name">invoice_ids</field>
+        <field name="business_meaning">A confirmed sale order generates one or more customer invoices.</field>
+    </record>
+    <record id="rel_sale_order_picking" model="ob.ai.model.relationship">
+        <field name="name">Sale Order → Delivery</field>
+        <field name="source_model_id" search="[('model','=','sale.order')]"/>
+        <field name="target_model_id" search="[('model','=','stock.picking')]"/>
+        <field name="relationship_type">one2many</field>
+        <field name="source_field_name">picking_ids</field>
+        <field name="business_meaning">A confirmed sale order triggers one or more delivery operations.</field>
+    </record>
+    <record id="rel_crm_lead_partner" model="ob.ai.model.relationship">
+        <field name="name">CRM Lead → Customer</field>
+        <field name="source_model_id" search="[('model','=','crm.lead')]"/>
+        <field name="target_model_id" search="[('model','=','res.partner')]"/>
+        <field name="relationship_type">many2one</field>
+        <field name="source_field_name">partner_id</field>
+        <field name="is_primary">True</field>
+        <field name="business_meaning">A CRM opportunity is linked to a customer contact.</field>
+    </record>
+    <record id="rel_invoice_partner" model="ob.ai.model.relationship">
+        <field name="name">Invoice → Customer</field>
+        <field name="source_model_id" search="[('model','=','account.move')]"/>
+        <field name="target_model_id" search="[('model','=','res.partner')]"/>
+        <field name="relationship_type">many2one</field>
+        <field name="source_field_name">partner_id</field>
+        <field name="is_primary">True</field>
+        <field name="business_meaning">Each customer invoice belongs to one partner/customer.</field>
+    </record>
+
+    <!-- ===================== Benchmark Sources ===================== -->
+    <record id="benchmark_source_internal" model="ob.ai.benchmark.source">
+        <field name="name">Internal Multi-Company Baseline</field>
+        <field name="source_type">internal</field>
+        <field name="refresh_schedule">monthly</field>
+        <field name="description">Automatically computed from all companies in this Odoo instance. Used as a peer benchmark when external data is unavailable.</field>
+    </record>
+
+    <!-- ===================== Benchmark Series ===================== -->
+    <record id="benchmark_series_revenue_internal" model="ob.ai.benchmark.series">
+        <field name="name">Monthly Revenue (Internal Peers)</field>
+        <field name="code">internal_monthly_revenue</field>
+        <field name="source_id" ref="benchmark_source_internal"/>
+        <field name="kpi_id" ref="kpi_monthly_revenue"/>
+        <field name="metric_category">revenue</field>
+        <field name="frequency">monthly</field>
+        <field name="unit">currency</field>
+        <field name="normalization_method">none</field>
+    </record>
+    <record id="benchmark_series_ar_days_internal" model="ob.ai.benchmark.series">
+        <field name="name">Average AR Days (Internal Peers)</field>
+        <field name="code">internal_ar_days</field>
+        <field name="source_id" ref="benchmark_source_internal"/>
+        <field name="kpi_id" ref="kpi_ar_days"/>
+        <field name="metric_category">ar_days</field>
+        <field name="frequency">monthly</field>
+        <field name="unit">days</field>
+        <field name="normalization_method">none</field>
+    </record>
+    <record id="benchmark_series_margin_internal" model="ob.ai.benchmark.series">
+        <field name="name">Gross Margin % (Internal Peers)</field>
+        <field name="code">internal_margin</field>
+        <field name="source_id" ref="benchmark_source_internal"/>
+        <field name="metric_category">margin</field>
+        <field name="frequency">monthly</field>
+        <field name="unit">%</field>
+        <field name="normalization_method">percentage</field>
+    </record>
+    <record id="benchmark_series_inventory_turns_internal" model="ob.ai.benchmark.series">
+        <field name="name">Inventory Turnover (Internal Peers)</field>
+        <field name="code">internal_inventory_turns</field>
+        <field name="source_id" ref="benchmark_source_internal"/>
+        <field name="kpi_id" ref="kpi_inventory_turns"/>
+        <field name="metric_category">inventory_turns</field>
+        <field name="frequency">monthly</field>
+        <field name="unit">ratio</field>
+        <field name="normalization_method">none</field>
+    </record>
+</odoo>

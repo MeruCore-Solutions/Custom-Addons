@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_ob_ocr_document_search" model="ir.ui.view">
+        <field name="name">ob.ocr.document.search</field>
+        <field name="model">ob.ocr.document</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="filename"/>
+                <field name="document_type_id"/>
+                <field name="ocr_provider_id"/>
+                <field name="company_id"/>
+                <filter string="Draft" name="state_draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Queued" name="state_queued" domain="[('state', '=', 'queued')]"/>
+                <filter string="Processing" name="state_processing" domain="[('state', '=', 'processing')]"/>
+                <filter string="Done" name="state_done" domain="[('state', '=', 'done')]"/>
+                <filter string="Failed" name="state_failed" domain="[('state', '=', 'failed')]"/>
+                <filter string="Reviewed" name="reviewed" domain="[('reviewed', '=', True)]"/>
+                <group>
+                    <filter string="State" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Document Type" name="group_type" context="{'group_by': 'document_type_id'}"/>
+                    <filter string="Provider" name="group_provider" context="{'group_by': 'ocr_provider_id'}"/>
+                    <filter string="Company" name="group_company" context="{'group_by': 'company_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_ob_ocr_document_tree" model="ir.ui.view">
+        <field name="name">ob.ocr.document.tree</field>
+        <field name="model">ob.ocr.document</field>
+        <field name="arch" type="xml">
+            <list default_order="create_date desc">
+                <field name="name"/>
+                <field name="filename"/>
+                <field name="document_type_id"/>
+                <field name="source_type"/>
+                <field name="ocr_provider_id"/>
+                <field name="state"/>
+                <field name="detected_language"/>
+                <field name="confidence_score"/>
+                <field name="reviewed"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="create_date"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ob_ocr_document_kanban" model="ir.ui.view">
+        <field name="name">ob.ocr.document.kanban</field>
+        <field name="model">ob.ocr.document</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state">
+                <field name="name"/>
+                <field name="filename"/>
+                <field name="document_type_id"/>
+                <field name="state"/>
+                <field name="confidence_score"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_global_click o_kanban_record">
+                            <strong><field name="name"/></strong>
+                            <div><field name="filename"/></div>
+                            <div><field name="document_type_id"/></div>
+                            <div class="text-muted"><field name="state"/></div>
+                            <div>Confidence: <field name="confidence_score"/></div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_ob_ocr_document_form" model="ir.ui.view">
+        <field name="name">ob.ocr.document.form</field>
+        <field name="model">ob.ocr.document</field>
+        <field name="arch" type="xml">
+            <form string="OCR Document">
+                <header>
+                    <button name="action_process_ocr" type="object" string="Process OCR" class="btn-primary" invisible="state not in ('draft', 'failed', 'cancelled')"/>
+                    <button name="action_retry_ocr" type="object" string="Retry OCR" invisible="state not in ('failed', 'cancelled')"/>
+                    <button name="action_cancel" type="object" string="Cancel" invisible="state not in ('draft', 'queued', 'processing')"/>
+                    <button name="action_mark_reviewed" type="object" string="Mark Reviewed" class="btn-secondary" invisible="state != 'done' or reviewed"/>
+                    <button name="action_create_target_record" type="object" string="Create Record" class="btn-primary" invisible="state != 'done' or related_res_id or not document_type_target_model"/>
+                    <button name="action_update_target_record" type="object" string="Update Record" invisible="not related_res_id"/>
+                    <button name="action_open_related_record" type="object" string="Open Linked Record" invisible="not related_res_id"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,queued,processing,done,failed,cancelled"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_related_record" type="object" class="oe_stat_button" icon="fa-link" invisible="not related_res_id">
+                            <field name="related_record_count" widget="statinfo" string="Linked Record"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="document_type_id"/>
+                            <field name="mapping_id"/>
+                            <field name="ocr_provider_id"/>
+                            <field name="source_type"/>
+                            <field name="file" filename="filename"/>
+                            <field name="filename"/>
+                            <field name="mimetype" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="user_id"/>
+                            <field name="language"/>
+                            <field name="detected_language" readonly="1"/>
+                            <field name="confidence_score" readonly="1"/>
+                            <field name="page_count" readonly="1"/>
+                            <field name="reviewed"/>
+                            <field name="reviewed_by" readonly="1"/>
+                            <field name="reviewed_date" readonly="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="related_record_name" readonly="1" invisible="not related_res_id"/>
+                        <field name="partner_override_id" options="{'no_create': False}"/>
+                        <field name="error_message" readonly="1" invisible="not error_message"/>
+                        <field name="review_note" placeholder="Optional reviewer notes..."/>
+                    </group>
+                    <notebook>
+                        <page string="Extracted JSON">
+                            <field name="extracted_json_text" nolabel="1" widget="text"/>
+                        </page>
+                        <page string="Raw Text">
+                            <field name="raw_text" nolabel="1" widget="text"/>
+                        </page>
+                        <page string="Line Items">
+                            <field name="line_ids" nolabel="1">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="product_code"/>
+                                    <field name="barcode"/>
+                                    <field name="product_name"/>
+                                    <field name="quantity"/>
+                                    <field name="uom_name"/>
+                                    <field name="unit_price"/>
+                                    <field name="discount"/>
+                                    <field name="tax_names"/>
+                                    <field name="note"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Logs">
+                            <field name="log_ids" nolabel="1" readonly="1">
+                                <list default_order="create_date desc">
+                                    <field name="create_date"/>
+                                    <field name="level"/>
+                                    <field name="message"/>
+                                    <field name="provider_id"/>
+                                    <field name="user_id"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Processed Files">
+                            <field name="processed_attachment_ids" nolabel="1" readonly="1">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="mimetype"/>
+                                    <field name="file_size"/>
+                                    <field name="create_date"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ob_ocr_document" model="ir.actions.act_window">
+        <field name="name">OCR Documents</field>
+        <field name="res_model">ob.ocr.document</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="search_view_id" ref="ob_ocr_base.view_ob_ocr_document_search"/>
+        <field name="context">{'default_source_type': 'upload'}</field>
+    </record>
+</odoo>

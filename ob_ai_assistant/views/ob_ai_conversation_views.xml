@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_ob_ai_conversation_list" model="ir.ui.view">
+        <field name="name">ob.ai.conversation.list</field>
+        <field name="model">ob.ai.conversation</field>
+        <field name="arch" type="xml">
+            <list default_order="create_date desc">
+                <field name="name"/>
+                <field name="user_id"/>
+                <field name="context_mode"/>
+                <field name="provider_id"/>
+                <field name="model_id"/>
+                <field name="allowed_model_id"/>
+                <field name="intent_code"/>
+                <field name="human_review_status"/>
+                <field name="state"/>
+                <field name="create_date"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ob_ai_conversation_form" model="ir.ui.view">
+        <field name="name">ob.ai.conversation.form</field>
+        <field name="model">ob.ai.conversation</field>
+        <field name="arch" type="xml">
+            <form string="AI Conversation" class="o_ob_ai_conversation_form">
+                <header invisible="chat_mode">
+                    <button name="button_switch_mode" type="object" string="Chat" class="btn btn-primary"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box" invisible="chat_mode">
+                        <button name="action_open_audit_logs" type="object" class="oe_stat_button" icon="fa-shield">
+                            <field name="audit_log_count" widget="statinfo" string="Audit Logs"/>
+                        </button>
+                        <button type="object" name="action_open_reminders" class="oe_stat_button" icon="fa-bell" invisible="not reminder_count">
+                            <field name="reminder_count" widget="statinfo" string="Reminders"/>
+                        </button>
+                        <button type="object" name="action_open_approvals" class="oe_stat_button" icon="fa-check-square-o" invisible="not approval_count">
+                            <field name="approval_count" widget="statinfo" string="Approvals"/>
+                        </button>
+                        <button type="object" name="action_open_validation_results" class="oe_stat_button" icon="fa-clipboard" invisible="not validation_result_count">
+                            <field name="validation_result_count" widget="statinfo" string="Validations"/>
+                        </button>
+                        <button type="object" name="action_open_investigation_traces" class="oe_stat_button" icon="fa-search" invisible="not investigation_trace_count">
+                            <field name="investigation_trace_count" widget="statinfo" string="Investigations"/>
+                        </button>
+                        <button type="object" name="action_open_memory_states" class="oe_stat_button" icon="fa-history" invisible="not memory_state_count">
+                            <field name="memory_state_count" widget="statinfo" string="Memory"/>
+                        </button>
+                    </div>
+                    <field name="chat_mode" invisible="1"/>
+                    <field name="available_allowed_model_ids" invisible="1"/>
+                    <field name="context_mode" invisible="1"/>
+                    <div class="oe_title" invisible="chat_mode">
+                        <label for="name" string="Conversation"/>
+                        <h1>
+                            <field name="name" placeholder="New Conversation"/>
+                        </h1>
+                    </div>
+                    <div invisible="not chat_mode">
+                        <div class="o_ob_ai_workspace_app">
+                            <div class="o_ob_ai_workspace_sidebar">
+                                <div class="o_ob_ai_sidebar_brand">
+                                    <div class="o_ob_ai_sidebar_eyebrow">AI Conversations</div>
+                                    <div class="row">
+                                        <div class="col-8 text-center">
+                                            <div class="o_ob_ai_sidebar_title">
+                                                <field name="name" nolabel="1" placeholder="New Conversation"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 test-center">
+                                            <button name="button_switch_mode" type="object" string="Chat" class="btn btn-primary" invisible="chat_mode"/>
+                                            <button name="button_switch_mode" type="object" string="Setting" class="btn btn-primary" invisible="not chat_mode"/>
+                                        </div>
+                                    </div>
+                                    <div class="o_ob_ai_sidebar_hint">
+                                        Standalone workspace for business AI operations and workflow actions.
+                                    </div>
+                                </div>
+                                <div class="o_ob_ai_sidebar_section">
+                                    <div class="o_ob_ai_sidebar_section_title">Workspace Context</div>
+                                    <div class="o_ob_ai_chat_meta">
+                                        <div class="o_ob_ai_meta_chip" invisible="not provider_id">
+                                            <span class="o_ob_ai_meta_label">Provider</span>
+                                            <field name="provider_id" readonly="1" nolabel="1"/>
+                                        </div>
+                                        <div class="o_ob_ai_meta_chip" invisible="not model_id">
+                                            <span class="o_ob_ai_meta_label">Model</span>
+                                            <field name="model_id" readonly="1" nolabel="1"/>
+                                        </div>
+                                        <div class="o_ob_ai_meta_chip">
+                                            <span class="o_ob_ai_meta_label">Scope</span>
+                                            <field name="context_mode" readonly="1" nolabel="1"/>
+                                        </div>
+                                        <div class="o_ob_ai_meta_chip" invisible="context_mode != 'focused' or not allowed_model_id">
+                                            <span class="o_ob_ai_meta_label">Context</span>
+                                            <field name="allowed_model_id" readonly="1" nolabel="1"/>
+                                        </div>
+                                        <div class="o_ob_ai_meta_chip" invisible="context_mode != 'focused' or not related_record_ref">
+                                            <span class="o_ob_ai_meta_label">Record</span>
+                                            <field name="related_record_ref" readonly="1" nolabel="1"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="o_ob_ai_sidebar_section">
+                                    <div class="o_ob_ai_sidebar_section_title">Monitoring</div>
+                                    <div class="o_ob_ai_sidebar_stats">
+                                        <button name="action_open_audit_logs" type="object" class="oe_stat_button">
+                                            <field name="audit_log_count" widget="statinfo" string="Audit Logs"/>
+                                        </button>
+                                        <button type="object" name="action_open_reminders" class="oe_stat_button" invisible="not reminder_count">
+                                            <field name="reminder_count" widget="statinfo" string="Reminders"/>
+                                        </button>
+                                        <button type="object" name="action_open_approvals" class="oe_stat_button" invisible="not approval_count">
+                                            <field name="approval_count" widget="statinfo" string="Approvals"/>
+                                        </button>
+                                        <button type="object" name="action_open_validation_results" class="oe_stat_button" invisible="not validation_result_count">
+                                            <field name="validation_result_count" widget="statinfo" string="Validations"/>
+                                        </button>
+                                        <button type="object" name="action_open_investigation_traces" class="oe_stat_button" invisible="not investigation_trace_count">
+                                            <field name="investigation_trace_count" widget="statinfo" string="Investigations"/>
+                                        </button>
+                                        <button type="object" name="action_open_memory_states" class="oe_stat_button" invisible="not memory_state_count">
+                                            <field name="memory_state_count" widget="statinfo" string="Memory"/>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="o_ob_ai_feedback_panel" invisible="not suggested_action_summary">
+                                    <field name="suggested_action_summary" readonly="1" nolabel="1"/>
+                                </div>
+                                <div class="o_ob_ai_error_panel" invisible="not last_error">
+                                    <field name="last_error" readonly="1" nolabel="1"/>
+                                </div>
+                            </div>
+                            <div class="o_ob_ai_workspace_stage">
+                                <div class="o_ob_ai_stage_header">
+                                    <div>
+                                        <div class="o_ob_ai_chat_eyebrow">AI Control Room</div>
+                                        <h2 class="o_ob_ai_chat_title">Chat with your Odoo assistant</h2>
+                                        <div class="o_ob_ai_chat_subtitle">
+                                            Ask naturally, combine models, and trigger governed operations from one modern workspace.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="o_ob_ai_message_viewport">
+                                    <field name="ai_message_ids" mode="kanban" readonly="1" nolabel="1" class="w-100 o_ob_ai_message_stream">
+                                        <kanban class="o_kanban_mobile o_ob_ai_message_stream_view" create="0" delete="0" quick_create="false" can_open="False">
+                                            <field name="role"/>
+                                            <field name="create_date"/>
+                                            <field name="content"/>
+                                            <field name="provider_id"/>
+                                            <field name="model_id"/>
+                                            <templates>
+                                                <t t-name="card">
+                                                    <article t-attf-class="o_ob_ai_message_card #{record.role.raw_value == 'user' ? 'o_ob_ai_message_user' : 'o_ob_ai_message_assistant'}">
+                                                        <div class="o_ob_ai_message_top">
+                                                            <div class="o_ob_ai_message_role">
+                                                                <t t-if="record.role.raw_value == 'user'">You</t>
+                                                                <t t-if="record.role.raw_value == 'assistant'">Assistant</t>
+                                                                <t t-if="record.role.raw_value == 'system'">System</t>
+                                                            </div>
+                                                            <div class="o_ob_ai_message_meta">
+                                                                <t t-if="record.role.raw_value != 'user' and record.provider_id.raw_value">
+                                                                    <field name="provider_id"/>
+                                                                </t>
+                                                                <t t-if="record.role.raw_value != 'user' and record.model_id.raw_value">
+                                                                    <field name="model_id"/>
+                                                                </t>
+                                                                <field name="create_date"/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="o_ob_ai_message_body">
+                                                            <div class="o_ob_ai_message_text" t-esc="record.content.raw_value"/>
+                                                        </div>
+                                                    </article>
+                                                </t>
+                                            </templates>
+                                        </kanban>
+                                    </field>
+                                </div>
+                                <!-- Live reasoning stream — JS subscribes to user-scoped bus channel ob_ai_user_<uid> -->
+                                <div class="o_ob_ai_live_stream">
+                                    <field name="last_agent_session_uuid" invisible="1"/>
+                                    <div class="o_ob_ai_live_stream_header">
+                                        <span class="o_ob_ai_live_stream_indicator"/>
+                                        <span class="o_ob_ai_live_stream_status">AI ready</span>
+                                    </div>
+                                    <div class="o_ob_ai_live_stream_events"/>
+                                </div>
+                                <div class="o_ob_ai_composer_panel">
+                                    <div class="o_ob_ai_composer_head">
+                                        <div>
+                                            <div class="o_ob_ai_composer_title">Compose your message</div>
+                                            <div class="o_ob_ai_composer_hint">Ask a question, request an analysis, or trigger an action workflow.</div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-10">
+                                            <field name="prompt_input" nolabel="1" class="o_ob_ai_composer_input" placeholder="Ask the AI assistant a business question or request a summary..." default_focus="1"/>
+                                        </div>
+                                        <div class="col-2">
+<!--                                            <div class="o_ob_ai_upload_panel">-->
+<!--                                                <div class="o_ob_ai_upload_title">Chat Documents</div>-->
+<!--                                                <div class="o_ob_ai_upload_hint">Upload files and ask AI to summarize, compare, or extract key insights.</div>-->
+
+<!--                                            </div>-->
+                                            <div class="o_ob_ai_composer_actions">
+                                                <field name="chat_attachment_ids" nolabel="1" widget="many2many_binary" options="{'accepted_file_extensions': '.pdf,.txt,.md,.csv,.json,.xml,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg'}"/>
+                                            </div>
+                                            <div class="o_ob_ai_composer_actions">
+                                                <button name="action_send_prompt" type="object" string="Send to AI" class="btn btn-primary"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <notebook>
+                        <page string="Settings" invisible="chat_mode">
+                            <div class="o_ob_ai_settings_shell">
+                                <div class="o_ob_ai_settings_intro">
+                                    <div class="o_ob_ai_settings_title">Conversation settings and traceability</div>
+                                    <div class="o_ob_ai_settings_text">
+                                        Configure provider context here and review workflow, validation, document, and audit details below.
+                                    </div>
+                                </div>
+                                <div class="o_ob_ai_settings_panel">
+                                    <group>
+                                        <group>
+                                            <field name="user_id" readonly="1"/>
+                                            <field name="company_id" groups="base.group_multi_company"/>
+                                            <field name="provider_id"/>
+                                            <field name="model_id" domain="[('provider_id', '=', provider_id)]"/>
+                                        </group>
+                                        <group>
+                                            <field name="context_mode" widget="radio"/>
+                                            <field name="allowed_model_id" domain="[('id', 'in', available_allowed_model_ids)]" invisible="context_mode != 'focused'"/>
+                                            <field name="related_record_ref" invisible="context_mode != 'focused'"/>
+                                            <field name="human_review_status" readonly="1"/>
+                                            <field name="intent_code" readonly="1"/>
+                                            <field name="intent_confidence" readonly="1"/>
+                                        </group>
+                                    </group>
+                                </div>
+                                <notebook>
+                                    <page string="Workflow">
+                                        <group>
+                                            <group>
+                                                <field name="last_snapshot_id" readonly="1"/>
+                                                <field name="last_approval_id" readonly="1"/>
+                                                <field name="last_investigation_trace_id" readonly="1"/>
+                                                <field name="last_memory_state_id" readonly="1"/>
+                                            </group>
+                                            <group>
+                                                <field name="reminder_ids" readonly="1">
+                                                    <list default_order="due_datetime asc">
+                                                        <field name="name"/>
+                                                        <field name="assigned_user_id"/>
+                                                        <field name="due_datetime"/>
+                                                        <field name="status"/>
+                                                    </list>
+                                                </field>
+                                            </group>
+                                        </group>
+                                    </page>
+                                    <page string="Investigations">
+                                        <field name="investigation_trace_ids" readonly="1">
+                                            <list default_order="create_date desc">
+                                                <field name="create_date"/>
+                                                <field name="operation_type"/>
+                                                <field name="status"/>
+                                                <field name="semantic_ids" widget="many2many_tags"/>
+                                                <field name="step_count"/>
+                                                <field name="schema_version_id"/>
+                                            </list>
+                                        </field>
+                                    </page>
+                                    <page string="Memory">
+                                        <field name="memory_state_ids" readonly="1">
+                                            <list default_order="create_date desc">
+                                                <field name="create_date"/>
+                                                <field name="status"/>
+                                                <field name="intent_code"/>
+                                                <field name="operation_type"/>
+                                                <field name="target_model_name"/>
+                                                <field name="result_reference_count"/>
+                                                <field name="last_trace_id"/>
+                                            </list>
+                                        </field>
+                                    </page>
+                                    <page string="Validations">
+                                        <field name="validation_result_ids" readonly="1">
+                                            <list default_order="create_date desc">
+                                                <field name="create_date"/>
+                                                <field name="rule_id"/>
+                                                <field name="validation_status"/>
+                                                <field name="review_status"/>
+                                                <field name="suggested_action"/>
+                                            </list>
+                                        </field>
+                                    </page>
+                                    <page string="Documents">
+                                        <group>
+                                            <field name="chat_attachment_ids" widget="many2many_binary" options="{'accepted_file_extensions': '.pdf,.txt,.md,.csv,.json,.xml,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg'}"/>
+                                        </group>
+                                        <field name="document_context_ids" readonly="1">
+                                            <list default_order="create_date desc">
+                                                <field name="create_date"/>
+                                                <field name="attachment_id"/>
+                                                <field name="context_type"/>
+                                                <field name="state"/>
+                                                <field name="character_count"/>
+                                            </list>
+                                        </field>
+                                    </page>
+                                    <page string="Audit">
+                                        <field name="audit_log_ids" readonly="1">
+                                            <list default_order="create_date desc">
+                                                <field name="create_date"/>
+                                                <field name="status"/>
+                                                <field name="intent_code"/>
+                                                <field name="action_performed"/>
+                                                <field name="provider_id"/>
+                                                <field name="model_id"/>
+                                                <field name="latency_ms"/>
+                                                <field name="input_tokens"/>
+                                                <field name="output_tokens"/>
+                                            </list>
+                                        </field>
+                                    </page>
+                                </notebook>
+                            </div>
+                        </page>
+                    </notebook>
+                    <chatter invisible="chat_mode"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ob_ai_conversation" model="ir.actions.act_window">
+        <field name="name">AI Conversations</field>
+        <field name="res_model">ob.ai.conversation</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'default_user_id': uid, 'default_context_mode': 'global', 'default_chat_mode': True}</field>
+    </record>
+</odoo>

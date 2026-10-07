@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="ocr_mapping_demo_generic_partner" model="ob.ocr.mapping">
+        <field name="name">Demo Generic Partner Mapping</field>
+        <field name="document_type_id" ref="ob_ocr_base.document_type_generic_document"/>
+        <field name="target_model">res.partner</field>
+        <field name="extraction_mode">regex</field>
+        <field name="schema_json" eval="{'fields': ['partner_name', 'email', 'phone']}"/>
+    </record>
+
+    <record id="ocr_mapping_field_demo_partner_name" model="ob.ocr.mapping.field">
+        <field name="mapping_id" ref="ob_ocr_base.ocr_mapping_demo_generic_partner"/>
+        <field name="name">Partner Name</field>
+        <field name="source_key">partner_name</field>
+        <field name="target_field">name</field>
+        <field name="transform_type">strip</field>
+    </record>
+
+    <record id="ocr_mapping_field_demo_email" model="ob.ocr.mapping.field">
+        <field name="mapping_id" ref="ob_ocr_base.ocr_mapping_demo_generic_partner"/>
+        <field name="name">Email</field>
+        <field name="source_key">email</field>
+        <field name="target_field">email</field>
+        <field name="transform_type">strip</field>
+    </record>
+
+    <record id="ocr_mapping_field_demo_phone" model="ob.ocr.mapping.field">
+        <field name="mapping_id" ref="ob_ocr_base.ocr_mapping_demo_generic_partner"/>
+        <field name="name">Phone</field>
+        <field name="source_key">phone</field>
+        <field name="target_field">phone</field>
+        <field name="transform_type">strip</field>
+    </record>
+
+    <record id="ocr_rule_demo_partner_name" model="ob.ocr.extraction.rule">
+        <field name="name">Partner Name</field>
+        <field name="document_type_id" ref="ob_ocr_base.document_type_generic_document"/>
+        <field name="mapping_id" ref="ob_ocr_base.ocr_mapping_demo_generic_partner"/>
+        <field name="target_key">partner_name</field>
+        <field name="pattern">(?:Partner|Customer|Vendor)\s*:\s*(.+)</field>
+        <field name="flags">IGNORECASE</field>
+    </record>
+
+    <record id="ocr_rule_demo_email" model="ob.ocr.extraction.rule">
+        <field name="name">Email</field>
+        <field name="document_type_id" ref="ob_ocr_base.document_type_generic_document"/>
+        <field name="mapping_id" ref="ob_ocr_base.ocr_mapping_demo_generic_partner"/>
+        <field name="target_key">email</field>
+        <field name="pattern">([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})</field>
+        <field name="flags">IGNORECASE</field>
+    </record>
+
+    <record id="ocr_rule_demo_phone" model="ob.ocr.extraction.rule">
+        <field name="name">Phone</field>
+        <field name="document_type_id" ref="ob_ocr_base.document_type_generic_document"/>
+        <field name="mapping_id" ref="ob_ocr_base.ocr_mapping_demo_generic_partner"/>
+        <field name="target_key">phone</field>
+        <field name="pattern">(?:Phone|Tel)\s*:\s*([0-9+\-/\s]+)</field>
+        <field name="flags">IGNORECASE</field>
+    </record>
+</odoo>

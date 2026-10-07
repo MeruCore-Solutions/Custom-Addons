@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="ocr_provider_tesseract" model="ob.ocr.provider">
+        <field name="name">Local Tesseract OCR</field>
+        <field name="code">tesseract_local</field>
+        <field name="provider_key">tesseract</field>
+        <field name="service_model">ob.ocr.provider.service</field>
+        <field name="is_default">True</field>
+        <field name="handwriting_supported">True</field>
+        <field name="store_processed_images">False</field>
+        <field name="allowed_mimetypes">application/pdf,image/png,image/jpeg,image/jpg,image/tiff,image/webp</field>
+        <field name="note">Install pytesseract, Pillow, and pypdfium2 or pdf2image, plus the Tesseract OCR binary and language packs.</field>
+    </record>
+</odoo>

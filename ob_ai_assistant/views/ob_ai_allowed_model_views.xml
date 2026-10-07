@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_ob_ai_allowed_model_list" model="ir.ui.view">
+        <field name="name">ob.ai.allowed.model.list</field>
+        <field name="model">ob.ai.allowed.model</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="model_id"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="alias_keywords"/>
+                <field name="max_record_count"/>
+                <field name="sensitivity_level"/>
+                <field name="allow_dashboard_generation"/>
+                <field name="allow_validation"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ob_ai_allowed_model_form" model="ir.ui.view">
+        <field name="name">ob.ai.allowed.model.form</field>
+        <field name="model">ob.ai.allowed.model</field>
+        <field name="arch" type="xml">
+            <form string="Allowed Odoo Model">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="model_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group>
+                            <field name="sequence"/>
+                            <field name="alias_keywords" placeholder="customer, partner, client"/>
+                            <field name="max_record_count"/>
+                            <field name="search_limit"/>
+                            <field name="default_order"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Field Access">
+                            <group>
+                                <field name="allowed_field_ids" widget="many2many_tags" placeholder="Select safe fields to expose to AI"/>
+                                <field name="blocked_field_ids" widget="many2many_tags" placeholder="Force-hide sensitive fields"/>
+                            </group>
+                        </page>
+                        <page string="Routing">
+                            <group>
+                                <group>
+                                    <field name="reference_field_names" placeholder="name,origin"/>
+                                    <field name="name_field_names" placeholder="name,display_name"/>
+                                    <field name="date_field_names" placeholder="scheduled_date,date_deadline"/>
+                                </group>
+                                <group>
+                                    <field name="sensitivity_level"/>
+                                    <field name="require_human_approval"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Allowed Actions">
+                            <group>
+                                <group>
+                                    <field name="allow_document_context"/>
+                                    <field name="allow_dashboard_generation"/>
+                                    <field name="allow_validation"/>
+                                </group>
+                                <group>
+                                    <field name="allow_chatter_posting"/>
+                                    <field name="allow_activity_creation"/>
+                                    <field name="allow_reminder_creation"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Prompt Template">
+                            <field name="summary_prompt_template" nolabel="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ob_ai_allowed_model" model="ir.actions.act_window">
+        <field name="name">Allowed Models</field>
+        <field name="res_model">ob.ai.allowed.model</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

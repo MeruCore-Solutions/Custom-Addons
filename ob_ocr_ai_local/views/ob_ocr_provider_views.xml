@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_ob_ocr_provider_search_ai_local" model="ir.ui.view">
+        <field name="name">ob.ocr.provider.search.ai.local</field>
+        <field name="model">ob.ocr.provider</field>
+        <field name="inherit_id" ref="ob_ocr_base.view_ob_ocr_provider_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <filter string="Local AI" name="local_ai_provider" domain="[('provider_key', '=', 'local_ai')]"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_ob_ocr_provider_tree_ai_local" model="ir.ui.view">
+        <field name="name">ob.ocr.provider.tree.ai.local</field>
+        <field name="model">ob.ocr.provider</field>
+        <field name="inherit_id" ref="ob_ocr_base.view_ob_ocr_provider_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list/field[@name='provider_key']" position="after">
+                <field name="ai_backend" optional="hide"/>
+                <field name="ai_model_name" optional="hide"/>
+                <field name="ai_ocr_backend" optional="hide"/>
+                <field name="ai_runtime_status" optional="hide" widget="badge"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_ob_ocr_provider_form_ai_local" model="ir.ui.view">
+        <field name="name">ob.ocr.provider.form.ai.local</field>
+        <field name="model">ob.ocr.provider</field>
+        <field name="inherit_id" ref="ob_ocr_base.view_ob_ocr_provider_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/group[last()]" position="after">
+                <group string="Local AI" invisible="provider_key != 'local_ai'">
+                    <group>
+                        <field name="ai_backend"/>
+                        <field name="ai_model_name"/>
+                        <field name="ai_device"/>
+                        <field name="ai_ocr_backend"/>
+                        <field name="ai_paddleocr_version" invisible="ai_ocr_backend != 'paddleocr'"/>
+                        <field name="ai_paddleocr_lang" invisible="ai_ocr_backend != 'paddleocr'"/>
+                        <field name="ai_runtime_status" widget="badge" readonly="1"/>
+                    </group>
+                    <group>
+                        <field name="ai_paddleocr_use_native_pdf_text" invisible="ai_ocr_backend != 'paddleocr'"/>
+                        <field name="ai_paddleocr_use_doc_orientation_classify" invisible="ai_ocr_backend != 'paddleocr'"/>
+                        <field name="ai_paddleocr_use_doc_unwarping" invisible="ai_ocr_backend != 'paddleocr'"/>
+                        <field name="ai_paddleocr_use_textline_orientation" invisible="ai_ocr_backend != 'paddleocr'"/>
+                        <field name="ai_paddleocr_detection_model_name" invisible="ai_ocr_backend != 'paddleocr'"/>
+                        <field name="ai_paddleocr_recognition_model_name" invisible="ai_ocr_backend != 'paddleocr'"/>
+                    </group>
+                    <group>
+                        <field name="ai_context_chars"/>
+                        <field name="ai_max_new_tokens"/>
+                        <field name="ai_temperature"/>
+                        <field name="ai_example_limit"/>
+                        <field name="ai_feedback_enabled"/>
+                        <button
+                            type="object"
+                            name="action_validate_ai_runtime"
+                            string="Validate Runtime"
+                            class="btn-secondary"
+                            icon="fa-check-circle"/>
+                    </group>
+                    <field name="ai_additional_instructions" widget="text"/>
+                    <field name="ai_runtime_message" widget="text" readonly="1"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

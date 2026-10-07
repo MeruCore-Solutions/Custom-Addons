@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ob_ai_prompt_template_general_query" model="ob.ai.prompt.template">
+        <field name="name">General Query</field>
+        <field name="code">general_query</field>
+        <field name="intent_type">general_query</field>
+        <field name="keyword_pattern">status,summary,explain</field>
+        <field name="prompt_text">Answer from the supplied Odoo data, keep the answer audit-friendly, and recommend safe next steps.</field>
+        <field name="system_instruction">Prefer concise operational summaries. If the data is insufficient, clearly say what extra Odoo context is required.</field>
+    </record>
+
+    <record id="ob_ai_prompt_template_document_summary" model="ob.ai.prompt.template">
+        <field name="name">Document Summary</field>
+        <field name="code">document_summary</field>
+        <field name="intent_type">summarize_document</field>
+        <field name="keyword_pattern">summarize document,attachment summary,document summary</field>
+        <field name="prompt_text">Summarize the related documents, highlight risks, missing data, and the next best follow-up.</field>
+        <field name="allow_document_context">True</field>
+    </record>
+
+    <record id="ob_ai_prompt_template_reminder" model="ob.ai.prompt.template">
+        <field name="name">Reminder Creation</field>
+        <field name="code">create_reminder</field>
+        <field name="intent_type">create_reminder</field>
+        <field name="keyword_pattern">remind me,follow up this,remind</field>
+        <field name="prompt_text">Create a concise internal reminder and confirm the due timing clearly.</field>
+        <field name="allow_reminder_creation">True</field>
+        <field name="read_only">False</field>
+    </record>
+
+    <record id="ob_ai_prompt_template_activity" model="ob.ai.prompt.template">
+        <field name="name">Activity Creation</field>
+        <field name="code">create_activity</field>
+        <field name="intent_type">create_activity</field>
+        <field name="keyword_pattern">create activity,create task,assign task</field>
+        <field name="prompt_text">Create an internal follow-up activity and state who owns it and when it is due.</field>
+        <field name="allow_activity_creation">True</field>
+        <field name="read_only">False</field>
+    </record>
+
+    <record id="ob_ai_prompt_template_dashboard" model="ob.ai.prompt.template">
+        <field name="name">Dashboard and KPI</field>
+        <field name="code">generate_dashboard</field>
+        <field name="intent_type">generate_dashboard</field>
+        <field name="keyword_pattern">dashboard,kpi,how many,priorities,task summary,overdue</field>
+        <field name="prompt_text">Summarize the deterministic KPI counts and explain the most important operational priorities.</field>
+        <field name="allow_dashboard_generation">True</field>
+    </record>
+
+    <record id="ob_ai_prompt_template_business_overview" model="ob.ai.prompt.template">
+        <field name="name">Business Overview</field>
+        <field name="code">business_overview</field>
+        <field name="intent_type">business_overview</field>
+        <field name="keyword_pattern">business overview,business summary,daily brief,executive summary,ceo summary,sales invoices deliveries</field>
+        <field name="prompt_text">Combine deterministic signals from sales, invoices, deliveries, and activities into one concise business brief.</field>
+        <field name="allow_dashboard_generation">True</field>
+    </record>
+
+    <record id="ob_ai_prompt_template_customer_behavior" model="ob.ai.prompt.template">
+        <field name="name">Customer Behavior Briefing</field>
+        <field name="code">customer_behavior_briefing</field>
+        <field name="intent_type">customer_behavior_briefing</field>
+        <field name="keyword_pattern">customer behaviour,customer behavior,customer engagement,customer trends,buyer behaviour,buyer behavior,repeat customers</field>
+        <field name="prompt_text">Combine deterministic customer, sales, CRM, invoicing, activity, and support signals into one customer-behavior briefing while respecting the active AI access policy.</field>
+        <field name="allow_dashboard_generation">True</field>
+    </record>
+
+    <record id="ob_ai_prompt_template_crm_briefing" model="ob.ai.prompt.template">
+        <field name="name">CRM Briefing</field>
+        <field name="code">crm_briefing</field>
+        <field name="intent_type">crm_briefing</field>
+        <field name="keyword_pattern">crm briefing,crm summary,crm overview,pipeline briefing,pipeline summary,pipeline overview,opportunity briefing,lead summary</field>
+        <field name="prompt_text">Summarize the visible CRM pipeline with deterministic lead, stage, revenue, closing-date, and next-activity signals while respecting the active AI access template.</field>
+        <field name="allow_dashboard_generation">True</field>
+    </record>
+
+    <record id="ob_ai_prompt_template_sales_overview" model="ob.ai.prompt.template">
+        <field name="name">Sales Overview</field>
+        <field name="code">sales_overview</field>
+        <field name="intent_type">sales_overview</field>
+        <field name="keyword_pattern">current month sales,sales this month,monthly sales,delivered sales,invoiced sales,revenue</field>
+        <field name="prompt_text">Use deterministic Odoo sales metrics for the requested period and explain the result in clear business language.</field>
+        <field name="allow_dashboard_generation">True</field>
+    </record>
+
+    <record id="ob_ai_prompt_template_sales_order_margin_list" model="ob.ai.prompt.template">
+        <field name="name">Sales Orders With Margin</field>
+        <field name="code">sales_order_margin_list</field>
+        <field name="intent_type">sales_order_margin_list</field>
+        <field name="keyword_pattern">sale orders with margin,sales orders with margin,sales margin,quotation margin,profitability by sales order</field>
+        <field name="prompt_text">List visible sales orders with deterministic margin values, explain totals clearly, and surface any access or module limitation precisely.</field>
+        <field name="allow_dashboard_generation">True</field>
+    </record>
+
+    <record id="ob_ai_prompt_template_product_sales_ranking" model="ob.ai.prompt.template">
+        <field name="name">Product Sales Ranking</field>
+        <field name="code">product_sales_ranking</field>
+        <field name="intent_type">product_sales_ranking</field>
+        <field name="keyword_pattern">most selling product,most sold product,top selling product,best selling product</field>
+        <field name="prompt_text">Use deterministic Odoo sales line data to rank the top-selling products for the requested period.</field>
+        <field name="allow_dashboard_generation">True</field>
+    </record>
+
+    <record id="ob_ai_prompt_template_delivery_worklist" model="ob.ai.prompt.template">
+        <field name="name">Today's Delivery Worklist</field>
+        <field name="code">delivery_worklist</field>
+        <field name="intent_type">delivery_worklist</field>
+        <field name="keyword_pattern">deliveries to process today,delivery to process today,shipments to process today</field>
+        <field name="prompt_text">List the delivery orders that need action today and keep the answer focused on the operational worklist.</field>
+        <field name="allow_dashboard_generation">True</field>
+    </record>
+
+    <record id="ob_ai_prompt_template_validation" model="ob.ai.prompt.template">
+        <field name="name">Record Validation</field>
+        <field name="code">validate_record</field>
+        <field name="intent_type">validate_record</field>
+        <field name="keyword_pattern">validate,check,review</field>
+        <field name="prompt_text">Summarize deterministic validation results, explain the risks, and recommend safe remediation steps.</field>
+        <field name="allow_validation">True</field>
+    </record>
+</odoo>

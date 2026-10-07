@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="ocr_mapping_supplier_quotation" model="ob.ocr.mapping">
+        <field name="name">Supplier Quotation Mapping</field>
+        <field name="document_type_id" ref="ob_ocr_quotation_to_purchase.document_type_supplier_quotation"/>
+        <field name="target_model">purchase.order</field>
+        <field name="schema_json" eval="{
+            'fields': [
+                'vendor_name', 'vendor_vat', 'vendor_address', 'vendor_email', 'vendor_phone',
+                'quotation_number', 'quotation_date', 'validity_date', 'currency',
+                'payment_terms', 'delivery_date', 'incoterm', 'notes'
+            ],
+            'collections': ['line_items']
+        }"/>
+    </record>
+
+    <record id="ocr_rule_supplier_name" model="ob.ocr.extraction.rule">
+        <field name="name">Supplier Name</field>
+        <field name="document_type_id" ref="ob_ocr_quotation_to_purchase.document_type_supplier_quotation"/>
+        <field name="mapping_id" ref="ob_ocr_quotation_to_purchase.ocr_mapping_supplier_quotation"/>
+        <field name="target_key">vendor_name</field>
+        <field name="pattern">(?:Vendor|Supplier|From)\s*:\s*(.+)</field>
+        <field name="flags">IGNORECASE</field>
+    </record>
+    <record id="ocr_rule_supplier_quotation_number" model="ob.ocr.extraction.rule">
+        <field name="name">Quotation Number</field>
+        <field name="document_type_id" ref="ob_ocr_quotation_to_purchase.document_type_supplier_quotation"/>
+        <field name="mapping_id" ref="ob_ocr_quotation_to_purchase.ocr_mapping_supplier_quotation"/>
+        <field name="target_key">quotation_number</field>
+        <field name="pattern">(?:Quotation|Quote)\s*(?:No\.?|Number)?\s*:\s*([A-Z0-9\/\-]+)</field>
+        <field name="flags">IGNORECASE</field>
+    </record>
+    <record id="ocr_rule_supplier_quotation_date" model="ob.ocr.extraction.rule">
+        <field name="name">Quotation Date</field>
+        <field name="document_type_id" ref="ob_ocr_quotation_to_purchase.document_type_supplier_quotation"/>
+        <field name="mapping_id" ref="ob_ocr_quotation_to_purchase.ocr_mapping_supplier_quotation"/>
+        <field name="target_key">quotation_date</field>
+        <field name="pattern">(?:Quotation Date|Date)\s*:\s*([0-9.\-\/]+)</field>
+        <field name="flags">IGNORECASE</field>
+    </record>
+    <record id="ocr_rule_supplier_currency" model="ob.ocr.extraction.rule">
+        <field name="name">Currency</field>
+        <field name="document_type_id" ref="ob_ocr_quotation_to_purchase.document_type_supplier_quotation"/>
+        <field name="mapping_id" ref="ob_ocr_quotation_to_purchase.ocr_mapping_supplier_quotation"/>
+        <field name="target_key">currency</field>
+        <field name="pattern">(?:Currency)\s*:\s*([A-Z]{3})</field>
+        <field name="flags">IGNORECASE</field>
+    </record>
+</odoo>

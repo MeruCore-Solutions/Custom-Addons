@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_ob_ocr_document_search_vendor_bill" model="ir.ui.view">
+        <field name="name">ob.ocr.document.search.vendor.bill</field>
+        <field name="model">ob.ocr.document</field>
+        <field name="inherit_id" ref="ob_ocr_base.view_ob_ocr_document_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <filter string="Vendor Bills" name="vendor_bill" domain="[('document_type', '=', 'vendor_bill')]"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

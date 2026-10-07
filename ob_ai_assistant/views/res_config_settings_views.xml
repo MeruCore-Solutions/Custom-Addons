@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_res_config_settings_ai_assistant" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.ob.ai.assistant</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app string="AI Assistant" data-string="AI Assistant" name="ob_ai_assistant" groups="ob_ai_assistant.group_ai_manager">
+                    <block title="Core Configuration" name="ai_assistant_core_settings">
+                        <setting string="Enable AI Assistant" help="Globally enables or disables the internal AI assistant flows.">
+                            <field name="ai_assistant_enabled"/>
+                        </setting>
+                        <setting string="Default Provider and Model" help="Choose the default provider and model shown to users when starting a new conversation.">
+                            <field name="ai_default_provider_id"/>
+                            <field name="ai_default_model_id" domain="[('provider_id', '=', ai_default_provider_id)]"/>
+                            <button type="object" name="action_open_ai_providers" string="Manage Providers" icon="oi-arrow-right" class="btn-link"/>
+                        </setting>
+                        <setting string="AI Service User" help="Optional internal user for controlled background work. User-facing answers still respect the requesting user's rights.">
+                            <field name="ai_service_user_id"/>
+                        </setting>
+                    </block>
+                    <block title="Security and Privacy" name="ai_assistant_privacy_settings">
+                        <setting string="Store Raw Request and Response Payloads" help="If disabled, audit logs keep metadata but omit raw provider request and response bodies.">
+                            <field name="ai_store_raw_payload"/>
+                        </setting>
+                        <setting string="Shared AI Data Retention (days)" help="How long AI-shared context/request/response payloads stay in audit logs before cleanup. Default is 1095 days (3 years). Use -1 to keep indefinitely.">
+                            <field name="ai_shared_data_retention_days"/>
+                        </setting>
+                        <setting string="Prompt Retention (days)" help="Older user prompts are redacted from conversation history after this many days.">
+                            <field name="ai_prompt_retention_days"/>
+                        </setting>
+                        <setting string="Response Retention (days)" help="Older AI responses are redacted from conversation history after this many days.">
+                            <field name="ai_response_retention_days"/>
+                        </setting>
+                        <setting string="Require Human Approval" help="Use this as a governance flag for future sensitive workflows.">
+                            <field name="ai_human_approval_required"/>
+                        </setting>
+                        <setting string="Allowed Odoo Models" help="Manage which models and fields the AI assistant can read.">
+                            <button type="object" name="action_open_ai_allowed_models" string="Open Allowed Models" icon="oi-arrow-right" class="btn-link"/>
+                        </setting>
+                        <setting string="Access Templates" help="Assign users to configurable AI access templates so data scope can be reduced without code changes.">
+                            <button type="object" name="action_open_ai_access_templates" string="Open Access Templates" icon="oi-arrow-right" class="btn-link"/>
+                        </setting>
+                        <setting string="Prompt Templates" help="Manage whitelist-backed intent templates, versions, and action policies.">
+                            <button type="object" name="action_open_ai_prompt_templates" string="Open Prompt Templates" icon="oi-arrow-right" class="btn-link"/>
+                        </setting>
+                    </block>
+                    <block title="Generic AI Foundation" name="ai_assistant_generic_foundation">
+                        <setting string="Enable Generic Schema Engine" help="Enables the new schema-aware foundation so AI requests carry live model metadata and secure communication contracts.">
+                            <field name="ai_generic_engine_enabled"/>
+                        </setting>
+                        <setting string="Enable True AI Orchestration" help="Turns on the agentic runtime that can plan, call secure communication tools, and answer from live ERP data instead of fixed templates.">
+                            <field name="ai_true_ai_orchestration_enabled"/>
+                        </setting>
+                        <setting string="Force Agentic AI for Read Queries" help="When enabled, read-only prompts default to the true AI orchestration flow before deterministic fallback logic.">
+                            <field name="ai_orchestrator_force_for_all"/>
+                        </setting>
+                        <setting string="Force Agentic AI for Administrators" help="Ensures administrators always use the true AI orchestration path for read prompts when available.">
+                            <field name="ai_orchestrator_force_for_admin"/>
+                        </setting>
+                        <setting string="Admin Global Scope Mode" help="Allows administrators with full-access templates to query across all active AI models in global context mode.">
+                            <field name="ai_admin_global_scope_enabled"/>
+                        </setting>
+                        <setting string="Auto Refresh Schema Registry" help="Refresh the schema registry automatically when it becomes stale or when the live module checksum changes.">
+                            <field name="ai_schema_auto_refresh_enabled"/>
+                        </setting>
+                        <setting string="Auto Sync Model Semantics" help="Refresh semantic field mappings for AI-enabled models whenever the schema registry is rebuilt.">
+                            <field name="ai_semantic_auto_sync_enabled"/>
+                        </setting>
+                        <setting string="Schema Registry" help="Inspect the current Odoo schema registry used by the AI foundation.">
+                            <button type="object" name="action_open_ai_schema_versions" string="Open Schema Registry" icon="oi-arrow-right" class="btn-link"/>
+                            <button type="object" name="action_refresh_ai_schema_registry" string="Refresh Now" icon="fa-refresh" class="btn-link"/>
+                        </setting>
+                        <setting string="Model Semantics" help="Review or fine-tune the business meaning that powers generic AI investigations across custom models.">
+                            <button type="object" name="action_open_ai_model_semantics" string="Open Semantics" icon="oi-arrow-right" class="btn-link"/>
+                            <button type="object" name="action_sync_ai_model_semantics" string="Sync Now" icon="fa-refresh" class="btn-link"/>
+                        </setting>
+                        <setting string="Communication Tokens" help="Review the short-lived secure tokens issued for AI-to-Odoo communication.">
+                            <button type="object" name="action_open_ai_request_tokens" string="Open Tokens" icon="oi-arrow-right" class="btn-link"/>
+                        </setting>
+                        <setting string="Enable Communication Gateway" help="Expose signed controller endpoints so external AI orchestrators can request schema and record bundles through the same policy engine.">
+                            <field name="ai_gateway_enabled"/>
+                        </setting>
+                        <setting string="Require Signed Gateway Requests" help="Require timestamped HMAC signatures for every gateway request, in addition to bearer request tokens.">
+                            <field name="ai_gateway_require_signature"/>
+                        </setting>
+                        <setting string="Gateway Clock Skew (seconds)" help="Maximum tolerated clock drift between the AI orchestrator and Odoo gateway signature timestamp.">
+                            <field name="ai_gateway_max_clock_skew_seconds"/>
+                        </setting>
+                        <setting string="Allow Gateway Action Scope" help="Permit communication tokens to include execute_actions scope so AI can run approved Odoo tools through the gateway.">
+                            <field name="ai_gateway_allow_action_scope"/>
+                        </setting>
+                        <setting string="Gateway Actions for Admin Full Access Only" help="When enabled, only administrator users with a full-access template can issue action-enabled gateway tokens.">
+                            <field name="ai_gateway_action_scope_admin_only"/>
+                        </setting>
+                        <setting string="Auto-add Action Scope to Chat Tokens" help="Automatically adds execute_actions scope to chat/action-proposal tokens when user policy permits it.">
+                            <field name="ai_gateway_auto_action_scope"/>
+                        </setting>
+                        <setting string="Investigation Traces" help="Inspect the structured plans and bounded data requests used by the generic AI investigation engine.">
+                            <button type="object" name="action_open_ai_investigation_traces" string="Open Traces" icon="oi-arrow-right" class="btn-link"/>
+                        </setting>
+                    </block>
+                    <block title="Runtime Limits" name="ai_assistant_runtime_settings">
+                        <setting string="Request Timeout" help="Global fallback timeout used when a provider record leaves timeout empty.">
+                            <field name="ai_request_timeout"/>
+                        </setting>
+                        <setting string="Maximum Retries" help="Global fallback retry count used when a provider record leaves retries empty.">
+                            <field name="ai_max_retries"/>
+                        </setting>
+                        <setting string="Maximum Prompt Size" help="Reject prompts larger than this many characters.">
+                            <field name="ai_max_prompt_chars"/>
+                        </setting>
+                        <setting string="Maximum Response Size" help="Truncate provider responses longer than this many characters.">
+                            <field name="ai_max_response_chars"/>
+                        </setting>
+                    </block>
+                    <block title="Investigation Limits" name="ai_assistant_investigation_limits">
+                        <setting string="Orchestrator Max Iterations" help="Maximum agent reasoning rounds for one prompt (plan, fetch, refine, finalize).">
+                            <field name="ai_orchestrator_max_iterations"/>
+                        </setting>
+                        <setting string="Orchestrator Max Tool Requests" help="Upper bound of communication-tool calls allowed in one orchestrated response.">
+                            <field name="ai_orchestrator_max_tools"/>
+                        </setting>
+                        <setting string="Request Token TTL" help="How long a secure communication token remains valid for one AI investigation flow.">
+                            <field name="ai_request_token_ttl_minutes"/>
+                        </setting>
+                        <setting string="Maximum Investigation Steps" help="Upper bound for how many structured follow-up fetches an AI investigation may perform.">
+                            <field name="ai_max_investigation_steps"/>
+                        </setting>
+                        <setting string="Maximum Models per Investigation" help="How many models the AI may inspect during one bounded investigation contract.">
+                            <field name="ai_max_models_per_request"/>
+                        </setting>
+                        <setting string="Maximum Records per Fetch" help="Hard cap for any one token-backed data fetch.">
+                            <field name="ai_max_records_per_fetch"/>
+                        </setting>
+                        <setting string="Schema Snapshot Retention" help="How many schema snapshots to keep before older versions are cleaned up automatically.">
+                            <field name="ai_schema_snapshot_retention"/>
+                        </setting>
+                    </block>
+                    <block title="Provider Secrets" name="ai_assistant_secret_settings">
+                        <setting string="OpenAI API Key" help="Stored in ir.config_parameter and used only for the ChatGPT provider." groups="base.group_system">
+                            <div class="flex-grow-1">
+                                <field name="ai_openai_api_key" password="True" nolabel="1" class="w-100" placeholder="sk-..."/>
+                            </div>
+                        </setting>
+                        <setting string="Anthropic API Key" help="Stored in ir.config_parameter and used only for the Claude provider." groups="base.group_system">
+                            <div class="flex-grow-1">
+                                <field name="ai_anthropic_api_key" password="True" nolabel="1" class="w-100" placeholder="sk-ant-..."/>
+                            </div>
+                        </setting>
+                    </block>
+                    <block title="Feature Flags" name="ai_assistant_feature_settings">
+                        <setting string="Document Summaries">
+                            <field name="ai_document_summary_enabled"/>
+                        </setting>
+                        <setting string="Document Extraction Max Characters" help="Maximum amount of extracted text kept per attachment context.">
+                            <field name="ai_document_extract_max_chars"/>
+                        </setting>
+                        <setting string="Document Extraction Max Rows" help="Maximum tabular rows extracted from one attachment for AI analysis/import.">
+                            <field name="ai_document_extract_max_rows"/>
+                        </setting>
+                        <setting string="Document Extraction Max Tables" help="Maximum tables/sheets extracted from one attachment context.">
+                            <field name="ai_document_extract_max_tables"/>
+                        </setting>
+                        <setting string="Conversation Summaries">
+                            <field name="ai_conversation_summary_enabled"/>
+                        </setting>
+                        <setting string="Allow Chatter Posting">
+                            <field name="ai_allow_chatter_posting"/>
+                        </setting>
+                        <setting string="Allow Activity Creation">
+                            <field name="ai_allow_activity_creation"/>
+                        </setting>
+                        <setting string="Allow Reminder Creation">
+                            <field name="ai_allow_reminder_creation"/>
+                        </setting>
+                        <setting string="Enable Dashboard Generation">
+                            <field name="ai_dashboard_enabled"/>
+                        </setting>
+                        <setting string="Enable Validation Suggestions">
+                            <field name="ai_validation_enabled"/>
+                        </setting>
+                        <setting string="Experimental Feature Flags" help="Optional free-form flags for staged rollouts or future behavior toggles.">
+                            <field name="ai_feature_flags" placeholder="flag_a,flag_b"/>
+                        </setting>
+                    </block>
+                    <block title="Operations" name="ai_assistant_operations">
+                        <setting string="Conversations">
+                            <button type="object" name="action_open_ai_conversations" string="Open Conversations" icon="oi-arrow-right" class="btn-link"/>
+                        </setting>
+                        <setting string="Reminders">
+                            <button type="object" name="action_open_ai_reminders" string="Open Reminders" icon="oi-arrow-right" class="btn-link"/>
+                        </setting>
+                        <setting string="Approvals">
+                            <button type="object" name="action_open_ai_approvals" string="Open Approvals" icon="oi-arrow-right" class="btn-link"/>
+                        </setting>
+                        <setting string="Validation Rules">
+                            <button type="object" name="action_open_ai_validation_rules" string="Open Validation Rules" icon="oi-arrow-right" class="btn-link"/>
+                        </setting>
+                        <setting string="Validation Results">
+                            <button type="object" name="action_open_ai_validation_results" string="Open Validation Results" icon="oi-arrow-right" class="btn-link"/>
+                        </setting>
+                        <setting string="KPI Snapshots">
+                            <button type="object" name="action_open_ai_kpi_snapshots" string="Open KPI Snapshots" icon="oi-arrow-right" class="btn-link"/>
+                        </setting>
+                        <setting string="Document Contexts">
+                            <button type="object" name="action_open_ai_document_contexts" string="Open Document Contexts" icon="oi-arrow-right" class="btn-link"/>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_ai_assistant_settings" model="ir.actions.act_window">
+        <field name="name">Settings</field>
+        <field name="path" eval="False"/>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_id" ref="view_res_config_settings_ai_assistant"/>
+        <field name="view_mode">form</field>
+        <field name="context">{'module': 'ob_ai_assistant', 'bin_size': False}</field>
+    </record>
+</odoo>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ocr_provider_local_ai" model="ob.ocr.provider">
+        <field name="name">Local AI + PaddleOCR PP-OCRv5</field>
+        <field name="code">local_ai_hybrid</field>
+        <field name="provider_key">local_ai</field>
+        <field name="service_model">ob.ocr.provider.local.ai.service</field>
+        <field name="sequence">30</field>
+        <field name="is_default">True</field>
+        <field name="handwriting_supported">True</field>
+        <field name="allowed_mimetypes">application/pdf,image/png,image/jpeg,image/jpg,image/tiff,image/webp,text/plain</field>
+        <field name="ai_backend">transformers_text</field>
+        <field name="ai_model_name">Qwen/Qwen2.5-1.5B-Instruct</field>
+        <field name="ai_device">auto</field>
+        <field name="ai_ocr_backend">paddleocr</field>
+        <field name="ai_paddleocr_version">PP-OCRv5</field>
+        <field name="ai_paddleocr_lang">en</field>
+        <field name="ai_paddleocr_use_native_pdf_text">True</field>
+        <field name="ai_feedback_enabled">True</field>
+        <field name="note">Hybrid provider that combines PaddleOCR PP-OCRv5 text extraction with schema-driven local AI JSON extraction and approved feedback examples.</field>
+    </record>
+</odoo>

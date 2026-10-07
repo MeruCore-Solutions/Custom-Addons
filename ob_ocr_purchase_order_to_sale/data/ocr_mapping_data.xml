@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="ocr_mapping_customer_purchase_order" model="ob.ocr.mapping">
+        <field name="name">Customer Purchase Order Mapping</field>
+        <field name="document_type_id" ref="ob_ocr_purchase_order_to_sale.document_type_customer_purchase_order"/>
+        <field name="target_model">sale.order</field>
+        <field name="schema_json" eval="{
+            'fields': [
+                'customer_name', 'customer_vat', 'customer_address', 'customer_email', 'customer_phone',
+                'customer_reference', 'po_number', 'order_date', 'expected_delivery_date',
+                'currency', 'payment_terms', 'incoterm', 'delivery_address', 'notes'
+            ],
+            'collections': ['line_items']
+        }"/>
+    </record>
+
+    <record id="ocr_rule_customer_name" model="ob.ocr.extraction.rule">
+        <field name="name">Customer Name</field>
+        <field name="document_type_id" ref="ob_ocr_purchase_order_to_sale.document_type_customer_purchase_order"/>
+        <field name="mapping_id" ref="ob_ocr_purchase_order_to_sale.ocr_mapping_customer_purchase_order"/>
+        <field name="target_key">customer_name</field>
+        <field name="pattern">(?:Customer|Buyer|Bill To)\s*:\s*(.+)</field>
+        <field name="flags">IGNORECASE</field>
+    </record>
+    <record id="ocr_rule_customer_vat" model="ob.ocr.extraction.rule">
+        <field name="name">Customer VAT</field>
+        <field name="document_type_id" ref="ob_ocr_purchase_order_to_sale.document_type_customer_purchase_order"/>
+        <field name="mapping_id" ref="ob_ocr_purchase_order_to_sale.ocr_mapping_customer_purchase_order"/>
+        <field name="target_key">customer_vat</field>
+        <field name="pattern">(?:VAT|Tax ID)\s*:\s*([A-Z0-9.\-\/]+)</field>
+        <field name="flags">IGNORECASE</field>
+    </record>
+    <record id="ocr_rule_customer_po_number" model="ob.ocr.extraction.rule">
+        <field name="name">Customer PO Number</field>
+        <field name="document_type_id" ref="ob_ocr_purchase_order_to_sale.document_type_customer_purchase_order"/>
+        <field name="mapping_id" ref="ob_ocr_purchase_order_to_sale.ocr_mapping_customer_purchase_order"/>
+        <field name="target_key">po_number</field>
+        <field name="pattern">(?:PO|Purchase Order)\s*(?:No\.?|Number)?\s*:\s*([A-Z0-9\/\-]+)</field>
+        <field name="flags">IGNORECASE</field>
+    </record>
+    <record id="ocr_rule_customer_order_date" model="ob.ocr.extraction.rule">
+        <field name="name">Order Date</field>
+        <field name="document_type_id" ref="ob_ocr_purchase_order_to_sale.document_type_customer_purchase_order"/>
+        <field name="mapping_id" ref="ob_ocr_purchase_order_to_sale.ocr_mapping_customer_purchase_order"/>
+        <field name="target_key">order_date</field>
+        <field name="pattern">(?:Order Date|Date)\s*:\s*([0-9.\-\/]+)</field>
+        <field name="flags">IGNORECASE</field>
+    </record>
+    <record id="ocr_rule_customer_currency" model="ob.ocr.extraction.rule">
+        <field name="name">Currency</field>
+        <field name="document_type_id" ref="ob_ocr_purchase_order_to_sale.document_type_customer_purchase_order"/>
+        <field name="mapping_id" ref="ob_ocr_purchase_order_to_sale.ocr_mapping_customer_purchase_order"/>
+        <field name="target_key">currency</field>
+        <field name="pattern">(?:Currency)\s*:\s*([A-Z]{3})</field>
+        <field name="flags">IGNORECASE</field>
+    </record>
+</odoo>

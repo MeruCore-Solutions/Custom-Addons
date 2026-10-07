@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="document_type_generic_document" model="ob.ocr.document.type">
+        <field name="name">Generic Document</field>
+        <field name="code">generic_document</field>
+        <field name="description">Generic OCR document type used as a reusable template and fallback.</field>
+    </record>
+</odoo>

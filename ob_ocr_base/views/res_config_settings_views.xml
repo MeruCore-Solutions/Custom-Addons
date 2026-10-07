@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_res_config_settings_ocr" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.ob.ocr.base</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app string="OCR" data-string="OCR" name="ob_ocr_base" groups="ob_ocr_base.group_ocr_manager">
+                    <block title="OCR Framework" name="ocr_framework_settings">
+                        <setting string="Default OCR Provider" help="Used when a document does not explicitly choose an OCR provider.">
+                            <field name="ocr_default_provider_id"/>
+                            <button type="object" name="action_open_ocr_providers" string="Manage Providers" icon="oi-arrow-right" class="btn-link"/>
+                        </setting>
+                        <setting string="Default OCR Language" help="Fallback language code for OCR, for example eng, deu, fra, ara.">
+                            <field name="ocr_default_language" placeholder="eng"/>
+                        </setting>
+                        <setting string="Auto Detect Language" help="Try to detect the OCR language before text extraction when the provider supports it.">
+                            <field name="ocr_auto_detect_language"/>
+                        </setting>
+                        <setting string="Enable Handwriting OCR" help="Allows handwritten OCR when the selected provider supports it.">
+                            <field name="ocr_enable_handwriting"/>
+                        </setting>
+                        <setting string="Confidence Threshold" help="Below this score the OCR document is still processed but flagged in the audit log for review.">
+                            <field name="ocr_confidence_threshold"/>
+                        </setting>
+                    </block>
+                    <block title="Record Creation" name="ocr_record_creation_settings">
+                        <setting string="Require Manual Review" help="Prevent target record creation until the OCR result is reviewed.">
+                            <field name="ocr_require_manual_review"/>
+                        </setting>
+                        <setting string="Auto Create Target Records" help="Automatically create target records after OCR when manual review is not required.">
+                            <field name="ocr_auto_create_target_records"/>
+                        </setting>
+                        <setting string="Allow Creating Partners" help="Permit OCR flows to create missing customers or vendors.">
+                            <field name="ocr_allow_create_partners"/>
+                        </setting>
+                        <setting string="Allow Creating Products" help="Permit OCR flows to create missing products.">
+                            <field name="ocr_allow_create_products"/>
+                        </setting>
+                    </block>
+                    <block title="Business Automation" name="ocr_automation_settings">
+                        <setting string="Auto Confirm Sale Orders">
+                            <field name="ocr_auto_confirm_sale_orders"/>
+                        </setting>
+                        <setting string="Auto Confirm Purchase Orders">
+                            <field name="ocr_auto_confirm_purchase_orders"/>
+                        </setting>
+                        <setting string="Auto Validate Delivery Orders">
+                            <field name="ocr_auto_validate_delivery_orders"/>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_ocr_settings" model="ir.actions.act_window">
+        <field name="name">Settings</field>
+        <field name="path" eval="False"/>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_id" ref="view_res_config_settings_ocr"/>
+        <field name="view_mode">form</field>
+        <field name="context">{'module': 'ob_ocr_base', 'bin_size': False}</field>
+    </record>
+</odoo>

@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- KPI Definition -->
+    <record id="view_ob_ai_kpi_definition_list" model="ir.ui.view">
+        <field name="name">ob.ai.kpi.definition.list</field>
+        <field name="model">ob.ai.kpi.definition</field>
+        <field name="arch" type="xml">
+            <list string="KPI Definitions">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="category"/>
+                <field name="model_id"/>
+                <field name="field_name"/>
+                <field name="aggregation"/>
+                <field name="unit"/>
+                <field name="active" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ob_ai_kpi_definition_form" model="ir.ui.view">
+        <field name="name">ob.ai.kpi.definition.form</field>
+        <field name="model">ob.ai.kpi.definition</field>
+        <field name="arch" type="xml">
+            <form string="KPI Definition">
+                <sheet>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="category"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group>
+                            <field name="model_id"/>
+                            <field name="field_name"/>
+                            <field name="aggregation"/>
+                            <field name="unit"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                    </group>
+                    <group string="Semantic Matching">
+                        <field name="synonyms" placeholder="monthly revenue, sales total, bookings, ..."/>
+                        <field name="description"/>
+                    </group>
+                    <notebook>
+                        <page string="Metric Formulas" name="formulas">
+                            <field name="formula_ids" mode="list">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="formula_type"/>
+                                    <field name="model_id"/>
+                                    <field name="field_name"/>
+                                    <field name="aggregation"/>
+                                    <field name="active" optional="hide"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Dimensions" name="dimensions">
+                            <field name="dimension_map_ids" widget="many2many_tags"/>
+                        </page>
+                        <page string="Benchmark Series" name="benchmarks">
+                            <field name="benchmark_series_ids" mode="list" readonly="1">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="source_id"/>
+                                    <field name="metric_category"/>
+                                    <field name="latest_value"/>
+                                    <field name="latest_period"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ob_ai_kpi_definition" model="ir.actions.act_window">
+        <field name="name">KPI Definitions</field>
+        <field name="res_model">ob.ai.kpi.definition</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{"search_default_active": 1}</field>
+    </record>
+
+    <!-- Metric Formula standalone view -->
+    <record id="view_ob_ai_metric_formula_form" model="ir.ui.view">
+        <field name="name">ob.ai.metric.formula.form</field>
+        <field name="model">ob.ai.metric.formula</field>
+        <field name="arch" type="xml">
+            <form string="Metric Formula">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="kpi_id"/>
+                            <field name="formula_type"/>
+                            <field name="sequence"/>
+                        </group>
+                        <group>
+                            <field name="model_id" invisible="formula_type not in ('odoo_aggregate','cross_model')"/>
+                            <field name="field_name" invisible="formula_type not in ('odoo_aggregate','cross_model')"/>
+                            <field name="aggregation" invisible="formula_type not in ('odoo_aggregate','cross_model')"/>
+                            <field name="groupby_field" invisible="formula_type != 'odoo_aggregate'"/>
+                            <field name="numerator_kpi_id" invisible="formula_type != 'ratio'"/>
+                            <field name="denominator_kpi_id" invisible="formula_type != 'ratio'"/>
+                            <field name="delta_kpi_id" invisible="formula_type != 'delta'"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                    </group>
+                    <group string="Domain Filter" invisible="formula_type not in ('odoo_aggregate','cross_model')">
+                        <field name="domain_json" widget="char" placeholder='[["state","=","sale"]]'/>
+                        <field name="condition_json" widget="char"/>
+                    </group>
+                    <group string="Custom Expression" invisible="formula_type != 'custom_expression'">
+                        <field name="custom_expression" widget="text"/>
+                    </group>
+                    <group string="Notes">
+                        <field name="notes"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Dimension Map -->
+    <record id="view_ob_ai_dimension_map_list" model="ir.ui.view">
+        <field name="name">ob.ai.dimension.map.list</field>
+        <field name="model">ob.ai.dimension.map</field>
+        <field name="arch" type="xml">
+            <list string="Dimension Maps">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="dimension_type"/>
+                <field name="model_id"/>
+                <field name="field_name"/>
+                <field name="groupby_expression"/>
+                <field name="active" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ob_ai_dimension_map_form" model="ir.ui.view">
+        <field name="name">ob.ai.dimension.map.form</field>
+        <field name="model">ob.ai.dimension.map</field>
+        <field name="arch" type="xml">
+            <form string="Dimension Map">
+                <sheet>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="dimension_type"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="model_id"/>
+                            <field name="field_name"/>
+                            <field name="groupby_expression"/>
+                        </group>
+                    </group>
+                    <group string="Value Labels (JSON)">
+                        <field name="value_map_json" widget="text" placeholder='{"draft": "Quotation", "sale": "Confirmed Order"}'/>
+                    </group>
+                    <group string="Applicable KPIs">
+                        <field name="kpi_ids" widget="many2many_tags"/>
+                    </group>
+                    <group string="Description">
+                        <field name="description"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ob_ai_dimension_map" model="ir.actions.act_window">
+        <field name="name">Dimension Maps</field>
+        <field name="res_model">ob.ai.dimension.map</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Model Relationship -->
+    <record id="view_ob_ai_model_relationship_list" model="ir.ui.view">
+        <field name="name">ob.ai.model.relationship.list</field>
+        <field name="model">ob.ai.model.relationship</field>
+        <field name="arch" type="xml">
+            <list string="Model Relationships">
+                <field name="name"/>
+                <field name="source_model_id"/>
+                <field name="relationship_type"/>
+                <field name="target_model_id"/>
+                <field name="source_field_name"/>
+                <field name="is_primary"/>
+                <field name="active" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ob_ai_model_relationship_form" model="ir.ui.view">
+        <field name="name">ob.ai.model.relationship.form</field>
+        <field name="model">ob.ai.model.relationship</field>
+        <field name="arch" type="xml">
+            <form string="Model Relationship">
+                <sheet>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="relationship_type"/>
+                            <field name="is_primary"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="source_model_id"/>
+                            <field name="source_field_name"/>
+                            <field name="target_model_id"/>
+                            <field name="target_field_name"/>
+                        </group>
+                    </group>
+                    <group string="Join Path (JSON)" invisible="relationship_type != 'aggregation'">
+                        <field name="join_path" widget="text"/>
+                    </group>
+                    <group string="Business Meaning">
+                        <field name="business_meaning"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ob_ai_model_relationship" model="ir.actions.act_window">
+        <field name="name">Model Relationships</field>
+        <field name="res_model">ob.ai.model.relationship</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_ob_ocr_provider_search" model="ir.ui.view">
+        <field name="name">ob.ocr.provider.search</field>
+        <field name="model">ob.ocr.provider</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="provider_key"/>
+                <field name="company_id"/>
+                <filter string="Default" name="default_provider" domain="[('is_default', '=', True)]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_ob_ocr_provider_tree" model="ir.ui.view">
+        <field name="name">ob.ocr.provider.tree</field>
+        <field name="model">ob.ocr.provider</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="provider_key"/>
+                <field name="is_default"/>
+                <field name="handwriting_supported"/>
+                <field name="store_processed_images"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ob_ocr_provider_form" model="ir.ui.view">
+        <field name="name">ob.ocr.provider.form</field>
+        <field name="model">ob.ocr.provider</field>
+        <field name="arch" type="xml">
+            <form string="OCR Provider">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="provider_key"/>
+                            <field name="service_model"/>
+                        </group>
+                        <group>
+                            <field name="sequence"/>
+                            <field name="is_default"/>
+                            <field name="handwriting_supported"/>
+                            <field name="store_processed_images"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="allowed_mimetypes"/>
+                        <field name="config_json_text" widget="text"/>
+                        <field name="note" widget="text"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ob_ocr_provider" model="ir.actions.act_window">
+        <field name="name">OCR Providers</field>
+        <field name="res_model">ob.ocr.provider</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="ob_ocr_base.view_ob_ocr_provider_search"/>
+    </record>
+</odoo>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_ob_ai_model_semantic_list" model="ir.ui.view">
+        <field name="name">ob.ai.model.semantic.list</field>
+        <field name="model">ob.ai.model.semantic</field>
+        <field name="arch" type="xml">
+            <list default_order="sequence, id">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="allowed_model_id"/>
+                <field name="model_id"/>
+                <field name="semantic_role"/>
+                <field name="generic_query_enabled"/>
+                <field name="allow_cross_model"/>
+                <field name="schema_version_id"/>
+                <field name="auto_generated"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ob_ai_model_semantic_form" model="ir.ui.view">
+        <field name="name">ob.ai.model.semantic.form</field>
+        <field name="model">ob.ai.model.semantic</field>
+        <field name="arch" type="xml">
+            <form string="AI Model Semantic">
+                <header>
+                    <button name="action_sync_from_schema" type="object" string="Sync From Schema" class="oe_highlight"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="sequence"/>
+                            <field name="active"/>
+                            <field name="auto_generated"/>
+                            <field name="allowed_model_id"/>
+                            <field name="model_id" readonly="1"/>
+                            <field name="schema_version_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="semantic_role"/>
+                            <field name="business_label"/>
+                            <field name="generic_query_enabled"/>
+                            <field name="allow_cross_model"/>
+                            <field name="default_sort_field"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Semantic Fields">
+                            <group>
+                                <group>
+                                    <field name="title_field_names"/>
+                                    <field name="state_field_names"/>
+                                    <field name="stage_field_names"/>
+                                    <field name="amount_field_names"/>
+                                    <field name="currency_field_names"/>
+                                    <field name="primary_date_field_names"/>
+                                    <field name="due_date_field_names"/>
+                                </group>
+                                <group>
+                                    <field name="owner_field_names"/>
+                                    <field name="partner_field_names"/>
+                                    <field name="priority_field_names"/>
+                                    <field name="probability_field_names"/>
+                                    <field name="description_field_names"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="State Meaning">
+                            <group>
+                                <field name="open_state_values"/>
+                                <field name="closed_state_values"/>
+                                <field name="inactive_state_values"/>
+                            </group>
+                        </page>
+                        <page string="Hints">
+                            <group>
+                                <field name="semantic_hints"/>
+                                <field name="example_queries"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ob_ai_model_semantic" model="ir.actions.act_window">
+        <field name="name">Model Semantics</field>
+        <field name="res_model">ob.ai.model.semantic</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

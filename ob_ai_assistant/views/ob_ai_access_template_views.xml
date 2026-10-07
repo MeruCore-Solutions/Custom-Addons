@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_ob_ai_access_template_list" model="ir.ui.view">
+        <field name="name">ob.ai.access.template.list</field>
+        <field name="model">ob.ai.access.template</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="user_ids" widget="many2many_tags"/>
+                <field name="model_count"/>
+                <field name="active_line_count"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ob_ai_access_template_form" model="ir.ui.view">
+        <field name="name">ob.ai.access.template.form</field>
+        <field name="model">ob.ai.access.template</field>
+        <field name="arch" type="xml">
+            <form string="AI Access Template">
+                <header>
+                    <button name="action_sync_model_lines" type="object" string="Load Missing Models" class="oe_highlight"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="Sales Manager Policy"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="sequence"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="active"/>
+                            <field name="allow_full_access"/>
+                        </group>
+                        <group>
+                            <field name="user_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                            <field name="model_count" readonly="1"/>
+                            <field name="active_line_count" readonly="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="description" placeholder="Describe which business users should use this template and how the AI scope is reduced."/>
+                    </group>
+                    <notebook>
+                        <page string="Model Policies">
+                            <field name="line_ids" nolabel="1">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="active"/>
+                                    <field name="allowed_model_id"/>
+                                    <field name="model_id"/>
+                                    <field name="max_record_count"/>
+                                    <field name="search_limit"/>
+                                    <field name="allow_document_context"/>
+                                    <field name="allow_dashboard_generation"/>
+                                    <field name="allow_validation"/>
+                                    <field name="allow_activity_creation"/>
+                                    <field name="allow_reminder_creation"/>
+                                    <field name="allow_chatter_posting"/>
+                                    <field name="require_human_approval"/>
+                                </list>
+                                <form string="Access Policy">
+                                    <header>
+                                        <button name="action_reset_from_allowed_model" type="object" string="Reset From Base Model" class="oe_highlight"/>
+                                    </header>
+                                    <sheet>
+                                        <group>
+                                            <group>
+                                                <field name="sequence"/>
+                                                <field name="active"/>
+                                                <field name="allowed_model_id"/>
+                                                <field name="model_id" readonly="1"/>
+                                            </group>
+                                            <group>
+                                                <field name="max_record_count"/>
+                                                <field name="search_limit"/>
+                                                <field name="default_order"/>
+                                                <field name="sensitivity_level"/>
+                                                <field name="require_human_approval"/>
+                                            </group>
+                                        </group>
+                                        <div class="alert alert-info" role="status" invisible="not parent.allow_full_access">
+                                            Admin full access is enabled on this template. These line settings stay available for documentation, but assigned users will receive unrestricted field access across all active AI models.
+                                        </div>
+                                        <notebook>
+                                            <page string="Field Access">
+                                                <group>
+                                                    <field name="allowed_field_ids" widget="many2many_tags" placeholder="Restrict the fields the AI may see for this template"/>
+                                                    <field name="blocked_field_ids" widget="many2many_tags" placeholder="Force-hide sensitive fields"/>
+                                                </group>
+                                            </page>
+                                            <page string="Routing">
+                                                <group>
+                                                    <field name="reference_field_names" placeholder="name,origin"/>
+                                                    <field name="name_field_names" placeholder="name,display_name"/>
+                                                    <field name="date_field_names" placeholder="scheduled_date,date_deadline"/>
+                                                </group>
+                                            </page>
+                                            <page string="Capabilities">
+                                                <group>
+                                                    <group>
+                                                        <field name="allow_document_context"/>
+                                                        <field name="allow_dashboard_generation"/>
+                                                        <field name="allow_validation"/>
+                                                    </group>
+                                                    <group>
+                                                        <field name="allow_chatter_posting"/>
+                                                        <field name="allow_activity_creation"/>
+                                                        <field name="allow_reminder_creation"/>
+                                                    </group>
+                                                </group>
+                                            </page>
+                                        </notebook>
+                                    </sheet>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ob_ai_access_template" model="ir.actions.act_window">
+        <field name="name">Access Templates</field>
+        <field name="res_model">ob.ai.access.template</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

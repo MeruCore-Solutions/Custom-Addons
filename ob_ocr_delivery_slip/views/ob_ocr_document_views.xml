@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_ob_ocr_document_search_delivery_slip" model="ir.ui.view">
+        <field name="name">ob.ocr.document.search.delivery.slip</field>
+        <field name="model">ob.ocr.document</field>
+        <field name="inherit_id" ref="ob_ocr_base.view_ob_ocr_document_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <filter string="Delivery Slips" name="delivery_slip" domain="[('document_type', '=', 'delivery_slip')]"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

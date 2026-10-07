@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_ob_ai_provider_list" model="ir.ui.view">
+        <field name="name">ob.ai.provider.list</field>
+        <field name="model">ob.ai.provider</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="provider_type"/>
+                <field name="default_model_id"/>
+                <field name="api_key_configured"/>
+                <field name="timeout_seconds"/>
+                <field name="max_retries"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ob_ai_provider_form" model="ir.ui.view">
+        <field name="name">ob.ai.provider.form</field>
+        <field name="model">ob.ai.provider</field>
+        <field name="arch" type="xml">
+            <form string="AI Provider">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="provider_type"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group>
+                            <field name="endpoint_url"/>
+                            <field name="default_model_id" domain="[('provider_id', '=', id)]"/>
+                            <field name="api_key_parameter"/>
+                            <field name="api_key_configured" readonly="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="timeout_seconds"/>
+                            <field name="max_retries"/>
+                        </group>
+                        <group>
+                            <field name="temperature"/>
+                            <field name="max_output_tokens"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Models">
+                            <field name="model_ids" context="{'default_provider_id': id}">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="model_key"/>
+                                    <field name="max_output_tokens"/>
+                                    <field name="supports_vision"/>
+                                    <field name="active"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Notes">
+                            <field name="note" nolabel="1" placeholder="Provider-specific notes, governance guidance, or endpoint details."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_ob_ai_model_list" model="ir.ui.view">
+        <field name="name">ob.ai.model.list</field>
+        <field name="model">ob.ai.model</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="provider_id"/>
+                <field name="model_key"/>
+                <field name="max_output_tokens"/>
+                <field name="supports_vision"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ob_ai_model_form" model="ir.ui.view">
+        <field name="name">ob.ai.model.form</field>
+        <field name="model">ob.ai.model</field>
+        <field name="arch" type="xml">
+            <form string="AI Model">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="provider_id"/>
+                            <field name="model_key"/>
+                        </group>
+                        <group>
+                            <field name="sequence"/>
+                            <field name="max_output_tokens"/>
+                            <field name="supports_vision"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <field name="note" placeholder="Optional notes about pricing, latency, or use cases."/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ob_ai_provider" model="ir.actions.act_window">
+        <field name="name">AI Providers</field>
+        <field name="res_model">ob.ai.provider</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_ob_ai_model" model="ir.actions.act_window">
+        <field name="name">AI Models</field>
+        <field name="res_model">ob.ai.model</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

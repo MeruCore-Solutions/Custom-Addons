@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_ob_ocr_feedback_example_user,ob.ocr.feedback.example.user,model_ob_ocr_feedback_example,ob_ocr_base.group_ocr_user,1,0,0,0
+access_ob_ocr_feedback_example_manager,ob.ocr.feedback.example.manager,model_ob_ocr_feedback_example,ob_ocr_base.group_ocr_manager,1,1,1,1

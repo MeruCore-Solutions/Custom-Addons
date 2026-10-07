@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="document_type_supplier_quotation" model="ob.ocr.document.type">
+        <field name="name">Supplier Quotation</field>
+        <field name="code">supplier_quotation</field>
+        <field name="description">Supplier quotations that become RFQs or purchase orders.</field>
+        <field name="target_model">purchase.order</field>
+        <field name="handler_model">ob.ocr.document</field>
+        <field name="prepare_method_name">_prepare_supplier_quotation_values</field>
+        <field name="create_method_name">_create_supplier_quotation_purchase_record</field>
+        <field name="update_method_name">_update_supplier_quotation_purchase_record</field>
+    </record>
+</odoo>

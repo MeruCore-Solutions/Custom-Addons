@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <function model="ir.config_parameter" name="setdefault_param" eval="('ob_ai_assistant.enabled', 'True')"/>
+        <function model="ir.config_parameter" name="setdefault_param" eval="('ob_ai_assistant.default_provider_id', ref('ob_ai_assistant.ob_ai_provider_openai'))"/>
+        <function model="ir.config_parameter" name="setdefault_param" eval="('ob_ai_assistant.default_model_id', ref('ob_ai_assistant.ob_ai_model_openai_gpt54mini'))"/>
+        <function model="ir.config_parameter" name="setdefault_param" eval="('ob_ai_assistant.request_timeout', '60')"/>
+        <function model="ir.config_parameter" name="setdefault_param" eval="('ob_ai_assistant.max_retries', '1')"/>
+        <function model="ir.config_parameter" name="setdefault_param" eval="('ob_ai_assistant.store_raw_payload', 'True')"/>
+        <function model="ir.config_parameter" name="setdefault_param" eval="('ob_ai_assistant.shared_data_retention_days', '1095')"/>
+        <function model="ir.config_parameter" name="setdefault_param" eval="('ob_ai_assistant.document_extract_max_chars', '20000')"/>
+        <function model="ir.config_parameter" name="setdefault_param" eval="('ob_ai_assistant.document_extract_max_rows', '500')"/>
+        <function model="ir.config_parameter" name="setdefault_param" eval="('ob_ai_assistant.document_extract_max_tables', '5')"/>
+        <function model="ir.config_parameter" name="setdefault_param" eval="('ob_ai_assistant.generic_engine_enabled', 'True')"/>
+        <function model="ir.config_parameter" name="setdefault_param" eval="('ob_ai_assistant.true_ai_orchestration_enabled', 'True')"/>
+        <function model="ir.config_parameter" name="setdefault_param" eval="('ob_ai_assistant.orchestrator_force_for_all', 'True')"/>
+        <function model="ir.config_parameter" name="setdefault_param" eval="('ob_ai_assistant.orchestrator_force_for_admin', 'True')"/>
+        <function model="ir.config_parameter" name="setdefault_param" eval="('ob_ai_assistant.admin_global_scope_enabled', 'True')"/>
+        <function model="ir.config_parameter" name="setdefault_param" eval="('ob_ai_assistant.schema_auto_refresh_enabled', 'True')"/>
+        <function model="ir.config_parameter" name="setdefault_param" eval="('ob_ai_assistant.semantic_auto_sync_enabled', 'True')"/>
+        <function model="ir.config_parameter" name="setdefault_param" eval="('ob_ai_assistant.orchestrator_max_iterations', '2')"/>
+        <function model="ir.config_parameter" name="setdefault_param" eval="('ob_ai_assistant.orchestrator_max_tools', '12')"/>
+        <function model="ir.config_parameter" name="setdefault_param" eval="('ob_ai_assistant.request_token_ttl_minutes', '15')"/>
+        <function model="ir.config_parameter" name="setdefault_param" eval="('ob_ai_assistant.gateway_enabled', 'True')"/>
+        <function model="ir.config_parameter" name="setdefault_param" eval="('ob_ai_assistant.gateway_require_signature', 'True')"/>
+        <function model="ir.config_parameter" name="setdefault_param" eval="('ob_ai_assistant.gateway_max_clock_skew_seconds', '180')"/>
+        <function model="ir.config_parameter" name="setdefault_param" eval="('ob_ai_assistant.gateway_allow_action_scope', 'True')"/>
+        <function model="ir.config_parameter" name="setdefault_param" eval="('ob_ai_assistant.gateway_action_scope_admin_only', 'True')"/>
+        <function model="ir.config_parameter" name="setdefault_param" eval="('ob_ai_assistant.gateway_auto_action_scope', 'True')"/>
+        <function model="ir.config_parameter" name="setdefault_param" eval="('ob_ai_assistant.max_investigation_steps', '3')"/>
+        <function model="ir.config_parameter" name="setdefault_param" eval="('ob_ai_assistant.max_models_per_request', '6')"/>
+        <function model="ir.config_parameter" name="setdefault_param" eval="('ob_ai_assistant.max_records_per_fetch', '25')"/>
+        <function model="ir.config_parameter" name="setdefault_param" eval="('ob_ai_assistant.schema_snapshot_retention', '5')"/>
+        <function model="ir.config_parameter" name="setdefault_param" eval="('ob_ai_assistant.schema_max_age_hours', '24')"/>
+        <!-- Agent-first solver loop config -->
+        <function model="ir.config_parameter" name="setdefault_param" eval="('ob_ai_assistant.solver_enabled', 'True')"/>
+        <function model="ir.config_parameter" name="setdefault_param" eval="('ob_ai_assistant.solver_max_steps', '15')"/>
+        <function model="ir.config_parameter" name="setdefault_param" eval="('ob_ai_assistant.solver_max_tokens', '8000')"/>
+        <function model="ir.config_parameter" name="setdefault_param" eval="('ob_ai_assistant.solver_timeout_seconds', '120')"/>
+        <function model="ir.config_parameter" name="setdefault_param" eval="('ob_ai_assistant.solver_reflect_enabled', 'True')"/>
+        <function model="ir.config_parameter" name="setdefault_param" eval="('ob_ai_assistant.solver_stream_commits', 'True')"/>
+    </data>
+</odoo>

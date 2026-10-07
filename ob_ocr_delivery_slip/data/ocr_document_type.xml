@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="document_type_delivery_slip" model="ob.ocr.document.type">
+        <field name="name">Delivery Slip</field>
+        <field name="code">delivery_slip</field>
+        <field name="description">Delivery slips that create or update stock pickings.</field>
+        <field name="target_model">stock.picking</field>
+        <field name="handler_model">ob.ocr.document</field>
+        <field name="prepare_method_name">_prepare_delivery_slip_values</field>
+        <field name="create_method_name">_create_delivery_slip_record</field>
+        <field name="update_method_name">_update_delivery_slip_record</field>
+    </record>
+</odoo>

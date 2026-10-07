@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ir_cron_ob_ai_retention_cleanup" model="ir.cron">
+        <field name="name">AI Assistant Retention Cleanup</field>
+        <field name="model_id" ref="model_ob_ai_audit_log"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_apply_retention_policies()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="active">True</field>
+        <field name="user_id" ref="base.user_root"/>
+    </record>
+
+    <record id="ir_cron_ob_ai_due_reminders" model="ir.cron">
+        <field name="name">AI Assistant Due Reminders</field>
+        <field name="model_id" ref="model_ob_ai_reminder"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_process_due_reminders()</field>
+        <field name="interval_number">15</field>
+        <field name="interval_type">minutes</field>
+        <field name="active">True</field>
+        <field name="user_id" ref="base.user_root"/>
+    </record>
+
+    <record id="ir_cron_ob_ai_schema_refresh" model="ir.cron">
+        <field name="name">AI Assistant Schema Refresh</field>
+        <field name="model_id" ref="model_ob_ai_schema_version"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_refresh_schema_registry()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="active">True</field>
+        <field name="user_id" ref="base.user_root"/>
+    </record>
+
+    <record id="ir_cron_ob_ai_request_token_cleanup" model="ir.cron">
+        <field name="name">AI Assistant Token Cleanup</field>
+        <field name="model_id" ref="model_ob_ai_request_token"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_cleanup_expired_tokens()</field>
+        <field name="interval_number">30</field>
+        <field name="interval_type">minutes</field>
+        <field name="active">True</field>
+        <field name="user_id" ref="base.user_root"/>
+    </record>
+
+    <record id="ir_cron_ob_ai_benchmark_sync" model="ir.cron">
+        <field name="name">AI Assistant Benchmark Sync</field>
+        <field name="model_id" ref="model_ob_ai_benchmark_source"/>
+        <field name="state">code</field>
+        <field name="code">env['ob.ai.benchmark.service'].sync_all_due()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="active">True</field>
+        <field name="user_id" ref="base.user_root"/>
+    </record>
+</odoo>

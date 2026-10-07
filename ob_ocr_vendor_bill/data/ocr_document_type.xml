@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="document_type_vendor_bill" model="ob.ocr.document.type">
+        <field name="name">Vendor Bill</field>
+        <field name="code">vendor_bill</field>
+        <field name="description">Vendor invoices and supplier bills that create draft account moves.</field>
+        <field name="target_model">account.move</field>
+        <field name="handler_model">ob.ocr.document</field>
+        <field name="prepare_method_name">_prepare_vendor_bill_values</field>
+        <field name="create_method_name">_create_vendor_bill_record</field>
+        <field name="update_method_name">_update_vendor_bill_record</field>
+    </record>
+</odoo>

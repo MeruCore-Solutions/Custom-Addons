@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_ob_ocr_feedback_example_search" model="ir.ui.view">
+        <field name="name">ob.ocr.feedback.example.search</field>
+        <field name="model">ob.ocr.feedback.example</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="partner_name"/>
+                <field name="reference_text"/>
+                <field name="document_type_id"/>
+                <field name="provider_id"/>
+                <field name="language"/>
+                <field name="company_id"/>
+                <filter string="Active" name="active_examples" domain="[('active', '=', True)]"/>
+                <group>
+                    <filter string="Document Type" name="group_document_type" context="{'group_by': 'document_type_id'}"/>
+                    <filter string="Provider" name="group_provider" context="{'group_by': 'provider_id'}"/>
+                    <filter string="Language" name="group_language" context="{'group_by': 'language'}"/>
+                    <filter string="Company" name="group_company" context="{'group_by': 'company_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_ob_ocr_feedback_example_tree" model="ir.ui.view">
+        <field name="name">ob.ocr.feedback.example.tree</field>
+        <field name="model">ob.ocr.feedback.example</field>
+        <field name="arch" type="xml">
+            <list default_order="last_used_date desc, write_date desc">
+                <field name="name"/>
+                <field name="document_type_id"/>
+                <field name="partner_name"/>
+                <field name="reference_text"/>
+                <field name="language"/>
+                <field name="provider_id"/>
+                <field name="use_count"/>
+                <field name="last_used_date"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ob_ocr_feedback_example_form" model="ir.ui.view">
+        <field name="name">ob.ocr.feedback.example.form</field>
+        <field name="model">ob.ocr.feedback.example</field>
+        <field name="arch" type="xml">
+            <form string="AI Feedback Example">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="document_type_id"/>
+                            <field name="provider_id"/>
+                            <field name="document_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group>
+                            <field name="language"/>
+                            <field name="partner_name"/>
+                            <field name="reference_text"/>
+                            <field name="use_count" readonly="1"/>
+                            <field name="last_used_date" readonly="1"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="related_model" readonly="1"/>
+                        <field name="related_res_id" readonly="1"/>
+                        <field name="note" widget="text"/>
+                    </group>
+                    <notebook>
+                        <page string="Raw Text">
+                            <field name="raw_text" nolabel="1" widget="text"/>
+                        </page>
+                        <page string="JSON">
+                            <field name="extracted_json_text" nolabel="1" widget="text"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ob_ocr_feedback_example" model="ir.actions.act_window">
+        <field name="name">AI Feedback Examples</field>
+        <field name="res_model">ob.ocr.feedback.example</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="ob_ocr_ai_local.view_ob_ocr_feedback_example_search"/>
+    </record>
+
+    <menuitem
+        id="menu_ocr_ai_feedback_examples"
+        name="AI Feedback Examples"
+        parent="ob_ocr_base.menu_ocr_configuration"
+        sequence="70"
+        action="ob_ocr_ai_local.action_ob_ocr_feedback_example"
+        groups="ob_ocr_base.group_ocr_manager"/>
+</odoo>

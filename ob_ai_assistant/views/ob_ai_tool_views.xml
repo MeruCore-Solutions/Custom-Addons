@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tool -->
+    <record id="view_ob_ai_tool_list" model="ir.ui.view">
+        <field name="name">ob.ai.tool.list</field>
+        <field name="model">ob.ai.tool</field>
+        <field name="arch" type="xml">
+            <list string="AI Tools" default_order="category, sequence">
+                <field name="sequence" widget="handle"/>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="category"/>
+                <field name="handler_method"/>
+                <field name="requires_approval"/>
+                <field name="audit_level"/>
+                <field name="active" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ob_ai_tool_form" model="ir.ui.view">
+        <field name="name">ob.ai.tool.form</field>
+        <field name="model">ob.ai.tool</field>
+        <field name="arch" type="xml">
+            <form string="AI Tool">
+                <sheet>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="category"/>
+                            <field name="sequence"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="handler_method"/>
+                            <field name="requires_approval"/>
+                            <field name="auto_approve_for_admin" invisible="not requires_approval"/>
+                            <field name="max_per_session"/>
+                            <field name="timeout_seconds"/>
+                            <field name="audit_level"/>
+                        </group>
+                    </group>
+                    <group string="Description (shown to the LLM)">
+                        <field name="description" nolabel="1" widget="text"/>
+                    </group>
+                    <notebook>
+                        <page string="Parameters (JSON Schema)" name="schema">
+                            <field name="parameters_schema" widget="text" nolabel="1"/>
+                        </page>
+                        <page string="Required Groups" name="groups">
+                            <field name="required_group_ids" widget="many2many_tags"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ob_ai_tool" model="ir.actions.act_window">
+        <field name="name">AI Tools</field>
+        <field name="res_model">ob.ai.tool</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Tool Call audit -->
+    <record id="view_ob_ai_tool_call_list" model="ir.ui.view">
+        <field name="name">ob.ai.tool.call.list</field>
+        <field name="model">ob.ai.tool.call</field>
+        <field name="arch" type="xml">
+            <list string="Tool Calls" default_order="create_date desc">
+                <field name="create_date"/>
+                <field name="tool_code"/>
+                <field name="conversation_id"/>
+                <field name="user_id"/>
+                <field name="status" decoration-success="status == 'success'" decoration-danger="status in ('error','timeout','rejected')" decoration-warning="status == 'pending_approval'"/>
+                <field name="latency_ms"/>
+                <field name="truncated" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ob_ai_tool_call_form" model="ir.ui.view">
+        <field name="name">ob.ai.tool.call.form</field>
+        <field name="model">ob.ai.tool.call</field>
+        <field name="arch" type="xml">
+            <form string="Tool Call" create="false" edit="false">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="tool_code"/>
+                            <field name="tool_id"/>
+                            <field name="status"/>
+                            <field name="latency_ms"/>
+                            <field name="create_date"/>
+                        </group>
+                        <group>
+                            <field name="conversation_id"/>
+                            <field name="session_id"/>
+                            <field name="step_id"/>
+                            <field name="user_id"/>
+                            <field name="approval_id" invisible="not approval_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Arguments"><field name="arguments_json" widget="text" readonly="1"/></page>
+                        <page string="Result"><field name="result_json" widget="text" readonly="1"/></page>
+                        <page string="Error" invisible="status not in ('error','timeout')"><field name="error_message" readonly="1"/></page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ob_ai_tool_call" model="ir.actions.act_window">
+        <field name="name">Tool Calls (Audit)</field>
+        <field name="res_model">ob.ai.tool.call</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Agent Session -->
+    <record id="view_ob_ai_agent_session_list" model="ir.ui.view">
+        <field name="name">ob.ai.agent.session.list</field>
+        <field name="model">ob.ai.agent.session</field>
+        <field name="arch" type="xml">
+            <list string="Agent Sessions" default_order="create_date desc">
+                <field name="create_date"/>
+                <field name="conversation_id"/>
+                <field name="user_id"/>
+                <field name="status" decoration-success="status == 'done'" decoration-danger="status == 'failed'" decoration-info="status in ('planning','running')"/>
+                <field name="step_count"/>
+                <field name="tool_call_count"/>
+                <field name="total_input_tokens"/>
+                <field name="total_output_tokens"/>
+                <field name="total_latency_ms"/>
+                <field name="stop_reason"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ob_ai_agent_session_form" model="ir.ui.view">
+        <field name="name">ob.ai.agent.session.form</field>
+        <field name="model">ob.ai.agent.session</field>
+        <field name="arch" type="xml">
+            <form string="Agent Session" create="false" edit="false">
+                <header>
+                    <field name="status" widget="statusbar" statusbar_visible="pending,planning,running,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="conversation_id"/>
+                            <field name="user_id"/>
+                            <field name="provider_id"/>
+                            <field name="model_id"/>
+                            <field name="stop_reason"/>
+                        </group>
+                        <group>
+                            <field name="step_count"/>
+                            <field name="tool_call_count"/>
+                            <field name="total_input_tokens"/>
+                            <field name="total_output_tokens"/>
+                            <field name="total_latency_ms"/>
+                            <field name="max_steps"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="User Prompt"><field name="user_prompt" readonly="1"/></page>
+                        <page string="Final Answer"><field name="final_answer" widget="text" readonly="1"/></page>
+                        <page string="Steps">
+                            <field name="step_ids" readonly="1">
+                                <list>
+                                    <field name="sequence"/>
+                                    <field name="step_type"/>
+                                    <field name="status"/>
+                                    <field name="tool_call_count"/>
+                                    <field name="input_tokens"/>
+                                    <field name="output_tokens"/>
+                                    <field name="latency_ms"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Reasoning Trace (JSON)"><field name="reasoning_trace" widget="text" readonly="1"/></page>
+                        <page string="Error" invisible="status != 'failed'"><field name="error_message" readonly="1"/></page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ob_ai_agent_session" model="ir.actions.act_window">
+        <field name="name">Agent Sessions</field>
+        <field name="res_model">ob.ai.agent.session</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Agent Step (drill-down) -->
+    <record id="view_ob_ai_agent_step_form" model="ir.ui.view">
+        <field name="name">ob.ai.agent.step.form</field>
+        <field name="model">ob.ai.agent.step</field>
+        <field name="arch" type="xml">
+            <form string="Agent Step" create="false" edit="false">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="session_id"/>
+                            <field name="sequence"/>
+                            <field name="step_type"/>
+                            <field name="status"/>
+                        </group>
+                        <group>
+                            <field name="input_tokens"/>
+                            <field name="output_tokens"/>
+                            <field name="latency_ms"/>
+                            <field name="tool_call_count"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Reasoning"><field name="reasoning_text" widget="text" readonly="1"/></page>
+                        <page string="Tool Calls">
+                            <field name="tool_call_ids" readonly="1">
+                                <list>
+                                    <field name="tool_code"/>
+                                    <field name="status"/>
+                                    <field name="latency_ms"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Raw Message"><field name="raw_message_json" widget="text" readonly="1"/></page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

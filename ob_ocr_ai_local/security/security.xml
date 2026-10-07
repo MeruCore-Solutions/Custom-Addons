@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="rule_ob_ocr_feedback_example_company" model="ir.rule">
+        <field name="name">OCR AI Feedback Examples by Company</field>
+        <field name="model_id" ref="model_ob_ocr_feedback_example"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('ob_ocr_base.group_ocr_user'))]"/>
+    </record>
+</odoo>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_ob_ai_investigation_trace_list" model="ir.ui.view">
+        <field name="name">ob.ai.investigation.trace.list</field>
+        <field name="model">ob.ai.investigation.trace</field>
+        <field name="arch" type="xml">
+            <list default_order="create_date desc">
+                <field name="create_date"/>
+                <field name="name"/>
+                <field name="conversation_id"/>
+                <field name="user_id"/>
+                <field name="operation_type"/>
+                <field name="status"/>
+                <field name="semantic_ids" widget="many2many_tags"/>
+                <field name="step_count"/>
+                <field name="schema_version_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ob_ai_investigation_trace_form" model="ir.ui.view">
+        <field name="name">ob.ai.investigation.trace.form</field>
+        <field name="model">ob.ai.investigation.trace</field>
+        <field name="arch" type="xml">
+            <form string="AI Investigation Trace">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="conversation_id"/>
+                            <field name="audit_log_id"/>
+                            <field name="parent_trace_id"/>
+                            <field name="user_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="request_token_id"/>
+                            <field name="schema_version_id"/>
+                        </group>
+                        <group>
+                            <field name="operation_type"/>
+                            <field name="status"/>
+                            <field name="date_scope"/>
+                            <field name="state_scope"/>
+                            <field name="step_count"/>
+                            <field name="semantic_ids" widget="many2many_tags"/>
+                            <field name="allowed_model_ids" widget="many2many_tags"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="prompt"/>
+                        <field name="normalized_prompt"/>
+                    </group>
+                    <notebook>
+                        <page string="Steps">
+                            <field name="steps_json"/>
+                        </page>
+                        <page string="Results">
+                            <group>
+                                <field name="selected_record_refs"/>
+                                <field name="final_summary"/>
+                                <field name="last_error"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ob_ai_investigation_trace" model="ir.actions.act_window">
+        <field name="name">Investigation Traces</field>
+        <field name="res_model">ob.ai.investigation.trace</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

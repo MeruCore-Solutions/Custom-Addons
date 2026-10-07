@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_ob_ocr_mapping_search" model="ir.ui.view">
+        <field name="name">ob.ocr.mapping.search</field>
+        <field name="model">ob.ocr.mapping</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="document_type_id"/>
+                <field name="provider_id"/>
+                <field name="target_model"/>
+                <field name="company_id"/>
+                <filter string="Active" name="active" domain="[('active', '=', True)]"/>
+                <group>
+                    <filter string="Document Type" name="group_type" context="{'group_by': 'document_type_id'}"/>
+                    <filter string="Provider" name="group_provider" context="{'group_by': 'provider_id'}"/>
+                    <filter string="Company" name="group_company" context="{'group_by': 'company_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_ob_ocr_mapping_tree" model="ir.ui.view">
+        <field name="name">ob.ocr.mapping.tree</field>
+        <field name="model">ob.ocr.mapping</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="document_type_id"/>
+                <field name="provider_id"/>
+                <field name="target_model"/>
+                <field name="extraction_mode"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ob_ocr_mapping_form" model="ir.ui.view">
+        <field name="name">ob.ocr.mapping.form</field>
+        <field name="model">ob.ocr.mapping</field>
+        <field name="arch" type="xml">
+            <form string="OCR Mapping">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="document_type_id"/>
+                            <field name="provider_id"/>
+                            <field name="target_model"/>
+                        </group>
+                        <group>
+                            <field name="sequence"/>
+                            <field name="extraction_mode"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="description" widget="text"/>
+                    </group>
+                    <notebook>
+                        <page string="Schema">
+                            <field name="schema_json_text" widget="text" nolabel="1"/>
+                        </page>
+                        <page string="Field Mapping">
+                            <field name="field_ids" nolabel="1">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="source_key"/>
+                                    <field name="target_field"/>
+                                    <field name="transform_type"/>
+                                    <field name="required"/>
+                                    <field name="is_line_field"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Extraction Rules">
+                            <field name="rule_ids" nolabel="1">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="target_key"/>
+                                    <field name="rule_type"/>
+                                    <field name="is_line_rule"/>
+                                    <field name="provider_id"/>
+                                    <field name="flags"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_ob_ocr_document_type_tree" model="ir.ui.view">
+        <field name="name">ob.ocr.document.type.tree</field>
+        <field name="model">ob.ocr.document.type</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="target_model"/>
+                <field name="handler_model"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="document_count"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ob_ocr_document_type_form" model="ir.ui.view">
+        <field name="name">ob.ocr.document.type.form</field>
+        <field name="model">ob.ocr.document.type</field>
+        <field name="arch" type="xml">
+            <form string="OCR Document Type">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="target_model"/>
+                            <field name="handler_model"/>
+                        </group>
+                        <group>
+                            <field name="prepare_method_name"/>
+                            <field name="create_method_name"/>
+                            <field name="update_method_name"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="description" widget="text"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_ob_ocr_extraction_rule_tree" model="ir.ui.view">
+        <field name="name">ob.ocr.extraction.rule.tree</field>
+        <field name="model">ob.ocr.extraction.rule</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="document_type_id"/>
+                <field name="mapping_id"/>
+                <field name="provider_id"/>
+                <field name="target_key"/>
+                <field name="rule_type"/>
+                <field name="is_line_rule"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ob_ocr_extraction_rule_form" model="ir.ui.view">
+        <field name="name">ob.ocr.extraction.rule.form</field>
+        <field name="model">ob.ocr.extraction.rule</field>
+        <field name="arch" type="xml">
+            <form string="OCR Extraction Rule">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="document_type_id"/>
+                            <field name="mapping_id"/>
+                            <field name="provider_id"/>
+                        </group>
+                        <group>
+                            <field name="sequence"/>
+                            <field name="target_key"/>
+                            <field name="rule_type"/>
+                            <field name="is_line_rule"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="pattern" widget="text"/>
+                        <field name="flags"/>
+                        <field name="default_value"/>
+                        <field name="note" widget="text"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_ob_ocr_log_tree" model="ir.ui.view">
+        <field name="name">ob.ocr.log.tree</field>
+        <field name="model">ob.ocr.log</field>
+        <field name="arch" type="xml">
+            <list default_order="create_date desc">
+                <field name="create_date"/>
+                <field name="document_id"/>
+                <field name="level"/>
+                <field name="message"/>
+                <field name="provider_id"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="user_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_ob_ocr_mapping" model="ir.actions.act_window">
+        <field name="name">OCR Mappings</field>
+        <field name="res_model">ob.ocr.mapping</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="ob_ocr_base.view_ob_ocr_mapping_search"/>
+    </record>
+
+    <record id="action_ob_ocr_document_type" model="ir.actions.act_window">
+        <field name="name">OCR Document Types</field>
+        <field name="res_model">ob.ocr.document.type</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_ob_ocr_extraction_rule" model="ir.actions.act_window">
+        <field name="name">OCR Extraction Rules</field>
+        <field name="res_model">ob.ocr.extraction.rule</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_ob_ocr_log" model="ir.actions.act_window">
+        <field name="name">OCR Logs</field>
+        <field name="res_model">ob.ocr.log</field>
+        <field name="view_mode">list</field>
+    </record>
+</odoo>

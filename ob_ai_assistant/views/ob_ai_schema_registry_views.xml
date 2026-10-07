@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_ob_ai_schema_version_list" model="ir.ui.view">
+        <field name="name">ob.ai.schema.version.list</field>
+        <field name="model">ob.ai.schema.version</field>
+        <field name="arch" type="xml">
+            <list default_order="create_date desc">
+                <field name="create_date"/>
+                <field name="name"/>
+                <field name="status"/>
+                <field name="trigger_source"/>
+                <field name="current"/>
+                <field name="odoo_version"/>
+                <field name="module_count"/>
+                <field name="model_count"/>
+                <field name="field_count"/>
+                <field name="duration_ms"/>
+                <field name="checksum"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ob_ai_schema_version_form" model="ir.ui.view">
+        <field name="name">ob.ai.schema.version.form</field>
+        <field name="model">ob.ai.schema.version</field>
+        <field name="arch" type="xml">
+            <form string="Schema Registry Version">
+                <header>
+                    <button type="object" name="action_refresh_now" string="Refresh Now" class="btn-primary"/>
+                    <button type="object" name="action_mark_current" string="Mark Current" invisible="current"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="status"/>
+                            <field name="trigger_source"/>
+                            <field name="current"/>
+                        </group>
+                        <group>
+                            <field name="odoo_version"/>
+                            <field name="module_count"/>
+                            <field name="model_count"/>
+                            <field name="field_count"/>
+                            <field name="duration_ms"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="started_at"/>
+                            <field name="completed_at"/>
+                        </group>
+                        <group>
+                            <field name="checksum"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="note"/>
+                        <field name="last_error"/>
+                    </group>
+                    <notebook>
+                        <page string="Modules">
+                            <field name="module_ids" readonly="1">
+                                <list>
+                                    <field name="technical_name"/>
+                                    <field name="display_name"/>
+                                    <field name="installed_version"/>
+                                    <field name="category_name"/>
+                                    <field name="application"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Models">
+                            <field name="schema_model_ids" readonly="1">
+                                <list>
+                                    <field name="display_name"/>
+                                    <field name="model_name"/>
+                                    <field name="modules"/>
+                                    <field name="field_count"/>
+                                    <field name="relation_count"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ob_ai_schema_version" model="ir.actions.act_window">
+        <field name="name">Schema Registry</field>
+        <field name="res_model">ob.ai.schema.version</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_ob_ai_schema_model_list" model="ir.ui.view">
+        <field name="name">ob.ai.schema.model.list</field>
+        <field name="model">ob.ai.schema.model</field>
+        <field name="arch" type="xml">
+            <list default_order="model_name asc">
+                <field name="schema_version_id"/>
+                <field name="display_name"/>
+                <field name="model_name"/>
+                <field name="modules"/>
+                <field name="field_count"/>
+                <field name="relation_count"/>
+                <field name="transient"/>
+                <field name="abstract"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ob_ai_schema_model_form" model="ir.ui.view">
+        <field name="name">ob.ai.schema.model.form</field>
+        <field name="model">ob.ai.schema.model</field>
+        <field name="arch" type="xml">
+            <form string="Schema Model">
+                <header>
+                    <button type="object" name="action_open_fields" string="Open Fields" class="btn-link"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="schema_version_id"/>
+                            <field name="ir_model_id"/>
+                            <field name="display_name"/>
+                            <field name="model_name"/>
+                        </group>
+                        <group>
+                            <field name="modules"/>
+                            <field name="field_count"/>
+                            <field name="relation_count"/>
+                            <field name="transient"/>
+                            <field name="abstract"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="info"/>
+                    </group>
+                    <notebook>
+                        <page string="Fields">
+                            <field name="field_ids" readonly="1">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="field_description"/>
+                                    <field name="ttype"/>
+                                    <field name="relation"/>
+                                    <field name="required"/>
+                                    <field name="readonly"/>
+                                    <field name="store"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ob_ai_schema_model" model="ir.actions.act_window">
+        <field name="name">Schema Models</field>
+        <field name="res_model">ob.ai.schema.model</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_ob_ai_schema_field_list" model="ir.ui.view">
+        <field name="name">ob.ai.schema.field.list</field>
+        <field name="model">ob.ai.schema.field</field>
+        <field name="arch" type="xml">
+            <list default_order="schema_model_id, name">
+                <field name="schema_version_id"/>
+                <field name="schema_model_id"/>
+                <field name="name"/>
+                <field name="field_description"/>
+                <field name="ttype"/>
+                <field name="relation"/>
+                <field name="required"/>
+                <field name="readonly"/>
+                <field name="store"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ob_ai_schema_field_form" model="ir.ui.view">
+        <field name="name">ob.ai.schema.field.form</field>
+        <field name="model">ob.ai.schema.field</field>
+        <field name="arch" type="xml">
+            <form string="Schema Field">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="schema_version_id"/>
+                            <field name="schema_model_id"/>
+                            <field name="ir_model_field_id"/>
+                            <field name="name"/>
+                            <field name="field_description"/>
+                        </group>
+                        <group>
+                            <field name="ttype"/>
+                            <field name="relation"/>
+                            <field name="related"/>
+                            <field name="required"/>
+                            <field name="readonly"/>
+                            <field name="store"/>
+                            <field name="index"/>
+                            <field name="copied"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="modules"/>
+                        <field name="help_text"/>
+                        <field name="selection_json"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ob_ai_schema_field" model="ir.actions.act_window">
+        <field name="name">Schema Fields</field>
+        <field name="res_model">ob.ai.schema.field</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_ob_ai_request_token_list" model="ir.ui.view">
+        <field name="name">ob.ai.request.token.list</field>
+        <field name="model">ob.ai.request.token</field>
+        <field name="arch" type="xml">
+            <list default_order="create_date desc">
+                <field name="create_date"/>
+                <field name="token_hint"/>
+                <field name="user_id"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="conversation_id"/>
+                <field name="request_kind"/>
+                <field name="schema_version_id"/>
+                <field name="expires_at"/>
+                <field name="last_used_at"/>
+                <field name="use_count"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ob_ai_request_token_form" model="ir.ui.view">
+        <field name="name">ob.ai.request.token.form</field>
+        <field name="model">ob.ai.request.token</field>
+        <field name="arch" type="xml">
+            <form string="Communication Token">
+                <header>
+                    <button type="object" name="action_revoke" string="Revoke" invisible="state != 'active'"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="conversation_id"/>
+                            <field name="audit_log_id"/>
+                            <field name="user_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="schema_version_id"/>
+                        </group>
+                        <group>
+                            <field name="request_kind"/>
+                            <field name="state"/>
+                            <field name="token_jti"/>
+                            <field name="token_hint"/>
+                            <field name="expires_at"/>
+                            <field name="last_used_at"/>
+                            <field name="use_count"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="max_investigation_steps"/>
+                            <field name="max_models_per_request"/>
+                            <field name="max_records_per_fetch"/>
+                        </group>
+                        <group>
+                            <field name="scope_json"/>
+                            <field name="template_signature"/>
+                            <field name="template_snapshot"/>
+                            <field name="revoked_reason"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ob_ai_request_token" model="ir.actions.act_window">
+        <field name="name">Communication Tokens</field>
+        <field name="res_model">ob.ai.request.token</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

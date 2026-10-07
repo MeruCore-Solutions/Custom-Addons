@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_ob_ai_document_context_list" model="ir.ui.view">
+        <field name="name">ob.ai.document.context.list</field>
+        <field name="model">ob.ai.document.context</field>
+        <field name="arch" type="xml">
+            <list default_order="create_date desc">
+                <field name="create_date"/>
+                <field name="attachment_id"/>
+                <field name="related_record_ref"/>
+                <field name="context_type"/>
+                <field name="state"/>
+                <field name="character_count"/>
+                <field name="structured_table_count"/>
+                <field name="structured_row_count"/>
+                <field name="extraction_engine"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ob_ai_document_context_form" model="ir.ui.view">
+        <field name="name">ob.ai.document.context.form</field>
+        <field name="model">ob.ai.document.context</field>
+        <field name="arch" type="xml">
+            <form string="AI Document Context">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="attachment_id"/>
+                            <field name="attachment_checksum" readonly="1"/>
+                            <field name="related_record_ref"/>
+                            <field name="source_conversation_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="context_type"/>
+                            <field name="state"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="character_count" readonly="1"/>
+                            <field name="structured_table_count" readonly="1"/>
+                            <field name="structured_row_count" readonly="1"/>
+                            <field name="extraction_engine" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Preview">
+                            <field name="text_preview" nolabel="1" readonly="1"/>
+                        </page>
+                        <page string="Extracted Text">
+                            <field name="extracted_text" nolabel="1"/>
+                        </page>
+                        <page string="Structured Data">
+                            <field name="structured_payload" nolabel="1" readonly="1"/>
+                        </page>
+                        <page string="Metadata">
+                            <field name="parse_metadata" nolabel="1" readonly="1"/>
+                        </page>
+                        <page string="Errors">
+                            <field name="error_message" nolabel="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ob_ai_document_context" model="ir.actions.act_window">
+        <field name="name">Document Contexts</field>
+        <field name="res_model">ob.ai.document.context</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

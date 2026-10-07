@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="module_category_ai_assistant" model="ir.module.category">
+        <field name="name">AI Assistant</field>
+        <field name="description">AI assistant access rights</field>
+        <field name="sequence">45</field>
+    </record>
+
+    <record id="res_groups_privilege_ai_assistant" model="res.groups.privilege">
+        <field name="name">AI Assistant</field>
+        <field name="description">AI assistant roles</field>
+        <field name="sequence">45</field>
+        <field name="category_id" ref="ob_ai_assistant.module_category_ai_assistant"/>
+    </record>
+
+    <record id="group_ai_user" model="res.groups">
+        <field name="name">User</field>
+        <field name="privilege_id" ref="ob_ai_assistant.res_groups_privilege_ai_assistant"/>
+        <field name="implied_ids" eval="[Command.link(ref('base.group_user'))]"/>
+    </record>
+
+    <record id="group_ai_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="privilege_id" ref="ob_ai_assistant.res_groups_privilege_ai_assistant"/>
+        <field name="implied_ids" eval="[Command.link(ref('ob_ai_assistant.group_ai_user'))]"/>
+        <field name="user_ids" eval="[Command.link(ref('base.user_admin'))]"/>
+    </record>
+
+    <record id="group_ai_administrator" model="res.groups">
+        <field name="name">Administrator</field>
+        <field name="privilege_id" ref="ob_ai_assistant.res_groups_privilege_ai_assistant"/>
+        <field name="implied_ids" eval="[Command.link(ref('ob_ai_assistant.group_ai_manager'))]"/>
+        <field name="user_ids" eval="[Command.link(ref('base.user_admin'))]"/>
+    </record>
+
+    <record id="group_ai_accounting_reviewer" model="res.groups">
+        <field name="name">Accounting Reviewer</field>
+        <field name="privilege_id" ref="ob_ai_assistant.res_groups_privilege_ai_assistant"/>
+        <field name="implied_ids" eval="[Command.link(ref('ob_ai_assistant.group_ai_user'))]"/>
+    </record>
+
+    <record id="group_ai_hr_reviewer" model="res.groups">
+        <field name="name">HR Reviewer</field>
+        <field name="privilege_id" ref="ob_ai_assistant.res_groups_privilege_ai_assistant"/>
+        <field name="implied_ids" eval="[Command.link(ref('ob_ai_assistant.group_ai_user'))]"/>
+    </record>
+
+    <record id="group_ai_healthcare_reviewer" model="res.groups">
+        <field name="name">Healthcare Reviewer</field>
+        <field name="privilege_id" ref="ob_ai_assistant.res_groups_privilege_ai_assistant"/>
+        <field name="implied_ids" eval="[Command.link(ref('ob_ai_assistant.group_ai_user'))]"/>
+    </record>
+
+    <record id="rule_ob_ai_provider_company" model="ir.rule">
+        <field name="name">AI Providers by Company</field>
+        <field name="model_id" ref="model_ob_ai_provider"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('ob_ai_assistant.group_ai_user'))]"/>
+    </record>
+
+    <record id="rule_ob_ai_model_company" model="ir.rule">
+        <field name="name">AI Models by Company</field>
+        <field name="model_id" ref="model_ob_ai_model"/>
+        <field name="domain_force">['|', ('provider_id.company_id', '=', False), ('provider_id.company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('ob_ai_assistant.group_ai_user'))]"/>
+    </record>
+
+    <record id="rule_ob_ai_allowed_model_company" model="ir.rule">
+        <field name="name">AI Allowed Models by Company</field>
+        <field name="model_id" ref="model_ob_ai_allowed_model"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('ob_ai_assistant.group_ai_user'))]"/>
+    </record>
+
+    <record id="rule_ob_ai_access_template_company" model="ir.rule">
+        <field name="name">AI Access Templates by Company</field>
+        <field name="model_id" ref="model_ob_ai_access_template"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('ob_ai_assistant.group_ai_manager'))]"/>
+    </record>
+
+    <record id="rule_ob_ai_access_template_line_company" model="ir.rule">
+        <field name="name">AI Access Template Lines by Company</field>
+        <field name="model_id" ref="model_ob_ai_access_template_line"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('ob_ai_assistant.group_ai_manager'))]"/>
+    </record>
+
+    <record id="rule_ob_ai_model_semantic_company" model="ir.rule">
+        <field name="name">AI Model Semantics by Company</field>
+        <field name="model_id" ref="model_ob_ai_model_semantic"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('ob_ai_assistant.group_ai_user')), (4, ref('ob_ai_assistant.group_ai_manager'))]"/>
+    </record>
+
+    <record id="rule_ob_ai_prompt_template_company" model="ir.rule">
+        <field name="name">AI Prompt Templates by Company</field>
+        <field name="model_id" ref="model_ob_ai_prompt_template"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('ob_ai_assistant.group_ai_user'))]"/>
+    </record>
+
+    <record id="rule_ob_ai_conversation_user" model="ir.rule">
+        <field name="name">AI Conversations Own</field>
+        <field name="model_id" ref="model_ob_ai_conversation"/>
+        <field name="domain_force">['&amp;', '|', ('company_id', '=', False), ('company_id', 'in', company_ids), ('user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('ob_ai_assistant.group_ai_user'))]"/>
+    </record>
+
+    <record id="rule_ob_ai_conversation_manager" model="ir.rule">
+        <field name="name">AI Conversations by Company</field>
+        <field name="model_id" ref="model_ob_ai_conversation"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('ob_ai_assistant.group_ai_manager'))]"/>
+    </record>
+
+    <record id="rule_ob_ai_message_user" model="ir.rule">
+        <field name="name">AI Messages Own Conversations</field>
+        <field name="model_id" ref="model_ob_ai_message"/>
+        <field name="domain_force">['&amp;', '|', ('company_id', '=', False), ('company_id', 'in', company_ids), ('conversation_id.user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('ob_ai_assistant.group_ai_user'))]"/>
+    </record>
+
+    <record id="rule_ob_ai_message_manager" model="ir.rule">
+        <field name="name">AI Messages by Company</field>
+        <field name="model_id" ref="model_ob_ai_message"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('ob_ai_assistant.group_ai_manager'))]"/>
+    </record>
+
+    <record id="rule_ob_ai_audit_log_user" model="ir.rule">
+        <field name="name">AI Audit Logs Own Requests</field>
+        <field name="model_id" ref="model_ob_ai_audit_log"/>
+        <field name="domain_force">['&amp;', '|', ('company_id', '=', False), ('company_id', 'in', company_ids), ('user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('ob_ai_assistant.group_ai_user'))]"/>
+    </record>
+
+    <record id="rule_ob_ai_audit_log_manager" model="ir.rule">
+        <field name="name">AI Audit Logs by Company</field>
+        <field name="model_id" ref="model_ob_ai_audit_log"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('ob_ai_assistant.group_ai_manager'))]"/>
+    </record>
+
+    <record id="rule_ob_ai_investigation_trace_user" model="ir.rule">
+        <field name="name">AI Investigation Traces Own Conversations</field>
+        <field name="model_id" ref="model_ob_ai_investigation_trace"/>
+        <field name="domain_force">['&amp;', '|', ('company_id', '=', False), ('company_id', 'in', company_ids), ('user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('ob_ai_assistant.group_ai_user'))]"/>
+    </record>
+
+    <record id="rule_ob_ai_investigation_trace_manager" model="ir.rule">
+        <field name="name">AI Investigation Traces by Company</field>
+        <field name="model_id" ref="model_ob_ai_investigation_trace"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('ob_ai_assistant.group_ai_manager'))]"/>
+    </record>
+
+    <record id="rule_ob_ai_memory_state_user" model="ir.rule">
+        <field name="name">AI Memory States Own Conversations</field>
+        <field name="model_id" ref="model_ob_ai_memory_state"/>
+        <field name="domain_force">['&amp;', '|', ('company_id', '=', False), ('company_id', 'in', company_ids), ('user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('ob_ai_assistant.group_ai_user'))]"/>
+    </record>
+
+    <record id="rule_ob_ai_memory_state_manager" model="ir.rule">
+        <field name="name">AI Memory States by Company</field>
+        <field name="model_id" ref="model_ob_ai_memory_state"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('ob_ai_assistant.group_ai_manager'))]"/>
+    </record>
+
+    <record id="rule_ob_ai_result_reference_user" model="ir.rule">
+        <field name="name">AI Result References Own Conversations</field>
+        <field name="model_id" ref="model_ob_ai_result_reference"/>
+        <field name="domain_force">['&amp;', '|', ('company_id', '=', False), ('company_id', 'in', company_ids), ('user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('ob_ai_assistant.group_ai_user'))]"/>
+    </record>
+
+    <record id="rule_ob_ai_result_reference_manager" model="ir.rule">
+        <field name="name">AI Result References by Company</field>
+        <field name="model_id" ref="model_ob_ai_result_reference"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('ob_ai_assistant.group_ai_manager'))]"/>
+    </record>
+
+    <record id="rule_ob_ai_reminder_user" model="ir.rule">
+        <field name="name">AI Reminders Own or Assigned</field>
+        <field name="model_id" ref="model_ob_ai_reminder"/>
+        <field name="domain_force">['&amp;', '|', ('company_id', '=', False), ('company_id', 'in', company_ids), '|', ('requesting_user_id', '=', user.id), ('assigned_user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('ob_ai_assistant.group_ai_user'))]"/>
+    </record>
+
+    <record id="rule_ob_ai_reminder_manager" model="ir.rule">
+        <field name="name">AI Reminders by Company</field>
+        <field name="model_id" ref="model_ob_ai_reminder"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('ob_ai_assistant.group_ai_manager'))]"/>
+    </record>
+
+    <record id="rule_ob_ai_approval_user" model="ir.rule">
+        <field name="name">AI Approvals Own Requests</field>
+        <field name="model_id" ref="model_ob_ai_approval"/>
+        <field name="domain_force">['&amp;', '|', ('company_id', '=', False), ('company_id', 'in', company_ids), ('requested_by_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('ob_ai_assistant.group_ai_user'))]"/>
+    </record>
+
+    <record id="rule_ob_ai_approval_reviewers" model="ir.rule">
+        <field name="name">AI Approvals by Company for Reviewers</field>
+        <field name="model_id" ref="model_ob_ai_approval"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('ob_ai_assistant.group_ai_manager')), (4, ref('ob_ai_assistant.group_ai_accounting_reviewer')), (4, ref('ob_ai_assistant.group_ai_hr_reviewer')), (4, ref('ob_ai_assistant.group_ai_healthcare_reviewer'))]"/>
+    </record>
+
+    <record id="rule_ob_ai_validation_rule_company" model="ir.rule">
+        <field name="name">AI Validation Rules by Company</field>
+        <field name="model_id" ref="model_ob_ai_validation_rule"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('ob_ai_assistant.group_ai_user'))]"/>
+    </record>
+
+    <record id="rule_ob_ai_validation_result_user" model="ir.rule">
+        <field name="name">AI Validation Results Own Conversations</field>
+        <field name="model_id" ref="model_ob_ai_validation_result"/>
+        <field name="domain_force">['&amp;', '|', ('company_id', '=', False), ('company_id', 'in', company_ids), '|', ('source_conversation_id.user_id', '=', user.id), ('reviewer_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('ob_ai_assistant.group_ai_user'))]"/>
+    </record>
+
+    <record id="rule_ob_ai_validation_result_reviewers" model="ir.rule">
+        <field name="name">AI Validation Results by Company for Reviewers</field>
+        <field name="model_id" ref="model_ob_ai_validation_result"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('ob_ai_assistant.group_ai_manager')), (4, ref('ob_ai_assistant.group_ai_accounting_reviewer')), (4, ref('ob_ai_assistant.group_ai_hr_reviewer')), (4, ref('ob_ai_assistant.group_ai_healthcare_reviewer'))]"/>
+    </record>
+
+    <record id="rule_ob_ai_kpi_snapshot_user" model="ir.rule">
+        <field name="name">AI KPI Snapshots Own</field>
+        <field name="model_id" ref="model_ob_ai_kpi_snapshot"/>
+        <field name="domain_force">['&amp;', '|', ('company_id', '=', False), ('company_id', 'in', company_ids), ('user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('ob_ai_assistant.group_ai_user'))]"/>
+    </record>
+
+    <record id="rule_ob_ai_kpi_snapshot_manager" model="ir.rule">
+        <field name="name">AI KPI Snapshots by Company</field>
+        <field name="model_id" ref="model_ob_ai_kpi_snapshot"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('ob_ai_assistant.group_ai_manager'))]"/>
+    </record>
+
+    <record id="rule_ob_ai_kpi_snapshot_line_user" model="ir.rule">
+        <field name="name">AI KPI Snapshot Lines Own</field>
+        <field name="model_id" ref="model_ob_ai_kpi_snapshot_line"/>
+        <field name="domain_force">['&amp;', '|', ('snapshot_id.company_id', '=', False), ('snapshot_id.company_id', 'in', company_ids), ('snapshot_id.user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('ob_ai_assistant.group_ai_user'))]"/>
+    </record>
+
+    <record id="rule_ob_ai_kpi_snapshot_line_manager" model="ir.rule">
+        <field name="name">AI KPI Snapshot Lines by Company</field>
+        <field name="model_id" ref="model_ob_ai_kpi_snapshot_line"/>
+        <field name="domain_force">['|', ('snapshot_id.company_id', '=', False), ('snapshot_id.company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('ob_ai_assistant.group_ai_manager'))]"/>
+    </record>
+
+    <record id="rule_ob_ai_document_context_user" model="ir.rule">
+        <field name="name">AI Document Context Own Conversations</field>
+        <field name="model_id" ref="model_ob_ai_document_context"/>
+        <field name="domain_force">['&amp;', '|', ('company_id', '=', False), ('company_id', 'in', company_ids), ('source_conversation_id.user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('ob_ai_assistant.group_ai_user'))]"/>
+    </record>
+
+    <record id="rule_ob_ai_document_context_manager" model="ir.rule">
+        <field name="name">AI Document Context by Company</field>
+        <field name="model_id" ref="model_ob_ai_document_context"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('ob_ai_assistant.group_ai_manager'))]"/>
+    </record>
+</odoo>

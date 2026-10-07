@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_ai_root" name="AI Assistant" sequence="15" web_icon="ob_ai_assistant,static/description/icon.png" groups="ob_ai_assistant.group_ai_user"/>
+    <menuitem id="menu_ai_conversations" name="Conversations" parent="ob_ai_assistant.menu_ai_root" action="ob_ai_assistant.action_ob_ai_conversation" sequence="10" groups="ob_ai_assistant.group_ai_user"/>
+    <menuitem id="menu_ai_reminders" name="Reminders" parent="ob_ai_assistant.menu_ai_root" action="ob_ai_assistant.action_ob_ai_reminder" sequence="20" groups="ob_ai_assistant.group_ai_user"/>
+    <menuitem id="menu_ai_snapshots" name="Dashboards" parent="ob_ai_assistant.menu_ai_root" action="ob_ai_assistant.action_ob_ai_kpi_snapshot" sequence="30" groups="ob_ai_assistant.group_ai_user"/>
+    <menuitem id="menu_ai_validation_results" name="Validation Results" parent="ob_ai_assistant.menu_ai_root" action="ob_ai_assistant.action_ob_ai_validation_result" sequence="40" groups="ob_ai_assistant.group_ai_user"/>
+    <menuitem id="menu_ai_approvals" name="Approvals" parent="ob_ai_assistant.menu_ai_root" action="ob_ai_assistant.action_ob_ai_approval" sequence="50" groups="ob_ai_assistant.group_ai_user,ob_ai_assistant.group_ai_manager,ob_ai_assistant.group_ai_accounting_reviewer,ob_ai_assistant.group_ai_hr_reviewer,ob_ai_assistant.group_ai_healthcare_reviewer"/>
+    <!-- Strategic Analytics sub-menu -->
+    <menuitem id="menu_ai_analytics" name="Analytics" parent="ob_ai_assistant.menu_ai_root" sequence="60" groups="ob_ai_assistant.group_ai_manager"/>
+    <menuitem id="menu_ai_health_scores" name="Business Health Scores" parent="ob_ai_assistant.menu_ai_analytics" action="ob_ai_assistant.action_ob_ai_health_score" sequence="10" groups="ob_ai_assistant.group_ai_manager"/>
+    <menuitem id="menu_ai_forecasts" name="Forecasts" parent="ob_ai_assistant.menu_ai_analytics" action="ob_ai_assistant.action_ob_ai_forecast_run" sequence="20" groups="ob_ai_assistant.group_ai_manager"/>
+    <menuitem id="menu_ai_scenarios" name="Scenario Simulations" parent="ob_ai_assistant.menu_ai_analytics" action="ob_ai_assistant.action_ob_ai_scenario_run" sequence="30" groups="ob_ai_assistant.group_ai_manager"/>
+    <menuitem id="menu_ai_configuration" name="Configuration" parent="ob_ai_assistant.menu_ai_root" sequence="90" groups="ob_ai_assistant.group_ai_manager"/>
+    <menuitem id="menu_ai_providers" name="Providers" parent="ob_ai_assistant.menu_ai_configuration" action="ob_ai_assistant.action_ob_ai_provider" sequence="10" groups="ob_ai_assistant.group_ai_manager"/>
+    <menuitem id="menu_ai_models" name="Models" parent="ob_ai_assistant.menu_ai_configuration" action="ob_ai_assistant.action_ob_ai_model" sequence="20" groups="ob_ai_assistant.group_ai_manager"/>
+    <menuitem id="menu_ai_allowed_models" name="Allowed Models" parent="ob_ai_assistant.menu_ai_configuration" action="ob_ai_assistant.action_ob_ai_allowed_model" sequence="30" groups="ob_ai_assistant.group_ai_manager"/>
+    <menuitem id="menu_ai_access_templates" name="Access Templates" parent="ob_ai_assistant.menu_ai_configuration" action="ob_ai_assistant.action_ob_ai_access_template" sequence="40" groups="ob_ai_assistant.group_ai_manager"/>
+    <menuitem id="menu_ai_model_semantics" name="Model Semantics" parent="ob_ai_assistant.menu_ai_configuration" action="ob_ai_assistant.action_ob_ai_model_semantic" sequence="50" groups="ob_ai_assistant.group_ai_manager"/>
+    <menuitem id="menu_ai_prompt_templates" name="Prompt Templates" parent="ob_ai_assistant.menu_ai_configuration" action="ob_ai_assistant.action_ob_ai_prompt_template" sequence="60" groups="ob_ai_assistant.group_ai_manager"/>
+    <menuitem id="menu_ai_validation_rules" name="Validation Rules" parent="ob_ai_assistant.menu_ai_configuration" action="ob_ai_assistant.action_ob_ai_validation_rule" sequence="70" groups="ob_ai_assistant.group_ai_manager"/>
+    <menuitem id="menu_ai_kpi_definitions" name="KPI Definitions" parent="ob_ai_assistant.menu_ai_configuration" action="ob_ai_assistant.action_ob_ai_kpi_definition" sequence="72" groups="ob_ai_assistant.group_ai_manager"/>
+    <menuitem id="menu_ai_dimension_maps" name="Dimension Maps" parent="ob_ai_assistant.menu_ai_configuration" action="ob_ai_assistant.action_ob_ai_dimension_map" sequence="74" groups="ob_ai_assistant.group_ai_manager"/>
+    <menuitem id="menu_ai_model_relationships" name="Model Relationships" parent="ob_ai_assistant.menu_ai_configuration" action="ob_ai_assistant.action_ob_ai_model_relationship" sequence="76" groups="ob_ai_assistant.group_ai_manager"/>
+    <menuitem id="menu_ai_benchmark_sources" name="Benchmark Sources" parent="ob_ai_assistant.menu_ai_configuration" action="ob_ai_assistant.action_ob_ai_benchmark_source" sequence="78" groups="ob_ai_assistant.group_ai_manager"/>
+    <menuitem id="menu_ai_benchmark_data" name="Benchmark Data" parent="ob_ai_assistant.menu_ai_configuration" action="ob_ai_assistant.action_ob_ai_benchmark_snapshot" sequence="79" groups="ob_ai_assistant.group_ai_manager"/>
+    <menuitem id="menu_ai_schema_registry" name="Schema Registry" parent="ob_ai_assistant.menu_ai_configuration" action="ob_ai_assistant.action_ob_ai_schema_version" sequence="80" groups="ob_ai_assistant.group_ai_manager"/>
+    <menuitem id="menu_ai_schema_models" name="Schema Models" parent="ob_ai_assistant.menu_ai_configuration" action="ob_ai_assistant.action_ob_ai_schema_model" sequence="85" groups="ob_ai_assistant.group_ai_manager"/>
+    <menuitem id="menu_ai_request_tokens" name="Communication Tokens" parent="ob_ai_assistant.menu_ai_configuration" action="ob_ai_assistant.action_ob_ai_request_token" sequence="90" groups="ob_ai_assistant.group_ai_manager"/>
+    <menuitem id="menu_ai_investigation_traces" name="Investigation Traces" parent="ob_ai_assistant.menu_ai_configuration" action="ob_ai_assistant.action_ob_ai_investigation_trace" sequence="92" groups="ob_ai_assistant.group_ai_manager"/>
+    <menuitem id="menu_ai_memory_states" name="Memory States" parent="ob_ai_assistant.menu_ai_configuration" action="ob_ai_assistant.action_ob_ai_memory_state" sequence="93" groups="ob_ai_assistant.group_ai_manager"/>
+    <menuitem id="menu_ai_document_contexts" name="Document Contexts" parent="ob_ai_assistant.menu_ai_configuration" action="ob_ai_assistant.action_ob_ai_document_context" sequence="94" groups="ob_ai_assistant.group_ai_manager"/>
+    <menuitem id="menu_ai_audit_logs" name="Audit Logs" parent="ob_ai_assistant.menu_ai_configuration" action="ob_ai_assistant.action_ob_ai_audit_log" sequence="96" groups="ob_ai_assistant.group_ai_manager"/>
+    <menuitem id="menu_ai_tools" name="AI Tools" parent="ob_ai_assistant.menu_ai_configuration" action="ob_ai_assistant.action_ob_ai_tool" sequence="55" groups="ob_ai_assistant.group_ai_manager"/>
+    <menuitem id="menu_ai_tool_calls" name="Tool Calls" parent="ob_ai_assistant.menu_ai_configuration" action="ob_ai_assistant.action_ob_ai_tool_call" sequence="56" groups="ob_ai_assistant.group_ai_manager"/>
+    <menuitem id="menu_ai_agent_sessions" name="Agent Sessions" parent="ob_ai_assistant.menu_ai_configuration" action="ob_ai_assistant.action_ob_ai_agent_session" sequence="57" groups="ob_ai_assistant.group_ai_manager"/>
+    <menuitem id="menu_ai_settings" name="Settings" parent="ob_ai_assistant.menu_ai_configuration" action="ob_ai_assistant.action_ai_assistant_settings" sequence="98" groups="ob_ai_assistant.group_ai_manager"/>
+</odoo>

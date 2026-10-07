@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_ocr_root" name="OCR" sequence="10" groups="ob_ocr_base.group_ocr_user"/>
+    <menuitem id="menu_ocr_documents" name="Documents" parent="ob_ocr_base.menu_ocr_root" action="ob_ocr_base.action_ob_ocr_document" sequence="10" groups="ob_ocr_base.group_ocr_user"/>
+    <menuitem id="menu_ocr_configuration" name="Configuration" parent="ob_ocr_base.menu_ocr_root" sequence="90" groups="ob_ocr_base.group_ocr_manager"/>
+    <menuitem id="menu_ocr_providers" name="Providers" parent="ob_ocr_base.menu_ocr_configuration" action="ob_ocr_base.action_ob_ocr_provider" sequence="10" groups="ob_ocr_base.group_ocr_manager"/>
+    <menuitem id="menu_ocr_mappings" name="Mappings" parent="ob_ocr_base.menu_ocr_configuration" action="ob_ocr_base.action_ob_ocr_mapping" sequence="20" groups="ob_ocr_base.group_ocr_manager"/>
+    <menuitem id="menu_ocr_document_types" name="Document Types" parent="ob_ocr_base.menu_ocr_configuration" action="ob_ocr_base.action_ob_ocr_document_type" sequence="30" groups="ob_ocr_base.group_ocr_manager"/>
+    <menuitem id="menu_ocr_extraction_rules" name="Extraction Rules" parent="ob_ocr_base.menu_ocr_configuration" action="ob_ocr_base.action_ob_ocr_extraction_rule" sequence="40" groups="ob_ocr_base.group_ocr_manager"/>
+    <menuitem id="menu_ocr_logs" name="Logs" parent="ob_ocr_base.menu_ocr_configuration" action="ob_ocr_base.action_ob_ocr_log" sequence="50" groups="ob_ocr_base.group_ocr_manager"/>
+    <menuitem id="menu_ocr_settings" name="Settings" parent="ob_ocr_base.menu_ocr_configuration" action="ob_ocr_base.action_ocr_settings" sequence="60" groups="ob_ocr_base.group_ocr_manager"/>
+</odoo>

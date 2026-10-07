@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="ocr_mapping_vendor_bill" model="ob.ocr.mapping">
+        <field name="name">Vendor Bill Mapping</field>
+        <field name="document_type_id" ref="ob_ocr_vendor_bill.document_type_vendor_bill"/>
+        <field name="target_model">account.move</field>
+        <field name="schema_json" eval="{
+            'fields': [
+                'vendor_name', 'vendor_vat', 'vendor_address', 'vendor_email', 'vendor_phone',
+                'bill_number', 'bill_date', 'due_date', 'currency',
+                'untaxed_amount', 'tax_amount', 'total_amount',
+                'payment_reference', 'notes'
+            ],
+            'collections': ['line_items']
+        }"/>
+    </record>
+
+    <record id="ocr_rule_vendor_name" model="ob.ocr.extraction.rule">
+        <field name="name">Vendor Name</field>
+        <field name="document_type_id" ref="ob_ocr_vendor_bill.document_type_vendor_bill"/>
+        <field name="mapping_id" ref="ob_ocr_vendor_bill.ocr_mapping_vendor_bill"/>
+        <field name="target_key">vendor_name</field>
+        <field name="pattern">(?:Vendor|Supplier|From)\s*:\s*(.+)</field>
+        <field name="flags">IGNORECASE</field>
+    </record>
+    <record id="ocr_rule_vendor_vat" model="ob.ocr.extraction.rule">
+        <field name="name">Vendor VAT</field>
+        <field name="document_type_id" ref="ob_ocr_vendor_bill.document_type_vendor_bill"/>
+        <field name="mapping_id" ref="ob_ocr_vendor_bill.ocr_mapping_vendor_bill"/>
+        <field name="target_key">vendor_vat</field>
+        <field name="pattern">(?:VAT|Tax ID|USt-IdNr)\s*:\s*([A-Z0-9.\-\/]+)</field>
+        <field name="flags">IGNORECASE</field>
+    </record>
+    <record id="ocr_rule_bill_number" model="ob.ocr.extraction.rule">
+        <field name="name">Bill Number</field>
+        <field name="document_type_id" ref="ob_ocr_vendor_bill.document_type_vendor_bill"/>
+        <field name="mapping_id" ref="ob_ocr_vendor_bill.ocr_mapping_vendor_bill"/>
+        <field name="target_key">bill_number</field>
+        <field name="pattern">(?:Invoice|Bill)\s*(?:No\.?|Number)?\s*:\s*([A-Z0-9\/\-]+)</field>
+        <field name="flags">IGNORECASE</field>
+    </record>
+    <record id="ocr_rule_bill_date" model="ob.ocr.extraction.rule">
+        <field name="name">Bill Date</field>
+        <field name="document_type_id" ref="ob_ocr_vendor_bill.document_type_vendor_bill"/>
+        <field name="mapping_id" ref="ob_ocr_vendor_bill.ocr_mapping_vendor_bill"/>
+        <field name="target_key">bill_date</field>
+        <field name="pattern">(?:Invoice Date|Bill Date|Date)\s*:\s*([0-9.\-\/]+)</field>
+        <field name="flags">IGNORECASE</field>
+    </record>
+    <record id="ocr_rule_due_date" model="ob.ocr.extraction.rule">
+        <field name="name">Due Date</field>
+        <field name="document_type_id" ref="ob_ocr_vendor_bill.document_type_vendor_bill"/>
+        <field name="mapping_id" ref="ob_ocr_vendor_bill.ocr_mapping_vendor_bill"/>
+        <field name="target_key">due_date</field>
+        <field name="pattern">(?:Due Date|Payment Due)\s*:\s*([0-9.\-\/]+)</field>
+        <field name="flags">IGNORECASE</field>
+    </record>
+    <record id="ocr_rule_bill_currency" model="ob.ocr.extraction.rule">
+        <field name="name">Currency</field>
+        <field name="document_type_id" ref="ob_ocr_vendor_bill.document_type_vendor_bill"/>
+        <field name="mapping_id" ref="ob_ocr_vendor_bill.ocr_mapping_vendor_bill"/>
+        <field name="target_key">currency</field>
+        <field name="pattern">(?:Currency)\s*:\s*([A-Z]{3})</field>
+        <field name="flags">IGNORECASE</field>
+    </record>
+    <record id="ocr_rule_total_amount" model="ob.ocr.extraction.rule">
+        <field name="name">Total Amount</field>
+        <field name="document_type_id" ref="ob_ocr_vendor_bill.document_type_vendor_bill"/>
+        <field name="mapping_id" ref="ob_ocr_vendor_bill.ocr_mapping_vendor_bill"/>
+        <field name="target_key">total_amount</field>
+        <field name="pattern">(?:Total|Grand Total)\s*:\s*([0-9.,]+)</field>
+        <field name="flags">IGNORECASE</field>
+    </record>
+    <record id="ocr_rule_payment_reference" model="ob.ocr.extraction.rule">
+        <field name="name">Payment Reference</field>
+        <field name="document_type_id" ref="ob_ocr_vendor_bill.document_type_vendor_bill"/>
+        <field name="mapping_id" ref="ob_ocr_vendor_bill.ocr_mapping_vendor_bill"/>
+        <field name="target_key">payment_reference</field>
+        <field name="pattern">(?:Payment Reference|Reference)\s*:\s*(.+)</field>
+        <field name="flags">IGNORECASE</field>
+    </record>
+</odoo>

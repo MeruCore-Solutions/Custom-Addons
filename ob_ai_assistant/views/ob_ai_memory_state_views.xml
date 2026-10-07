@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_ob_ai_memory_state_list" model="ir.ui.view">
+        <field name="name">ob.ai.memory.state.list</field>
+        <field name="model">ob.ai.memory.state</field>
+        <field name="arch" type="xml">
+            <list default_order="create_date desc">
+                <field name="create_date"/>
+                <field name="conversation_id"/>
+                <field name="status"/>
+                <field name="intent_code"/>
+                <field name="operation_type"/>
+                <field name="target_model_name"/>
+                <field name="schema_version_id"/>
+                <field name="last_trace_id"/>
+                <field name="result_reference_count"/>
+                <field name="last_used_at"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ob_ai_memory_state_form" model="ir.ui.view">
+        <field name="name">ob.ai.memory.state.form</field>
+        <field name="model">ob.ai.memory.state</field>
+        <field name="arch" type="xml">
+            <form string="AI Memory State">
+                <header>
+                    <button name="action_mark_stale" type="object" string="Mark Stale" class="btn-secondary" invisible="status != 'valid'"/>
+                    <field name="status" widget="statusbar" statusbar_visible="valid,stale,superseded"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="conversation_id"/>
+                            <field name="parent_memory_state_id"/>
+                            <field name="last_trace_id"/>
+                            <field name="user_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group>
+                            <field name="intent_code"/>
+                            <field name="operation_type"/>
+                            <field name="target_model_name"/>
+                            <field name="multi_model"/>
+                            <field name="schema_version_id"/>
+                            <field name="template_signature"/>
+                            <field name="last_used_at"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="semantic_ids" widget="many2many_tags"/>
+                            <field name="allowed_model_ids" widget="many2many_tags"/>
+                            <field name="date_scope"/>
+                            <field name="state_scope"/>
+                            <field name="step_count"/>
+                        </group>
+                        <group>
+                            <field name="last_prompt"/>
+                            <field name="summary_excerpt"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="References">
+                            <field name="result_reference_ids" readonly="1">
+                                <list default_order="sequence asc">
+                                    <field name="sequence"/>
+                                    <field name="model_name"/>
+                                    <field name="record_ref"/>
+                                    <field name="display_name"/>
+                                    <field name="summary_line"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Payload">
+                            <group>
+                                <field name="domain_payload"/>
+                                <field name="result_record_refs"/>
+                                <field name="route_context_payload"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ob_ai_memory_state" model="ir.actions.act_window">
+        <field name="name">AI Memory States</field>
+        <field name="res_model">ob.ai.memory.state</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

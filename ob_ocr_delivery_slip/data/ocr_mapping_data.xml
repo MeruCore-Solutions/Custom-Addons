@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="ocr_mapping_delivery_slip" model="ob.ocr.mapping">
+        <field name="name">Delivery Slip Mapping</field>
+        <field name="document_type_id" ref="ob_ocr_delivery_slip.document_type_delivery_slip"/>
+        <field name="target_model">stock.picking</field>
+        <field name="schema_json" eval="{
+            'fields': [
+                'delivery_slip_number', 'partner_name', 'partner_vat', 'source_document',
+                'scheduled_date', 'delivery_date', 'carrier', 'tracking_number',
+                'warehouse', 'source_location', 'destination_location', 'notes'
+            ],
+            'collections': ['line_items']
+        }"/>
+    </record>
+
+    <record id="ocr_rule_delivery_slip_number" model="ob.ocr.extraction.rule">
+        <field name="name">Delivery Slip Number</field>
+        <field name="document_type_id" ref="ob_ocr_delivery_slip.document_type_delivery_slip"/>
+        <field name="mapping_id" ref="ob_ocr_delivery_slip.ocr_mapping_delivery_slip"/>
+        <field name="target_key">delivery_slip_number</field>
+        <field name="pattern">(?:Delivery Slip|Delivery Note)\s*(?:No\.?|Number)?\s*:\s*([A-Z0-9\/\-]+)</field>
+        <field name="flags">IGNORECASE</field>
+    </record>
+    <record id="ocr_rule_delivery_partner" model="ob.ocr.extraction.rule">
+        <field name="name">Partner Name</field>
+        <field name="document_type_id" ref="ob_ocr_delivery_slip.document_type_delivery_slip"/>
+        <field name="mapping_id" ref="ob_ocr_delivery_slip.ocr_mapping_delivery_slip"/>
+        <field name="target_key">partner_name</field>
+        <field name="pattern">(?:Customer|Vendor|Partner|Deliver To)\s*:\s*(.+)</field>
+        <field name="flags">IGNORECASE</field>
+    </record>
+    <record id="ocr_rule_delivery_source_document" model="ob.ocr.extraction.rule">
+        <field name="name">Source Document</field>
+        <field name="document_type_id" ref="ob_ocr_delivery_slip.document_type_delivery_slip"/>
+        <field name="mapping_id" ref="ob_ocr_delivery_slip.ocr_mapping_delivery_slip"/>
+        <field name="target_key">source_document</field>
+        <field name="pattern">(?:Source Document|Reference|Origin)\s*:\s*([A-Z0-9\/\-]+)</field>
+        <field name="flags">IGNORECASE</field>
+    </record>
+    <record id="ocr_rule_delivery_date" model="ob.ocr.extraction.rule">
+        <field name="name">Delivery Date</field>
+        <field name="document_type_id" ref="ob_ocr_delivery_slip.document_type_delivery_slip"/>
+        <field name="mapping_id" ref="ob_ocr_delivery_slip.ocr_mapping_delivery_slip"/>
+        <field name="target_key">delivery_date</field>
+        <field name="pattern">(?:Delivery Date|Date)\s*:\s*([0-9.\-\/]+)</field>
+        <field name="flags">IGNORECASE</field>
+    </record>
+    <record id="ocr_rule_delivery_tracking" model="ob.ocr.extraction.rule">
+        <field name="name">Tracking Number</field>
+        <field name="document_type_id" ref="ob_ocr_delivery_slip.document_type_delivery_slip"/>
+        <field name="mapping_id" ref="ob_ocr_delivery_slip.ocr_mapping_delivery_slip"/>
+        <field name="target_key">tracking_number</field>
+        <field name="pattern">(?:Tracking|Tracking Number)\s*:\s*([A-Z0-9\-]+)</field>
+        <field name="flags">IGNORECASE</field>
+    </record>
+</odoo>

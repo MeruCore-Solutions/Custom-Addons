@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Health Score -->
+    <record id="view_ob_ai_health_score_list" model="ir.ui.view">
+        <field name="name">ob.ai.health.score.list</field>
+        <field name="model">ob.ai.health.score</field>
+        <field name="arch" type="xml">
+            <list string="Business Health Scores" default_order="score_date desc">
+                <field name="score_date"/>
+                <field name="company_id"/>
+                <field name="overall_score" decoration-success="overall_score >= 75" decoration-warning="overall_score >= 50 and overall_score &lt; 75" decoration-danger="overall_score &lt; 50"/>
+                <field name="overall_grade"/>
+                <field name="liquidity_score" optional="hide"/>
+                <field name="growth_score" optional="hide"/>
+                <field name="execution_score" optional="hide"/>
+                <field name="pipeline_score" optional="hide"/>
+                <field name="fulfillment_score" optional="hide"/>
+                <field name="receivable_score" optional="hide"/>
+                <field name="status"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ob_ai_health_score_form" model="ir.ui.view">
+        <field name="name">ob.ai.health.score.form</field>
+        <field name="model">ob.ai.health.score</field>
+        <field name="arch" type="xml">
+            <form string="Business Health Score">
+                <header>
+                    <button name="action_recompute" string="Recompute" type="object" class="btn-secondary"/>
+                    <field name="status" widget="statusbar" statusbar_visible="draft,computed,reviewed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group string="Overall">
+                            <field name="company_id"/>
+                            <field name="score_date"/>
+                            <field name="overall_score"/>
+                            <field name="overall_grade"/>
+                        </group>
+                        <group string="Domain Scores (0 – 100)">
+                            <field name="liquidity_score"/>
+                            <field name="growth_score"/>
+                            <field name="execution_score"/>
+                            <field name="pipeline_score"/>
+                            <field name="fulfillment_score"/>
+                            <field name="receivable_score"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Analysis" name="analysis">
+                            <field name="analysis_text" widget="text" readonly="1"/>
+                        </page>
+                        <page string="Recommendations" name="recs">
+                            <field name="recommendations" widget="text" readonly="1"/>
+                        </page>
+                        <page string="Benchmark Gap" name="benchmark">
+                            <field name="benchmark_gap_text" widget="text" readonly="1"/>
+                        </page>
+                        <page string="Warnings" name="warnings">
+                            <field name="warnings_payload" widget="text" readonly="1"/>
+                        </page>
+                        <page string="Raw Metrics" name="metrics">
+                            <field name="metrics_payload" widget="text" readonly="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ob_ai_health_score" model="ir.actions.act_window">
+        <field name="name">Business Health Scores</field>
+        <field name="res_model">ob.ai.health.score</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Forecast Run -->
+    <record id="view_ob_ai_forecast_run_list" model="ir.ui.view">
+        <field name="name">ob.ai.forecast.run.list</field>
+        <field name="model">ob.ai.forecast.run</field>
+        <field name="arch" type="xml">
+            <list string="Forecast Runs" default_order="create_date desc">
+                <field name="name"/>
+                <field name="company_id"/>
+                <field name="forecast_type"/>
+                <field name="forecast_periods"/>
+                <field name="period_unit"/>
+                <field name="methodology"/>
+                <field name="status" decoration-success="status == 'done'" decoration-danger="status == 'failed'"/>
+                <field name="create_date"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ob_ai_forecast_run_form" model="ir.ui.view">
+        <field name="name">ob.ai.forecast.run.form</field>
+        <field name="model">ob.ai.forecast.run</field>
+        <field name="arch" type="xml">
+            <form string="Forecast Run">
+                <header>
+                    <field name="status" widget="statusbar" statusbar_visible="draft,running,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="company_id"/>
+                            <field name="forecast_type"/>
+                            <field name="kpi_id"/>
+                            <field name="methodology"/>
+                        </group>
+                        <group>
+                            <field name="historical_from"/>
+                            <field name="historical_to"/>
+                            <field name="forecast_periods"/>
+                            <field name="period_unit"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Forecast Narrative" name="narrative">
+                            <field name="result_text" widget="text" readonly="1"/>
+                        </page>
+                        <page string="Assumptions" name="assumptions">
+                            <field name="assumptions" widget="text" readonly="1"/>
+                        </page>
+                        <page string="Forecast Data (JSON)" name="data">
+                            <field name="forecast_payload" widget="text" readonly="1"/>
+                        </page>
+                        <page string="Error" name="error" invisible="status != 'failed'">
+                            <field name="error_message" widget="text" readonly="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ob_ai_forecast_run" model="ir.actions.act_window">
+        <field name="name">Forecasts</field>
+        <field name="res_model">ob.ai.forecast.run</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Scenario Run -->
+    <record id="view_ob_ai_scenario_run_list" model="ir.ui.view">
+        <field name="name">ob.ai.scenario.run.list</field>
+        <field name="model">ob.ai.scenario.run</field>
+        <field name="arch" type="xml">
+            <list string="Scenario Simulations" default_order="create_date desc">
+                <field name="name"/>
+                <field name="company_id"/>
+                <field name="scenario_type"/>
+                <field name="status" decoration-success="status == 'done'" decoration-danger="status == 'failed'"/>
+                <field name="create_date"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ob_ai_scenario_run_form" model="ir.ui.view">
+        <field name="name">ob.ai.scenario.run.form</field>
+        <field name="model">ob.ai.scenario.run</field>
+        <field name="arch" type="xml">
+            <form string="Scenario Simulation">
+                <header>
+                    <field name="status" widget="statusbar" statusbar_visible="draft,running,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="company_id"/>
+                            <field name="scenario_type"/>
+                        </group>
+                        <group/>
+                    </group>
+                    <notebook>
+                        <page string="Narrative" name="narrative">
+                            <field name="result_text" widget="text" readonly="1"/>
+                        </page>
+                        <page string="Assumptions" name="assumptions">
+                            <field name="assumptions" widget="text" readonly="1"/>
+                        </page>
+                        <page string="Impact (JSON)" name="impact">
+                            <field name="impact_payload" widget="text" readonly="1"/>
+                        </page>
+                        <page string="Sensitivity (JSON)" name="sensitivity">
+                            <field name="sensitivity_payload" widget="text" readonly="1"/>
+                        </page>
+                        <page string="Parameters (JSON)" name="params">
+                            <field name="parameter_payload" widget="text" readonly="1"/>
+                        </page>
+                        <page string="Baseline (JSON)" name="baseline">
+                            <field name="baseline_payload" widget="text" readonly="1"/>
+                        </page>
+                        <page string="Error" name="error" invisible="status != 'failed'">
+                            <field name="error_message" widget="text" readonly="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ob_ai_scenario_run" model="ir.actions.act_window">
+        <field name="name">Scenarios</field>
+        <field name="res_model">ob.ai.scenario.run</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

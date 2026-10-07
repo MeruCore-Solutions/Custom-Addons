@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="document_type_customer_purchase_order" model="ob.ocr.document.type">
+        <field name="name">Customer Purchase Order</field>
+        <field name="code">customer_purchase_order</field>
+        <field name="description">Customer purchase orders that become sale quotations or sale orders.</field>
+        <field name="target_model">sale.order</field>
+        <field name="handler_model">ob.ocr.document</field>
+        <field name="prepare_method_name">_prepare_customer_purchase_order_values</field>
+        <field name="create_method_name">_create_customer_purchase_order_sale_record</field>
+        <field name="update_method_name">_update_customer_purchase_order_sale_record</field>
+    </record>
+</odoo>

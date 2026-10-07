@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_ob_ai_approval_list" model="ir.ui.view">
+        <field name="name">ob.ai.approval.list</field>
+        <field name="model">ob.ai.approval</field>
+        <field name="arch" type="xml">
+            <list default_order="create_date desc">
+                <field name="name"/>
+                <field name="requested_by_id"/>
+                <field name="reviewer_id"/>
+                <field name="action_type"/>
+                <field name="approval_scope"/>
+                <field name="review_status"/>
+                <field name="create_date"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ob_ai_approval_form" model="ir.ui.view">
+        <field name="name">ob.ai.approval.form</field>
+        <field name="model">ob.ai.approval</field>
+        <field name="arch" type="xml">
+            <form string="AI Approval">
+                <header>
+                    <button name="action_approve" type="object" string="Approve" groups="ob_ai_assistant.group_ai_manager,ob_ai_assistant.group_ai_accounting_reviewer,ob_ai_assistant.group_ai_hr_reviewer,ob_ai_assistant.group_ai_healthcare_reviewer" invisible="review_status not in ('draft', 'pending_review')"/>
+                    <button name="action_reject" type="object" string="Reject" groups="ob_ai_assistant.group_ai_manager,ob_ai_assistant.group_ai_accounting_reviewer,ob_ai_assistant.group_ai_hr_reviewer,ob_ai_assistant.group_ai_healthcare_reviewer" invisible="review_status not in ('draft', 'pending_review')"/>
+                    <button name="action_apply" type="object" string="Apply" class="oe_highlight" groups="ob_ai_assistant.group_ai_manager,ob_ai_assistant.group_ai_accounting_reviewer,ob_ai_assistant.group_ai_hr_reviewer,ob_ai_assistant.group_ai_healthcare_reviewer" invisible="review_status != 'approved'"/>
+                    <field name="review_status" widget="statusbar" statusbar_visible="draft,pending_review,approved,rejected,applied"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="requested_by_id" readonly="1"/>
+                            <field name="reviewer_id" readonly="1"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group>
+                            <field name="action_type"/>
+                            <field name="approval_scope"/>
+                            <field name="related_record_ref"/>
+                            <field name="source_conversation_id" readonly="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="action_summary" nolabel="1"/>
+                        <field name="result_message" readonly="1" invisible="not result_message"/>
+                    </group>
+                    <notebook>
+                        <page string="Payload">
+                            <field name="payload_json" nolabel="1"/>
+                        </page>
+                        <page string="Trace">
+                            <group>
+                                <field name="idempotency_key" readonly="1"/>
+                                <field name="reviewed_on" readonly="1"/>
+                                <field name="applied_on" readonly="1"/>
+                            </group>
+                        </page>
+                    </notebook>
+                    <chatter/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ob_ai_approval" model="ir.actions.act_window">
+        <field name="name">AI Approvals</field>
+        <field name="res_model">ob.ai.approval</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

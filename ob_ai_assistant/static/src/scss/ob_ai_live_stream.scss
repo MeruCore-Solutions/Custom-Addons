@@ -1,0 +1,110 @@
+// Live AI reasoning stream — rendered between message viewport and composer.
+
+.o_ob_ai_live_stream {
+    margin: 0.5rem 1rem;
+    padding: 0;
+    background: transparent;
+
+    .o_ob_ai_live_stream_header {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.4rem 0.75rem;
+        font-size: 0.85rem;
+        color: #475569;
+        font-weight: 500;
+        background: rgba(20, 184, 166, 0.08);
+        border-left: 3px solid #14b8a6;
+        border-radius: 0.25rem;
+        margin-bottom: 0.4rem;
+    }
+
+    .o_ob_ai_live_stream_indicator {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #14b8a6;
+        animation: ob_ai_pulse 1.2s ease-in-out infinite;
+    }
+
+    .o_ob_ai_live_stream_events {
+        max-height: 14rem;
+        overflow-y: auto;
+        padding: 0.25rem 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.2rem;
+    }
+
+    .o_ob_ai_stream_event {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.5rem;
+        padding: 0.3rem 0.6rem;
+        font-size: 0.8rem;
+        line-height: 1.35;
+        background: rgba(148, 163, 184, 0.08);
+        border-radius: 0.25rem;
+        color: #334155;
+        opacity: 0;
+        animation: ob_ai_fade_in 0.25s ease-out forwards;
+    }
+
+    .o_ob_ai_stream_event_thinking,
+    .o_ob_ai_stream_event_session_started {
+        background: rgba(99, 102, 241, 0.10);
+    }
+
+    .o_ob_ai_stream_event_tool_call {
+        background: rgba(14, 165, 233, 0.10);
+    }
+
+    .o_ob_ai_stream_event_tool_result {
+        background: rgba(34, 197, 94, 0.10);
+    }
+
+    .o_ob_ai_stream_event_reflection {
+        background: rgba(168, 85, 247, 0.10);
+    }
+
+    .o_ob_ai_stream_event_final_answer,
+    .o_ob_ai_stream_event_done {
+        background: rgba(34, 197, 94, 0.18);
+        font-weight: 500;
+    }
+
+    .o_ob_ai_stream_event_error {
+        background: rgba(239, 68, 68, 0.15);
+        color: #7f1d1d;
+    }
+
+    .o_ob_ai_stream_icon {
+        flex-shrink: 0;
+        font-size: 0.9rem;
+        width: 1rem;
+        text-align: center;
+    }
+
+    .o_ob_ai_stream_label {
+        font-weight: 500;
+        white-space: nowrap;
+    }
+
+    .o_ob_ai_stream_detail {
+        flex-grow: 1;
+        color: #64748b;
+        font-size: 0.75rem;
+        word-break: break-word;
+        margin-left: 0.5rem;
+    }
+}
+
+@keyframes ob_ai_pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.85); }
+}
+
+@keyframes ob_ai_fade_in {
+    from { opacity: 0; transform: translateY(-2px); }
+    to { opacity: 1; transform: translateY(0); }
+}
