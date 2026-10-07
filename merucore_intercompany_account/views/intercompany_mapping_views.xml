@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="m_view_intercompany_account_mapping_list" model="ir.ui.view">
+        <field name="name">merucore.intercompany.account.mapping.list</field>
+        <field name="model">merucore.intercompany.account.mapping</field>
+        <field name="arch" type="xml">
+            <list decoration-muted="not m_active">
+                <field name="m_sequence" optional="hide"/>
+                <field name="m_name"/>
+                <field name="m_rule_id"/>
+                <field name="m_move_scope"/>
+                <field name="m_source_account_id"/>
+                <field name="m_destination_account_id"/>
+                <field name="m_active" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="m_view_intercompany_account_mapping_search" model="ir.ui.view">
+        <field name="name">merucore.intercompany.account.mapping.search</field>
+        <field name="model">merucore.intercompany.account.mapping</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="m_name"/>
+                <field name="m_rule_id"/>
+                <field name="m_source_account_id"/>
+                <field name="m_destination_account_id"/>
+                <filter name="m_filter_active" string="Active" domain="[('m_active', '=', True)]"/>
+                <group>
+                    <filter name="m_group_rule" string="Rule" context="{'group_by': 'm_rule_id'}"/>
+                    <filter name="m_group_scope" string="Scope" context="{'group_by': 'm_move_scope'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="m_view_intercompany_account_mapping_form" model="ir.ui.view">
+        <field name="name">merucore.intercompany.account.mapping.form</field>
+        <field name="model">merucore.intercompany.account.mapping</field>
+        <field name="arch" type="xml">
+            <form string="Intercompany Account Mapping">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="m_name"/>
+                            <field name="m_rule_id"/>
+                            <field name="m_move_scope"/>
+                            <field name="m_sequence"/>
+                            <field name="m_active"/>
+                        </group>
+                        <group>
+                            <field name="m_source_company_id" readonly="1" groups="base.group_multi_company"/>
+                            <field name="m_destination_company_id" readonly="1" groups="base.group_multi_company"/>
+                            <field name="m_source_account_id"/>
+                            <field name="m_destination_account_id"/>
+                        </group>
+                    </group>
+                    <group string="Notes">
+                        <field name="m_notes" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="m_view_intercompany_tax_mapping_list" model="ir.ui.view">
+        <field name="name">merucore.intercompany.tax.mapping.list</field>
+        <field name="model">merucore.intercompany.tax.mapping</field>
+        <field name="arch" type="xml">
+            <list decoration-muted="not m_active">
+                <field name="m_sequence" optional="hide"/>
+                <field name="m_name"/>
+                <field name="m_rule_id"/>
+                <field name="m_move_scope"/>
+                <field name="m_source_tax_id"/>
+                <field name="m_destination_tax_id"/>
+                <field name="m_active" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="m_view_intercompany_tax_mapping_search" model="ir.ui.view">
+        <field name="name">merucore.intercompany.tax.mapping.search</field>
+        <field name="model">merucore.intercompany.tax.mapping</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="m_name"/>
+                <field name="m_rule_id"/>
+                <field name="m_source_tax_id"/>
+                <field name="m_destination_tax_id"/>
+                <filter name="m_filter_active" string="Active" domain="[('m_active', '=', True)]"/>
+                <group>
+                    <filter name="m_group_rule" string="Rule" context="{'group_by': 'm_rule_id'}"/>
+                    <filter name="m_group_scope" string="Scope" context="{'group_by': 'm_move_scope'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="m_view_intercompany_tax_mapping_form" model="ir.ui.view">
+        <field name="name">merucore.intercompany.tax.mapping.form</field>
+        <field name="model">merucore.intercompany.tax.mapping</field>
+        <field name="arch" type="xml">
+            <form string="Intercompany Tax Mapping">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="m_name"/>
+                            <field name="m_rule_id"/>
+                            <field name="m_move_scope"/>
+                            <field name="m_sequence"/>
+                            <field name="m_active"/>
+                        </group>
+                        <group>
+                            <field name="m_source_tax_id"/>
+                            <field name="m_destination_tax_id"/>
+                        </group>
+                    </group>
+                    <group string="Notes">
+                        <field name="m_notes" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="m_view_intercompany_analytic_mapping_list" model="ir.ui.view">
+        <field name="name">merucore.intercompany.analytic.mapping.list</field>
+        <field name="model">merucore.intercompany.analytic.mapping</field>
+        <field name="arch" type="xml">
+            <list decoration-muted="not m_active">
+                <field name="m_sequence" optional="hide"/>
+                <field name="m_name"/>
+                <field name="m_rule_id"/>
+                <field name="m_source_analytic_account_id"/>
+                <field name="m_destination_analytic_account_id"/>
+                <field name="m_active" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="m_view_intercompany_analytic_mapping_search" model="ir.ui.view">
+        <field name="name">merucore.intercompany.analytic.mapping.search</field>
+        <field name="model">merucore.intercompany.analytic.mapping</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="m_name"/>
+                <field name="m_rule_id"/>
+                <field name="m_source_analytic_account_id"/>
+                <field name="m_destination_analytic_account_id"/>
+                <filter name="m_filter_active" string="Active" domain="[('m_active', '=', True)]"/>
+                <group>
+                    <filter name="m_group_rule" string="Rule" context="{'group_by': 'm_rule_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="m_view_intercompany_analytic_mapping_form" model="ir.ui.view">
+        <field name="name">merucore.intercompany.analytic.mapping.form</field>
+        <field name="model">merucore.intercompany.analytic.mapping</field>
+        <field name="arch" type="xml">
+            <form string="Intercompany Analytic Mapping">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="m_name"/>
+                            <field name="m_rule_id"/>
+                            <field name="m_sequence"/>
+                            <field name="m_active"/>
+                        </group>
+                        <group>
+                            <field name="m_source_analytic_account_id"/>
+                            <field name="m_destination_analytic_account_id"/>
+                            <field name="m_source_analytic_plan_id" readonly="1"/>
+                            <field name="m_destination_analytic_plan_id" readonly="1"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="m_view_intercompany_document_mapping_list" model="ir.ui.view">
+        <field name="name">merucore.intercompany.document.mapping.list</field>
+        <field name="model">merucore.intercompany.document.mapping</field>
+        <field name="arch" type="xml">
+            <list create="false" edit="false" delete="false">
+                <field name="m_transaction_id"/>
+                <field name="m_role"/>
+                <field name="m_move_id"/>
+                <field name="m_company_id" groups="base.group_multi_company"/>
+                <field name="m_document_key"/>
+                <field name="m_origin_move_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="m_action_intercompany_account_mappings" model="ir.actions.act_window">
+        <field name="name">Account Mappings</field>
+        <field name="res_model">merucore.intercompany.account.mapping</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="m_view_intercompany_account_mapping_search"/>
+    </record>
+
+    <record id="m_action_intercompany_tax_mappings" model="ir.actions.act_window">
+        <field name="name">Tax Mappings</field>
+        <field name="res_model">merucore.intercompany.tax.mapping</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="m_view_intercompany_tax_mapping_search"/>
+    </record>
+
+    <record id="m_action_intercompany_analytic_mappings" model="ir.actions.act_window">
+        <field name="name">Analytic Mappings</field>
+        <field name="res_model">merucore.intercompany.analytic.mapping</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="m_view_intercompany_analytic_mapping_search"/>
+    </record>
+
+    <record id="m_action_intercompany_document_mappings" model="ir.actions.act_window">
+        <field name="name">Accounting Document Links</field>
+        <field name="res_model">merucore.intercompany.document.mapping</field>
+        <field name="view_mode">list</field>
+        <field name="context">{'create': False, 'edit': False, 'delete': False}</field>
+    </record>
+</odoo>

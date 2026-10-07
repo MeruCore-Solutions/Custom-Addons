@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MeruCore Intercompany Control Center - Base</title>
+    <style>
+        :root {
+            --bg: #f4f6f8;
+            --panel: #ffffff;
+            --ink: #1f2933;
+            --muted: #52606d;
+            --accent: #0f6cbd;
+            --accent-soft: #d9ebfb;
+            --border: #d9e2ec;
+        }
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Tahoma, sans-serif;
+            color: var(--ink);
+            background: linear-gradient(180deg, #f9fbfd 0%, var(--bg) 100%);
+        }
+        .page {
+            max-width: 1040px;
+            margin: 0 auto;
+            padding: 40px 20px 56px;
+        }
+        .hero {
+            background: radial-gradient(circle at top left, #e8f2fb 0%, #ffffff 55%);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 16px 36px rgba(15, 108, 189, 0.08);
+        }
+        .eyebrow {
+            display: inline-block;
+            background: var(--accent-soft);
+            color: var(--accent);
+            border-radius: 999px;
+            padding: 8px 14px;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+        h1, h2 {
+            margin: 0 0 16px;
+        }
+        h1 {
+            font-size: 42px;
+            line-height: 1.08;
+            margin-top: 18px;
+        }
+        h2 {
+            font-size: 26px;
+        }
+        p {
+            margin: 0 0 14px;
+            color: var(--muted);
+            line-height: 1.7;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 18px;
+            margin-top: 30px;
+        }
+        .card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 22px;
+        }
+        .section {
+            margin-top: 34px;
+        }
+        ul {
+            margin: 0;
+            padding-left: 18px;
+            color: var(--muted);
+            line-height: 1.75;
+        }
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px;
+        }
+        .step {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 22px;
+        }
+        .step strong {
+            color: var(--accent);
+            display: block;
+            margin-bottom: 10px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <section class="hero">
+            <span class="eyebrow">Odoo 19 Base Module</span>
+            <h1>MeruCore Intercompany Control Center - Base</h1>
+            <p>
+                Build reliable intercompany foundations before you automate documents. This addon gives your team
+                company-pair rules, transaction oversight, audit history, issue tracking, and safe retry hooks in one
+                multi-company-aware control center.
+            </p>
+        </section>
+
+        <section class="section">
+            <h2>Business Problem</h2>
+            <p>
+                Intercompany automations often fail because there is no neutral control layer between source and
+                destination companies. Teams need visibility, traceability, and governed retry behavior before they
+                add business-specific generation logic.
+            </p>
+        </section>
+
+        <section class="section">
+            <h2>Core Features</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Transaction Control Center</h3>
+                    <p>Track each intercompany synchronization as a single auditable transaction record across both companies.</p>
+                </div>
+                <div class="card">
+                    <h3>Company-Pair Configuration</h3>
+                    <p>Create directional rules with responsible users, retry limits, delay policy, and notification preferences.</p>
+                </div>
+                <div class="card">
+                    <h3>Exception And Retry Handling</h3>
+                    <p>Use a controlled retry wizard, bounded retry cron jobs, and extension-ready retry handlers.</p>
+                </div>
+                <div class="card">
+                    <h3>Immutable Audit Trail</h3>
+                    <p>Log synchronization, warning, error, retry, and state-change events without allowing silent tampering.</p>
+                </div>
+                <div class="card">
+                    <h3>Security And Isolation</h3>
+                    <p>Expose records only when users can access both sides of the company pair, with manager-only technical details.</p>
+                </div>
+                <div class="card">
+                    <h3>Extension Foundation</h3>
+                    <p>Future MeruCore modules can inherit the mixin and register business-specific retry and health handlers.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>What This Module Includes</h2>
+            <ul>
+                <li>Intercompany transactions with health state, retry count, and source or destination document metadata.</li>
+                <li>Directional company-pair rules with responsible ownership and optional automatic retry.</li>
+                <li>Immutable intercompany audit events with resolve and reopen support.</li>
+                <li>Issue-focused menus for transactions that need attention.</li>
+                <li>Reusable mixin methods for future sale, purchase, stock, and accounting extensions.</li>
+            </ul>
+        </section>
+
+        <section class="section">
+            <h2>Installation And Configuration</h2>
+            <div class="steps">
+                <div class="step">
+                    <strong>Step 1</strong>
+                    Install the addon in an Odoo 19 database with the standard <code>base</code> and <code>mail</code> dependencies available.
+                </div>
+                <div class="step">
+                    <strong>Step 2</strong>
+                    Enable intercompany support on the companies that will participate in governed intercompany flows.
+                </div>
+                <div class="step">
+                    <strong>Step 3</strong>
+                    Create company-pair rules and assign the responsible intercompany users or managers.
+                </div>
+                <div class="step">
+                    <strong>Step 4</strong>
+                    Connect extension addons later when you are ready to automate specific intercompany document flows.
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Support</h2>
+            <p>
+                MeruCore Solutions support contact to confirm: <strong>support@merucore.com</strong>
+            </p>
+        </section>
+    </div>
+</body>
+</html>

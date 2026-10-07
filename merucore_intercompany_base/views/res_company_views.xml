@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="m_view_company_form_intercompany" model="ir.ui.view">
+        <field name="name">res.company.form.merucore.intercompany</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Intercompany" name="m_intercompany_settings">
+                    <group>
+                        <group>
+                            <field name="m_intercompany_enabled"/>
+                            <field name="m_intercompany_default_responsible_user_id" options="{'no_create_edit': True}"/>
+                        </group>
+                        <group>
+                            <field name="m_intercompany_rule_count" readonly="1"/>
+                            <field name="m_intercompany_rule_ids" widget="many2many_tags" readonly="1" options="{'no_open': False}"/>
+                            <button name="m_action_open_intercompany_rules"
+                                    string="Open Rules"
+                                    type="object"
+                                    class="oe_link"
+                                    invisible="m_intercompany_rule_count == 0"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

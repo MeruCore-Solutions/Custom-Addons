@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="m_view_intercompany_transaction_list_reconcile" model="ir.ui.view">
+        <field name="name">merucore.intercompany.transaction.list.reconcile</field>
+        <field name="model">merucore.intercompany.transaction</field>
+        <field name="inherit_id" ref="merucore_intercompany_base.m_view_intercompany_transaction_list"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='m_retry_count']" position="before">
+                <field name="m_match_count" optional="show"/>
+                <field name="m_settlement_count" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="m_view_intercompany_transaction_form_reconcile" model="ir.ui.view">
+        <field name="name">merucore.intercompany.transaction.form.reconcile</field>
+        <field name="model">merucore.intercompany.transaction</field>
+        <field name="inherit_id" ref="merucore_intercompany_base.m_view_intercompany_transaction_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="m_action_open_matches" type="object" class="oe_stat_button" icon="fa-link">
+                    <field name="m_match_count" widget="statinfo" string="Matches"/>
+                </button>
+                <button name="m_action_open_settlements" type="object" class="oe_stat_button" icon="fa-exchange">
+                    <field name="m_settlement_count" widget="statinfo" string="Settlements"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>

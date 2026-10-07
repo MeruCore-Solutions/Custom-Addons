@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="m_view_intercompany_rule_form_sale_purchase" model="ir.ui.view">
+        <field name="name">merucore.intercompany.rule.form.sale.purchase</field>
+        <field name="model">merucore.intercompany.rule</field>
+        <field name="inherit_id" ref="merucore_intercompany_base.m_view_intercompany_rule_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='m_notes']/.." position="before">
+                <group string="Sale &amp; Purchase Synchronization">
+                    <group string="Automation">
+                        <field name="m_sale_purchase_enabled"/>
+                        <field name="m_trigger_document" invisible="not m_sale_purchase_enabled"/>
+                        <field name="m_creation_timing" invisible="not m_sale_purchase_enabled"/>
+                        <field name="m_sync_direction" invisible="not m_sale_purchase_enabled"/>
+                        <field name="m_company_partner_validation" invisible="not m_sale_purchase_enabled"/>
+                    </group>
+                    <group string="Synchronization">
+                        <field name="m_sync_header_values" invisible="not m_sale_purchase_enabled"/>
+                        <field name="m_sync_order_lines" invisible="not m_sale_purchase_enabled"/>
+                        <field name="m_sync_quantities" invisible="not m_sale_purchase_enabled"/>
+                        <field name="m_sync_unit_prices" invisible="not m_sale_purchase_enabled"/>
+                        <field name="m_sync_discounts" invisible="not m_sale_purchase_enabled"/>
+                        <field name="m_sync_descriptions" invisible="not m_sale_purchase_enabled"/>
+                        <field name="m_sync_planned_dates" invisible="not m_sale_purchase_enabled"/>
+                        <field name="m_sync_uom" invisible="not m_sale_purchase_enabled"/>
+                    </group>
+                    <group string="Pricing and Currency">
+                        <field name="m_price_strategy" invisible="not m_sale_purchase_enabled"/>
+                        <field name="m_cost_plus_percentage" invisible="not m_sale_purchase_enabled or m_price_strategy != 'cost_plus'"/>
+                        <field name="m_currency_strategy" invisible="not m_sale_purchase_enabled"/>
+                        <field name="m_conflict_policy" invisible="not m_sale_purchase_enabled"/>
+                    </group>
+                    <group string="Product and Tax Mapping">
+                        <field name="m_product_mapping_strategy" invisible="not m_sale_purchase_enabled"/>
+                        <field name="m_tax_strategy" invisible="not m_sale_purchase_enabled"/>
+                    </group>
+                    <group string="Confirmation and Cancellation">
+                        <field name="m_counterpart_document_state" invisible="not m_sale_purchase_enabled"/>
+                        <field name="m_confirm_counterpart_automatically" invisible="not m_sale_purchase_enabled"/>
+                        <field name="m_allow_counterpart_line_creation" invisible="not m_sale_purchase_enabled"/>
+                        <field name="m_allow_counterpart_line_deletion" invisible="not m_sale_purchase_enabled"/>
+                        <field name="m_allow_sync_after_confirmation" invisible="not m_sale_purchase_enabled"/>
+                        <field name="m_cancel_counterpart" invisible="not m_sale_purchase_enabled"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

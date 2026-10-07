@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="m_action_intercompany_matches" model="ir.actions.act_window">
+        <field name="name">Matches</field>
+        <field name="res_model">merucore.intercompany.match</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="m_view_intercompany_match_search"/>
+        <field name="context">{}</field>
+    </record>
+
+    <record id="m_action_intercompany_settlements" model="ir.actions.act_window">
+        <field name="name">Settlements</field>
+        <field name="res_model">merucore.intercompany.settlement</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="m_view_intercompany_settlement_search"/>
+        <field name="context">{}</field>
+    </record>
+
+    <menuitem id="m_menu_intercompany_matches"
+              name="Matches"
+              parent="merucore_intercompany_base.m_menu_intercompany_control_center"
+              action="m_action_intercompany_matches"
+              sequence="40"
+              groups="merucore_intercompany_base.m_group_intercompany_user"/>
+
+    <menuitem id="m_menu_intercompany_settlements"
+              name="Settlements"
+              parent="merucore_intercompany_base.m_menu_intercompany_control_center"
+              action="m_action_intercompany_settlements"
+              sequence="50"
+              groups="merucore_intercompany_base.m_group_intercompany_user"/>
+</odoo>

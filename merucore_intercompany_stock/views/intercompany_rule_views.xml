@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="m_view_intercompany_rule_form_stock" model="ir.ui.view">
+        <field name="name">merucore.intercompany.rule.form.stock</field>
+        <field name="model">merucore.intercompany.rule</field>
+        <field name="inherit_id" ref="merucore_intercompany_base.m_view_intercompany_rule_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='m_notes']/.." position="before">
+                <group string="Stock Synchronization">
+                    <group string="Workflow">
+                        <field name="m_stock_sync_enabled"/>
+                        <field name="m_stock_workflow" invisible="not m_stock_sync_enabled"/>
+                        <field name="m_stock_product_mapping_strategy" invisible="not m_stock_sync_enabled"/>
+                        <field name="m_stock_transit_location_id" invisible="not m_stock_sync_enabled"/>
+                    </group>
+                    <group string="Counterpart Behavior">
+                        <field name="m_stock_auto_confirm_counterpart" invisible="not m_stock_sync_enabled"/>
+                        <field name="m_stock_auto_assign_counterpart" invisible="not m_stock_sync_enabled"/>
+                        <field name="m_stock_cancel_counterpart" invisible="not m_stock_sync_enabled"/>
+                        <field name="m_stock_destination_picking_type_id" invisible="not m_stock_sync_enabled"/>
+                    </group>
+                    <group string="Data Propagation">
+                        <field name="m_stock_sync_lots" invisible="not m_stock_sync_enabled"/>
+                        <field name="m_stock_sync_packages" invisible="not m_stock_sync_enabled"/>
+                        <field name="m_stock_sync_owners" invisible="not m_stock_sync_enabled"/>
+                        <field name="m_stock_destination_location_id" invisible="not m_stock_sync_enabled"/>
+                    </group>
+                    <group string="Manual Transfer Defaults">
+                        <field name="m_stock_source_picking_type_id" invisible="not m_stock_sync_enabled or m_stock_workflow == 'automatic'"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

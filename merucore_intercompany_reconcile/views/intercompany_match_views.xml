@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="m_view_intercompany_match_list" model="ir.ui.view">
+        <field name="name">merucore.intercompany.match.list</field>
+        <field name="model">merucore.intercompany.match</field>
+        <field name="arch" type="xml">
+            <list decoration-muted="not m_active"
+                  decoration-danger="m_state == 'mismatch'"
+                  decoration-success="m_state == 'settled'">
+                <field name="m_name"/>
+                <field name="m_rule_id"/>
+                <field name="m_source_move_id"/>
+                <field name="m_destination_move_id"/>
+                <field name="m_source_residual_amount"/>
+                <field name="m_destination_residual_amount"/>
+                <field name="m_difference_amount"/>
+                <field name="m_state"/>
+                <field name="m_settlement_count"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="m_view_intercompany_match_search" model="ir.ui.view">
+        <field name="name">merucore.intercompany.match.search</field>
+        <field name="model">merucore.intercompany.match</field>
+        <field name="arch" type="xml">
+            <search string="Intercompany Matches">
+                <field name="m_name"/>
+                <field name="m_rule_id"/>
+                <field name="m_transaction_id"/>
+                <field name="m_source_move_id"/>
+                <field name="m_destination_move_id"/>
+                <filter name="m_filter_mismatch" string="Mismatches" domain="[('m_state', '=', 'mismatch')]"/>
+                <filter name="m_filter_proposed" string="Proposed" domain="[('m_state', '=', 'proposed')]"/>
+                <filter name="m_filter_settled" string="Settled" domain="[('m_state', '=', 'settled')]"/>
+                <group>
+                    <filter name="m_group_rule" string="Rule" context="{'group_by': 'm_rule_id'}"/>
+                    <filter name="m_group_state" string="State" context="{'group_by': 'm_state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="m_view_intercompany_match_form" model="ir.ui.view">
+        <field name="name">merucore.intercompany.match.form</field>
+        <field name="model">merucore.intercompany.match</field>
+        <field name="arch" type="xml">
+            <form string="Intercompany Match">
+                <header>
+                    <button name="m_action_create_settlement"
+                            string="Create Settlement"
+                            type="object"
+                            class="oe_highlight"
+                            invisible="not m_active"/>
+                    <button name="m_action_refresh_lines" string="Refresh Lines" type="object"/>
+                    <button name="m_action_cancel" string="Archive" type="object" invisible="not m_active"/>
+                    <button name="m_action_restore" string="Restore" type="object" invisible="m_active"/>
+                    <field name="m_state" widget="statusbar" statusbar_visible="draft,proposed,settled,mismatch,cancelled"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="m_action_open_source_move" type="object" class="oe_stat_button" icon="fa-arrow-circle-left">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Source</span>
+                                <span class="o_stat_text">Move</span>
+                            </div>
+                        </button>
+                        <button name="m_action_open_destination_move" type="object" class="oe_stat_button" icon="fa-arrow-circle-right">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Destination</span>
+                                <span class="o_stat_text">Move</span>
+                            </div>
+                        </button>
+                        <button name="m_action_open_settlements" type="object" class="oe_stat_button" icon="fa-exchange">
+                            <field name="m_settlement_count" widget="statinfo" string="Settlements"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="m_name"/>
+                            <field name="m_rule_id"/>
+                            <field name="m_transaction_id"/>
+                            <field name="m_active"/>
+                            <field name="m_match_basis" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="m_source_company_id" groups="base.group_multi_company"/>
+                            <field name="m_destination_company_id" groups="base.group_multi_company"/>
+                            <field name="m_source_residual_amount" readonly="1"/>
+                            <field name="m_destination_residual_amount" readonly="1"/>
+                            <field name="m_difference_amount" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Source">
+                        <group>
+                            <field name="m_source_move_id"/>
+                            <field name="m_source_reference" readonly="1"/>
+                            <field name="m_source_date" readonly="1"/>
+                            <field name="m_source_move_line_ids" widget="many2many_tags"/>
+                        </group>
+                        <group>
+                            <field name="m_source_partner_id" readonly="1"/>
+                            <field name="m_source_currency_id" readonly="1"/>
+                            <field name="m_is_amount_within_tolerance" readonly="1"/>
+                            <field name="m_is_date_within_tolerance" readonly="1"/>
+                            <field name="m_is_cross_currency" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Destination">
+                        <group>
+                            <field name="m_destination_move_id"/>
+                            <field name="m_destination_reference" readonly="1"/>
+                            <field name="m_destination_date" readonly="1"/>
+                            <field name="m_destination_move_line_ids" widget="many2many_tags"/>
+                        </group>
+                        <group>
+                            <field name="m_destination_partner_id" readonly="1"/>
+                            <field name="m_destination_currency_id" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Notes">
+                        <field name="m_note" nolabel="1"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+</odoo>

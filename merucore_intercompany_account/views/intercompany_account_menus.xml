@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="m_menu_intercompany_account_mappings"
+              name="Accounting Mappings"
+              parent="merucore_intercompany_base.m_menu_intercompany_configuration"
+              sequence="20"
+              groups="merucore_intercompany_base.m_group_intercompany_manager"/>
+
+    <menuitem id="m_menu_intercompany_account_mapping_accounts"
+              name="Account Mappings"
+              parent="m_menu_intercompany_account_mappings"
+              action="m_action_intercompany_account_mappings"
+              sequence="10"
+              groups="merucore_intercompany_base.m_group_intercompany_manager"/>
+
+    <menuitem id="m_menu_intercompany_account_mapping_taxes"
+              name="Tax Mappings"
+              parent="m_menu_intercompany_account_mappings"
+              action="m_action_intercompany_tax_mappings"
+              sequence="20"
+              groups="merucore_intercompany_base.m_group_intercompany_manager"/>
+
+    <menuitem id="m_menu_intercompany_account_mapping_analytics"
+              name="Analytic Mappings"
+              parent="m_menu_intercompany_account_mappings"
+              action="m_action_intercompany_analytic_mappings"
+              sequence="30"
+              groups="merucore_intercompany_base.m_group_intercompany_manager"/>
+
+    <menuitem id="m_menu_intercompany_account_document_links"
+              name="Accounting Document Links"
+              parent="m_menu_intercompany_account_mappings"
+              action="m_action_intercompany_document_mappings"
+              sequence="40"
+              groups="merucore_intercompany_base.m_group_intercompany_manager"/>
+</odoo>

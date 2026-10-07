@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="m_view_intercompany_stock_transfer_list" model="ir.ui.view">
+        <field name="name">merucore.intercompany.stock.transfer.list</field>
+        <field name="model">merucore.intercompany.stock.transfer</field>
+        <field name="arch" type="xml">
+            <list decoration-muted="m_state == 'cancelled'" decoration-success="m_state == 'done'">
+                <field name="m_name"/>
+                <field name="m_rule_id"/>
+                <field name="m_source_company_id" groups="base.group_multi_company"/>
+                <field name="m_destination_company_id" groups="base.group_multi_company"/>
+                <field name="m_planned_date"/>
+                <field name="m_reference"/>
+                <field name="m_state"/>
+                <field name="m_source_picking_id" optional="show"/>
+                <field name="m_destination_picking_id" optional="show"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="m_view_intercompany_stock_transfer_search" model="ir.ui.view">
+        <field name="name">merucore.intercompany.stock.transfer.search</field>
+        <field name="model">merucore.intercompany.stock.transfer</field>
+        <field name="arch" type="xml">
+            <search string="Manual Intercompany Transfers">
+                <field name="m_name"/>
+                <field name="m_reference"/>
+                <field name="m_rule_id"/>
+                <field name="m_source_company_id"/>
+                <field name="m_destination_company_id"/>
+                <filter name="m_filter_draft" string="Draft" domain="[('m_state', '=', 'draft')]"/>
+                <filter name="m_filter_confirmed" string="Documents Created" domain="[('m_state', '=', 'confirmed')]"/>
+                <filter name="m_filter_done" string="Done" domain="[('m_state', '=', 'done')]"/>
+                <filter name="m_filter_cancelled" string="Cancelled" domain="[('m_state', '=', 'cancelled')]"/>
+                <group>
+                    <filter name="m_group_source_company" string="Source Company" context="{'group_by': 'm_source_company_id'}"/>
+                    <filter name="m_group_destination_company" string="Destination Company" context="{'group_by': 'm_destination_company_id'}"/>
+                    <filter name="m_group_state" string="State" context="{'group_by': 'm_state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="m_view_intercompany_stock_transfer_form" model="ir.ui.view">
+        <field name="name">merucore.intercompany.stock.transfer.form</field>
+        <field name="model">merucore.intercompany.stock.transfer</field>
+        <field name="arch" type="xml">
+            <form string="Manual Intercompany Stock Transfer">
+                <header>
+                    <button name="m_action_generate_documents"
+                            string="Generate Pickings"
+                            type="object"
+                            class="oe_highlight"
+                            invisible="m_state in ('confirmed', 'done', 'cancelled')"/>
+                    <button name="m_action_mark_done"
+                            string="Mark Done"
+                            type="object"
+                            invisible="m_state != 'confirmed'"/>
+                    <button name="m_action_cancel"
+                            string="Cancel"
+                            type="object"
+                            invisible="m_state in ('done', 'cancelled')"/>
+                    <field name="m_state" widget="statusbar" statusbar_visible="draft,confirmed,done,cancelled"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="m_action_open_source_picking"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-sign-out"
+                                invisible="not m_source_picking_id">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Source</span>
+                                <span class="o_stat_text">Picking</span>
+                            </div>
+                        </button>
+                        <button name="m_action_open_destination_picking"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-sign-in"
+                                invisible="not m_destination_picking_id">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Destination</span>
+                                <span class="o_stat_text">Picking</span>
+                            </div>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="m_name"/>
+                            <field name="m_rule_id" options="{'no_create_edit': True}"/>
+                            <field name="m_reference"/>
+                            <field name="m_planned_date"/>
+                        </group>
+                        <group>
+                            <field name="m_source_company_id" groups="base.group_multi_company" readonly="1"/>
+                            <field name="m_destination_company_id" groups="base.group_multi_company" readonly="1"/>
+                            <field name="m_intercompany_transaction_id" readonly="1" options="{'no_open': False}"/>
+                            <field name="m_picking_count" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Lines">
+                            <field name="m_line_ids">
+                                <list editable="bottom">
+                                    <field name="m_sequence" widget="handle"/>
+                                    <field name="m_product_id"/>
+                                    <field name="m_description"/>
+                                    <field name="m_quantity"/>
+                                    <field name="m_uom_id"/>
+                                    <field name="m_owner_id" optional="hide"/>
+                                    <field name="m_lot_name" optional="show"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Notes">
+                            <field name="m_note" nolabel="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="m_action_intercompany_stock_transfers" model="ir.actions.act_window">
+        <field name="name">Manual Stock Transfers</field>
+        <field name="res_model">merucore.intercompany.stock.transfer</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="m_view_intercompany_stock_transfer_search"/>
+        <field name="context">{}</field>
+    </record>
+
+    <menuitem id="m_menu_intercompany_stock_transfers"
+              name="Manual Stock Transfers"
+              parent="merucore_intercompany_base.m_menu_intercompany_control_center"
+              action="m_action_intercompany_stock_transfers"
+              sequence="40"
+              groups="merucore_intercompany_base.m_group_intercompany_user"/>
+</odoo>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="m_view_intercompany_transaction_list_stock" model="ir.ui.view">
+        <field name="name">merucore.intercompany.transaction.list.stock</field>
+        <field name="model">merucore.intercompany.transaction</field>
+        <field name="inherit_id" ref="merucore_intercompany_base.m_view_intercompany_transaction_list"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='m_transaction_type']" position="after">
+                <field name="m_source_picking_state" optional="show"/>
+                <field name="m_destination_picking_state" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="m_view_intercompany_transaction_search_stock" model="ir.ui.view">
+        <field name="name">merucore.intercompany.transaction.search.stock</field>
+        <field name="model">merucore.intercompany.transaction</field>
+        <field name="inherit_id" ref="merucore_intercompany_base.m_view_intercompany_transaction_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='m_filter_open_issue']" position="after">
+                <filter name="m_filter_stock_without_destination" string="Missing Receipt" domain="[('m_transaction_type', '=', 'stock'), ('m_destination_picking_id', '=', False)]"/>
+                <filter name="m_filter_stock_manual_transfer" string="Manual Transfers" domain="[('m_stock_transfer_id', '!=', False)]"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="m_view_intercompany_transaction_form_stock" model="ir.ui.view">
+        <field name="name">merucore.intercompany.transaction.form.stock</field>
+        <field name="model">merucore.intercompany.transaction</field>
+        <field name="inherit_id" ref="merucore_intercompany_base.m_view_intercompany_transaction_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="m_action_open_source_picking"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-sign-out"
+                        invisible="not m_source_picking_id">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">Source</span>
+                        <span class="o_stat_text">Picking</span>
+                    </div>
+                </button>
+                <button name="m_action_open_destination_picking"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-sign-in"
+                        invisible="not m_destination_picking_id">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">Destination</span>
+                        <span class="o_stat_text">Picking</span>
+                    </div>
+                </button>
+                <button name="m_action_open_stock_transfer"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-exchange"
+                        invisible="not m_stock_transfer_id">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">Manual</span>
+                        <span class="o_stat_text">Transfer</span>
+                    </div>
+                </button>
+            </xpath>
+            <xpath expr="//field[@name='m_destination_document_name']/../.." position="inside">
+                <group string="Stock Links">
+                    <field name="m_parent_transaction_id" readonly="1" options="{'no_open': False}"/>
+                    <field name="m_stock_transfer_id" readonly="1" options="{'no_open': False}"/>
+                    <field name="m_source_picking_id" readonly="1" options="{'no_open': False}"/>
+                    <field name="m_source_picking_state" readonly="1"/>
+                </group>
+                <group string="Counterpart Receipt">
+                    <field name="m_destination_picking_id" readonly="1" options="{'no_open': False}"/>
+                    <field name="m_destination_picking_state" readonly="1"/>
+                    <field name="m_stock_transfer_state" readonly="1" invisible="not m_stock_transfer_id"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="m_view_account_move_form_intercompany_reconcile" model="ir.ui.view">
+        <field name="name">account.move.form.intercompany.reconcile</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="m_action_open_intercompany_matches" type="object" class="oe_stat_button" icon="fa-link">
+                    <field name="m_intercompany_match_count" widget="statinfo" string="Intercompany Matches"/>
+                </button>
+                <button name="m_action_open_intercompany_settlements" type="object" class="oe_stat_button" icon="fa-exchange">
+                    <field name="m_intercompany_settlement_count" widget="statinfo" string="Intercompany Settlements"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>

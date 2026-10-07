@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="m_view_intercompany_rule_list" model="ir.ui.view">
+        <field name="name">merucore.intercompany.rule.list</field>
+        <field name="model">merucore.intercompany.rule</field>
+        <field name="arch" type="xml">
+            <list decoration-muted="not m_active" default_order="m_sequence">
+                <field name="m_sequence" optional="hide"/>
+                <field name="m_name"/>
+                <field name="m_direction"/>
+                <field name="m_source_company_id" groups="base.group_multi_company"/>
+                <field name="m_destination_company_id" groups="base.group_multi_company"/>
+                <field name="m_responsible_user_id" optional="hide"/>
+                <field name="m_auto_retry"/>
+                <field name="m_max_retry_count" optional="hide"/>
+                <field name="m_retry_delay_minutes" optional="hide"/>
+                <field name="m_transaction_count" string="Transactions"/>
+                <field name="m_active" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="m_view_intercompany_rule_search" model="ir.ui.view">
+        <field name="name">merucore.intercompany.rule.search</field>
+        <field name="model">merucore.intercompany.rule</field>
+        <field name="arch" type="xml">
+            <search string="Intercompany Rules">
+                <field name="m_name"/>
+                <field name="m_source_company_id"/>
+                <field name="m_destination_company_id"/>
+                <field name="m_responsible_user_id"/>
+                <filter name="m_filter_active" string="Active" domain="[('m_active', '=', True)]"/>
+                <filter name="m_filter_archived" string="Archived" domain="[('m_active', '=', False)]"/>
+                <group>
+                    <filter name="m_group_source_company" string="Source Company" context="{'group_by': 'm_source_company_id'}"/>
+                    <filter name="m_group_destination_company" string="Destination Company" context="{'group_by': 'm_destination_company_id'}"/>
+                    <filter name="m_group_responsible_user" string="Responsible User" context="{'group_by': 'm_responsible_user_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="m_view_intercompany_rule_form" model="ir.ui.view">
+        <field name="name">merucore.intercompany.rule.form</field>
+        <field name="model">merucore.intercompany.rule</field>
+        <field name="arch" type="xml">
+            <form string="Intercompany Rule">
+                <header>
+                    <button name="m_action_archive" string="Archive" type="object" invisible="not m_active"/>
+                    <button name="m_action_restore" string="Restore" type="object" invisible="m_active"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="m_action_open_transactions" type="object" class="oe_stat_button" icon="fa-random">
+                            <field name="m_transaction_count" widget="statinfo" string="Transactions"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="m_name"/>
+                            <field name="m_sequence"/>
+                            <field name="m_direction" readonly="1"/>
+                            <field name="m_active"/>
+                        </group>
+                        <group>
+                            <field name="m_source_company_id" options="{'no_create_edit': True}" groups="base.group_multi_company"/>
+                            <field name="m_destination_company_id" options="{'no_create_edit': True}" groups="base.group_multi_company"/>
+                            <field name="m_responsible_user_id" options="{'no_create_edit': True}"/>
+                        </group>
+                    </group>
+                    <group string="Retry Policy">
+                        <group>
+                            <field name="m_auto_retry"/>
+                            <field name="m_max_retry_count"/>
+                            <field name="m_retry_delay_minutes"/>
+                        </group>
+                        <group>
+                            <field name="m_notify_on_warning"/>
+                            <field name="m_notify_on_failure"/>
+                        </group>
+                    </group>
+                    <group string="Notes">
+                        <field name="m_notes" nolabel="1"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+</odoo>

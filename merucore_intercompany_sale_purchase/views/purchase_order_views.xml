@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="m_purchase_order_form_intercompany" model="ir.ui.view">
+        <field name="name">purchase.order.form.intercompany</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="m_action_create_counterpart_order"
+                        string="Create Counterpart Order"
+                        type="object"
+                        invisible="state == 'cancel' or m_intercompany_counterpart_id or not m_intercompany_rule_id or not m_intercompany_dual_company_access"/>
+                <button name="m_action_preview_synchronization"
+                        string="Preview Synchronization"
+                        type="object"
+                        invisible="state == 'cancel' or not m_intercompany_rule_id or not m_intercompany_dual_company_access"/>
+                <button name="m_action_synchronize_now"
+                        string="Synchronize Now"
+                        type="object"
+                        invisible="state == 'cancel' or not m_intercompany_counterpart_id or not m_intercompany_dual_company_access"/>
+                <button name="m_action_retry_failed_synchronization"
+                        string="Retry Failed Synchronization"
+                        type="object"
+                        invisible="m_intercompany_sync_state != 'failed' or not m_intercompany_transaction_id or not m_intercompany_dual_company_access"/>
+            </xpath>
+            <xpath expr="//sheet" position="inside">
+                <field name="m_intercompany_rule_id" invisible="1"/>
+                <field name="m_intercompany_dual_company_access" invisible="1"/>
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="m_action_open_intercompany_transaction"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-random"
+                        invisible="not m_intercompany_transaction_id or not m_intercompany_dual_company_access">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">Intercompany</span>
+                        <span class="o_stat_text">Transaction</span>
+                    </div>
+                </button>
+                <button name="m_action_open_intercompany_counterpart_order"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-shopping-cart"
+                        invisible="not m_intercompany_counterpart_id or not m_intercompany_dual_company_access">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">Counterpart</span>
+                        <span class="o_stat_text">Sales</span>
+                    </div>
+                </button>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="Intercompany" invisible="not m_intercompany_transaction_id and not m_intercompany_rule_id">
+                    <group>
+                        <group>
+                            <field name="m_intercompany_sync_state" readonly="1"/>
+                            <field name="m_intercompany_health_state" readonly="1"/>
+                            <field name="m_intercompany_counterpart_id" readonly="1" options="{'no_open': False}"/>
+                            <field name="m_intercompany_last_sync_at" readonly="1"/>
+                            <field name="m_intercompany_origin_company_id" readonly="1" groups="base.group_multi_company"/>
+                        </group>
+                        <group groups="merucore_intercompany_base.m_group_intercompany_manager">
+                            <field name="m_intercompany_transaction_id" readonly="1" options="{'no_open': False}"/>
+                            <field name="m_intercompany_sync_version" readonly="1"/>
+                            <field name="m_intercompany_locked_fields" readonly="1" widget="text"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

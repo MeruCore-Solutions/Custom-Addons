@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="m_view_intercompany_retry_wizard_form" model="ir.ui.view">
+        <field name="name">merucore.intercompany.retry.wizard.form</field>
+        <field name="model">merucore.intercompany.retry.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Retry Intercompany Transaction">
+                <group>
+                    <field name="m_transaction_id"/>
+                    <field name="m_last_error_message" readonly="1"/>
+                    <field name="m_current_retry_count" readonly="1"/>
+                    <field name="m_max_retry_count" readonly="1"/>
+                    <field name="m_force_retry"/>
+                    <field name="m_manager_note" placeholder="Add an audit note for this retry attempt."/>
+                </group>
+                <footer>
+                    <button name="m_action_retry" string="Retry" type="object" class="btn-primary"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

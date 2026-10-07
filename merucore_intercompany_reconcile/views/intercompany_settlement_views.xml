@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="m_view_intercompany_settlement_list" model="ir.ui.view">
+        <field name="name">merucore.intercompany.settlement.list</field>
+        <field name="model">merucore.intercompany.settlement</field>
+        <field name="arch" type="xml">
+            <list decoration-success="m_state == 'posted'"
+                  decoration-warning="m_state == 'partially_posted'"
+                  decoration-danger="m_state == 'failed'">
+                <field name="m_name"/>
+                <field name="m_match_id"/>
+                <field name="m_strategy"/>
+                <field name="m_source_amount"/>
+                <field name="m_destination_amount"/>
+                <field name="m_state"/>
+                <field name="m_posting_date"/>
+                <field name="m_line_count"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="m_view_intercompany_settlement_search" model="ir.ui.view">
+        <field name="name">merucore.intercompany.settlement.search</field>
+        <field name="model">merucore.intercompany.settlement</field>
+        <field name="arch" type="xml">
+            <search string="Intercompany Settlements">
+                <field name="m_name"/>
+                <field name="m_rule_id"/>
+                <field name="m_match_id"/>
+                <field name="m_transaction_id"/>
+                <filter name="m_filter_draft" string="Draft" domain="[('m_state', '=', 'draft')]"/>
+                <filter name="m_filter_awaiting" string="Awaiting Approval" domain="[('m_state', '=', 'awaiting_approval')]"/>
+                <filter name="m_filter_posted" string="Posted" domain="[('m_state', '=', 'posted')]"/>
+                <filter name="m_filter_partial" string="Partial" domain="[('m_state', '=', 'partially_posted')]"/>
+                <group>
+                    <filter name="m_group_rule" string="Rule" context="{'group_by': 'm_rule_id'}"/>
+                    <filter name="m_group_state" string="State" context="{'group_by': 'm_state'}"/>
+                    <filter name="m_group_strategy" string="Strategy" context="{'group_by': 'm_strategy'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="m_view_intercompany_settlement_form" model="ir.ui.view">
+        <field name="name">merucore.intercompany.settlement.form</field>
+        <field name="model">merucore.intercompany.settlement</field>
+        <field name="arch" type="xml">
+            <form string="Intercompany Settlement">
+                <header>
+                    <button name="m_action_request_approval"
+                            string="Request Approval"
+                            type="object"
+                            class="oe_highlight"
+                            invisible="m_state != 'draft'"/>
+                    <button name="m_action_approve_source"
+                            string="Approve Source"
+                            type="object"
+                            invisible="m_state in ('posted', 'reversed', 'cancelled')"/>
+                    <button name="m_action_approve_destination"
+                            string="Approve Destination"
+                            type="object"
+                            invisible="m_state in ('posted', 'reversed', 'cancelled')"/>
+                    <button name="m_action_post"
+                            string="Post"
+                            type="object"
+                            class="oe_highlight"
+                            invisible="m_state in ('posted', 'reversed', 'cancelled')"/>
+                    <button name="m_action_reverse"
+                            string="Reverse"
+                            type="object"
+                            invisible="m_state not in ('posted', 'partially_posted')"/>
+                    <button name="m_action_cancel"
+                            string="Cancel"
+                            type="object"
+                            invisible="m_state in ('posted', 'partially_posted', 'reversed', 'cancelled')"/>
+                    <field name="m_state" widget="statusbar" statusbar_visible="draft,awaiting_approval,approved,posted,partially_posted,reversed,cancelled,failed"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="m_name"/>
+                            <field name="m_match_id"/>
+                            <field name="m_rule_id"/>
+                            <field name="m_transaction_id"/>
+                            <field name="m_strategy"/>
+                            <field name="m_posting_date"/>
+                        </group>
+                        <group>
+                            <field name="m_source_amount" readonly="1"/>
+                            <field name="m_destination_amount" readonly="1"/>
+                            <field name="m_amount_difference" readonly="1"/>
+                            <field name="m_within_tolerance" readonly="1"/>
+                            <field name="m_error_message" readonly="1"/>
+                            <field name="m_line_count" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Approval">
+                        <group>
+                            <field name="m_source_approved_by_id" readonly="1"/>
+                            <field name="m_source_approved_at" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="m_destination_approved_by_id" readonly="1"/>
+                            <field name="m_destination_approved_at" readonly="1"/>
+                            <field name="m_is_fully_approved" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Artifacts">
+                        <group>
+                            <field name="m_source_entry_move_id" readonly="1"/>
+                            <field name="m_source_reversal_move_id" readonly="1"/>
+                            <field name="m_source_payment_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="m_destination_entry_move_id" readonly="1"/>
+                            <field name="m_destination_reversal_move_id" readonly="1"/>
+                            <field name="m_destination_payment_id" readonly="1"/>
+                        </group>
+                    </group>
+                    <field name="m_line_ids" nolabel="1">
+                        <list editable="bottom">
+                            <field name="m_company_role"/>
+                            <field name="m_company_id" groups="base.group_multi_company"/>
+                            <field name="m_move_id"/>
+                            <field name="m_move_line_id"/>
+                            <field name="m_account_id"/>
+                            <field name="m_open_amount" readonly="1"/>
+                            <field name="m_allocated_amount"/>
+                            <field name="m_posting_move_line_id" readonly="1"/>
+                            <field name="m_is_reconciled" readonly="1"/>
+                            <field name="m_note"/>
+                        </list>
+                    </field>
+                    <group string="Notes">
+                        <field name="m_note" nolabel="1"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="m_view_intercompany_sync_preview_form" model="ir.ui.view">
+        <field name="name">merucore.intercompany.sync.preview.form</field>
+        <field name="model">merucore.intercompany.sync.preview</field>
+        <field name="arch" type="xml">
+            <form string="Intercompany Synchronization Preview">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="m_source_label" readonly="1"/>
+                            <field name="m_counterpart_label" readonly="1"/>
+                            <field name="m_rule_id" readonly="1" options="{'no_open': False}"/>
+                            <field name="m_transaction_id" readonly="1" options="{'no_open': False}"/>
+                        </group>
+                        <group>
+                            <field name="m_destructive_change" readonly="1"/>
+                            <field name="m_manager_confirmation" invisible="not m_destructive_change"/>
+                        </group>
+                    </group>
+                    <group string="Proposed Changes">
+                        <field name="m_difference_html" readonly="1" nolabel="1"/>
+                    </group>
+                    <footer>
+                        <button name="m_action_apply" string="Apply" type="object" class="btn-primary"/>
+                        <button string="Close" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

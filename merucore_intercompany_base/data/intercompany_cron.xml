@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="m_ir_cron_intercompany_retry" model="ir.cron">
+        <field name="name">MeruCore Intercompany Automatic Retry</field>
+        <field name="model_id" ref="model_merucore_intercompany_transaction"/>
+        <field name="state">code</field>
+        <field name="code">model.m_cron_process_retry_batch()</field>
+        <field name="interval_number">15</field>
+        <field name="interval_type">minutes</field>
+        <field name="active" eval="False"/>
+    </record>
+
+    <record id="m_ir_cron_intercompany_health_check" model="ir.cron">
+        <field name="name">MeruCore Intercompany Health Check</field>
+        <field name="model_id" ref="model_merucore_intercompany_transaction"/>
+        <field name="state">code</field>
+        <field name="code">model.m_cron_run_health_check_batch()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">hours</field>
+        <field name="active" eval="False"/>
+    </record>
+</odoo>

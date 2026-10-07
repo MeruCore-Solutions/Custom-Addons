@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="m_view_stock_picking_list_intercompany" model="ir.ui.view">
+        <field name="name">stock.picking.list.intercompany.stock</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.vpicktree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='origin']" position="after">
+                <field name="m_intercompany_sync_state" optional="show"/>
+                <field name="m_intercompany_counterpart_picking_id" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="m_view_stock_picking_form_intercompany" model="ir.ui.view">
+        <field name="name">stock.picking.form.intercompany.stock</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="m_action_open_intercompany_transaction"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-random"
+                        invisible="not m_intercompany_transaction_id">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">Intercompany</span>
+                        <span class="o_stat_text">Transaction</span>
+                    </div>
+                </button>
+                <button name="m_action_open_intercompany_counterpart"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-exchange"
+                        invisible="not m_intercompany_counterpart_model or not m_intercompany_counterpart_res_id">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">Counterpart</span>
+                        <span class="o_stat_text">Document</span>
+                    </div>
+                </button>
+            </xpath>
+            <xpath expr="//header" position="inside">
+                <button name="m_action_sync_intercompany_stock"
+                        string="Create Intercompany Receipt"
+                        type="object"
+                        invisible="state != 'done' or m_intercompany_counterpart_picking_id or picking_type_code != 'outgoing'"/>
+            </xpath>
+            <xpath expr="//group[2]" position="inside">
+                <field name="m_intercompany_sync_state" readonly="1"/>
+                <field name="m_intercompany_last_sync_at" readonly="1" invisible="not m_intercompany_last_sync_at"/>
+            </xpath>
+            <xpath expr="//sheet" position="inside">
+                <group string="Intercompany" invisible="not m_intercompany_rule_id and not m_intercompany_transaction_id and not m_intercompany_counterpart_picking_id">
+                    <group>
+                        <field name="m_intercompany_rule_id" readonly="1" options="{'no_open': False}"/>
+                        <field name="m_intercompany_transaction_id" readonly="1" options="{'no_open': False}"/>
+                        <field name="m_intercompany_manual_transfer_id" readonly="1" options="{'no_open': False}"/>
+                    </group>
+                    <group>
+                        <field name="m_intercompany_counterpart_picking_id" readonly="1" options="{'no_open': False}"/>
+                        <field name="m_intercompany_root_picking_id" readonly="1" options="{'no_open': False}"/>
+                        <field name="m_intercompany_origin_company_id" readonly="1"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="m_view_intercompany_transaction_list_sale_purchase" model="ir.ui.view">
+        <field name="name">merucore.intercompany.transaction.list.sale.purchase</field>
+        <field name="model">merucore.intercompany.transaction</field>
+        <field name="inherit_id" ref="merucore_intercompany_base.m_view_intercompany_transaction_list"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='m_transaction_type']" position="after">
+                <field name="m_counterpart_creation_state" optional="show"/>
+                <field name="m_pending_conflict" optional="show"/>
+                <field name="m_line_mismatch_count" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="m_view_intercompany_transaction_search_sale_purchase" model="ir.ui.view">
+        <field name="name">merucore.intercompany.transaction.search.sale.purchase</field>
+        <field name="model">merucore.intercompany.transaction</field>
+        <field name="inherit_id" ref="merucore_intercompany_base.m_view_intercompany_transaction_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='m_filter_open_issue']" position="after">
+                <filter name="m_filter_incomplete_pair" string="Incomplete Pair" domain="['|', ('m_sale_order_id', '=', False), ('m_purchase_order_id', '=', False)]"/>
+                <filter name="m_filter_amount_mismatch" string="Amount Mismatch" domain="[('m_currency_mismatch', '=', False), ('m_amount_difference', '!=', 0)]"/>
+                <filter name="m_filter_line_mismatch" string="Line Mismatch" domain="[('m_line_mismatch_count', '>', 0)]"/>
+                <filter name="m_filter_pending_conflict" string="Pending Conflict" domain="[('m_pending_conflict', '=', True)]"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="m_view_intercompany_transaction_form_sale_purchase" model="ir.ui.view">
+        <field name="name">merucore.intercompany.transaction.form.sale.purchase</field>
+        <field name="model">merucore.intercompany.transaction</field>
+        <field name="inherit_id" ref="merucore_intercompany_base.m_view_intercompany_transaction_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="m_action_open_sale_order"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-shopping-cart"
+                        invisible="not m_sale_order_id">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">Sales</span>
+                        <span class="o_stat_text">Order</span>
+                    </div>
+                </button>
+                <button name="m_action_open_purchase_order"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-truck"
+                        invisible="not m_purchase_order_id">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">Purchase</span>
+                        <span class="o_stat_text">Order</span>
+                    </div>
+                </button>
+            </xpath>
+            <xpath expr="//group[./group/field[@name='m_health_state']]" position="inside">
+                <group string="Sale / Purchase Status">
+                    <field name="m_counterpart_creation_state"/>
+                    <field name="m_pending_conflict"/>
+                    <field name="m_line_mismatch_count"/>
+                    <field name="m_currency_mismatch"/>
+                    <field name="m_amount_difference" invisible="m_currency_mismatch"/>
+                    <field name="m_sync_version"/>
+                </group>
+            </xpath>
+            <xpath expr="//field[@name='m_source_company_id']/../.." position="inside">
+                <group string="Linked Documents">
+                    <field name="m_sale_order_id" readonly="1" options="{'no_open': False}"/>
+                    <field name="m_sale_state" readonly="1"/>
+                    <field name="m_sale_amount_total" readonly="1" invisible="not m_sale_order_id"/>
+                </group>
+                <group string="Counterpart">
+                    <field name="m_purchase_order_id" readonly="1" options="{'no_open': False}"/>
+                    <field name="m_purchase_state" readonly="1"/>
+                    <field name="m_purchase_amount_total" readonly="1" invisible="not m_purchase_order_id"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

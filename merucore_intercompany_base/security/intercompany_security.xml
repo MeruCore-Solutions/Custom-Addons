@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="m_module_category_intercompany" model="ir.module.category">
+        <field name="name">MeruCore Intercompany</field>
+        <field name="description">Security groups for MeruCore intercompany control and audit features.</field>
+        <field name="sequence">36</field>
+    </record>
+
+    <record id="m_res_groups_privilege_intercompany" model="res.groups.privilege">
+        <field name="name">MeruCore Intercompany</field>
+        <field name="sequence">36</field>
+        <field name="category_id" ref="m_module_category_intercompany"/>
+    </record>
+
+    <record id="m_group_intercompany_user" model="res.groups">
+        <field name="name">Intercompany User</field>
+        <field name="sequence">10</field>
+        <field name="privilege_id" ref="m_res_groups_privilege_intercompany"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="m_group_intercompany_manager" model="res.groups">
+        <field name="name">Intercompany Manager</field>
+        <field name="sequence">20</field>
+        <field name="privilege_id" ref="m_res_groups_privilege_intercompany"/>
+        <field name="implied_ids" eval="[(4, ref('m_group_intercompany_user'))]"/>
+    </record>
+
+    <record id="m_rule_intercompany_rule_visibility_user" model="ir.rule">
+        <field name="name">Intercompany Rules: dual-company visibility</field>
+        <field name="model_id" ref="model_merucore_intercompany_rule"/>
+        <field name="groups" eval="[(4, ref('m_group_intercompany_user'))]"/>
+        <field name="domain_force">[('m_source_company_id', 'in', company_ids), ('m_destination_company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="m_rule_intercompany_rule_visibility_manager" model="ir.rule">
+        <field name="name">Intercompany Rules: manager dual-company visibility</field>
+        <field name="model_id" ref="model_merucore_intercompany_rule"/>
+        <field name="groups" eval="[(4, ref('m_group_intercompany_manager'))]"/>
+        <field name="domain_force">[('m_source_company_id', 'in', company_ids), ('m_destination_company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="m_rule_intercompany_transaction_visibility_user" model="ir.rule">
+        <field name="name">Intercompany Transactions: dual-company visibility</field>
+        <field name="model_id" ref="model_merucore_intercompany_transaction"/>
+        <field name="groups" eval="[(4, ref('m_group_intercompany_user'))]"/>
+        <field name="domain_force">[('m_source_company_id', 'in', company_ids), ('m_destination_company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="m_rule_intercompany_transaction_visibility_manager" model="ir.rule">
+        <field name="name">Intercompany Transactions: manager dual-company visibility</field>
+        <field name="model_id" ref="model_merucore_intercompany_transaction"/>
+        <field name="groups" eval="[(4, ref('m_group_intercompany_manager'))]"/>
+        <field name="domain_force">[('m_source_company_id', 'in', company_ids), ('m_destination_company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="m_rule_intercompany_event_visibility_user" model="ir.rule">
+        <field name="name">Intercompany Events: dual-company visibility</field>
+        <field name="model_id" ref="model_merucore_intercompany_event"/>
+        <field name="groups" eval="[(4, ref('m_group_intercompany_user'))]"/>
+        <field name="domain_force">[('m_transaction_id.m_source_company_id', 'in', company_ids), ('m_transaction_id.m_destination_company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="m_rule_intercompany_event_visibility_manager" model="ir.rule">
+        <field name="name">Intercompany Events: manager dual-company visibility</field>
+        <field name="model_id" ref="model_merucore_intercompany_event"/>
+        <field name="groups" eval="[(4, ref('m_group_intercompany_manager'))]"/>
+        <field name="domain_force">[('m_transaction_id.m_source_company_id', 'in', company_ids), ('m_transaction_id.m_destination_company_id', 'in', company_ids)]</field>
+    </record>
+</odoo>

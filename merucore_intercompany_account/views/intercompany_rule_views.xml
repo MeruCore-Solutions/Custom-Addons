@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="m_view_intercompany_rule_form_account" model="ir.ui.view">
+        <field name="name">merucore.intercompany.rule.form.account</field>
+        <field name="model">merucore.intercompany.rule</field>
+        <field name="inherit_id" ref="merucore_intercompany_base.m_view_intercompany_rule_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='m_notes']/.." position="before">
+                <group string="Invoice / Bill Automation">
+                    <group string="Workflow">
+                        <field name="m_account_sync_enabled"/>
+                        <field name="m_account_workflow" invisible="not m_account_sync_enabled"/>
+                        <field name="m_trigger_document" invisible="not m_account_sync_enabled"/>
+                        <field name="m_counterpart_creation_timing" invisible="not m_account_sync_enabled"/>
+                        <field name="m_sync_direction" invisible="not m_account_sync_enabled"/>
+                        <field name="m_partner_validation" invisible="not m_account_sync_enabled"/>
+                        <field name="m_responsible_account_user_id" invisible="not m_account_sync_enabled"/>
+                    </group>
+                    <group string="Draft Synchronization">
+                        <field name="m_sync_draft_headers" invisible="not m_account_sync_enabled"/>
+                        <field name="m_sync_draft_lines" invisible="not m_account_sync_enabled"/>
+                        <field name="m_sync_quantities" invisible="not m_account_sync_enabled"/>
+                        <field name="m_sync_unit_prices" invisible="not m_account_sync_enabled"/>
+                        <field name="m_sync_discounts" invisible="not m_account_sync_enabled"/>
+                        <field name="m_sync_dates" invisible="not m_account_sync_enabled"/>
+                        <field name="m_sync_payment_terms" invisible="not m_account_sync_enabled"/>
+                        <field name="m_sync_analytic_distribution" invisible="not m_account_sync_enabled"/>
+                        <field name="m_sync_line_labels" invisible="not m_account_sync_enabled"/>
+                        <field name="m_allow_line_creation" invisible="not m_account_sync_enabled"/>
+                        <field name="m_allow_line_deletion" invisible="not m_account_sync_enabled"/>
+                        <field name="m_conflict_policy" invisible="not m_account_sync_enabled"/>
+                    </group>
+                </group>
+                <group string="Journals and Dates">
+                    <group string="Journals">
+                        <field name="m_journal_strategy" invisible="not m_account_sync_enabled"/>
+                        <field name="m_source_sale_journal_id" invisible="not m_account_sync_enabled"/>
+                        <field name="m_source_purchase_journal_id" invisible="not m_account_sync_enabled"/>
+                        <field name="m_destination_sale_journal_id" invisible="not m_account_sync_enabled"/>
+                        <field name="m_destination_purchase_journal_id" invisible="not m_account_sync_enabled"/>
+                    </group>
+                    <group string="Posting and Reversals">
+                        <field name="m_counterpart_document_state" invisible="not m_account_sync_enabled"/>
+                        <field name="m_auto_post_counterpart" invisible="not m_account_sync_enabled"/>
+                        <field name="m_posting_failure_policy" invisible="not m_account_sync_enabled"/>
+                        <field name="m_refund_strategy" invisible="not m_account_sync_enabled"/>
+                        <field name="m_reversal_date_strategy" invisible="not m_account_sync_enabled"/>
+                        <field name="m_cancel_counterpart_draft" invisible="not m_account_sync_enabled"/>
+                    </group>
+                </group>
+                <group string="Accounts, Taxes, and Currency">
+                    <group string="Strategies">
+                        <field name="m_account_strategy" invisible="not m_account_sync_enabled"/>
+                        <field name="m_tax_strategy" invisible="not m_account_sync_enabled"/>
+                        <field name="m_price_strategy" invisible="not m_account_sync_enabled"/>
+                        <field name="m_currency_strategy" invisible="not m_account_sync_enabled"/>
+                        <field name="m_exchange_rate_date_strategy" invisible="not m_account_sync_enabled"/>
+                    </group>
+                    <group string="Matching and Tolerances">
+                        <field name="m_three_way_matching_enabled" invisible="not m_account_sync_enabled"/>
+                        <field name="m_quantity_tolerance" invisible="not m_account_sync_enabled"/>
+                        <field name="m_amount_tolerance" invisible="not m_account_sync_enabled"/>
+                        <field name="m_tax_tolerance" invisible="not m_account_sync_enabled"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

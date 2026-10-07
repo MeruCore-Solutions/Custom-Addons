@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="m_view_intercompany_event_list" model="ir.ui.view">
+        <field name="name">merucore.intercompany.event.list</field>
+        <field name="model">merucore.intercompany.event</field>
+        <field name="arch" type="xml">
+            <list create="0" delete="0" edit="0"
+                  decoration-muted="m_resolved"
+                  decoration-warning="m_event_type == 'warning'"
+                  decoration-danger="m_event_type == 'error'">
+                <field name="m_event_at"/>
+                <field name="m_event_type"/>
+                <field name="m_summary"/>
+                <field name="m_transaction_id"/>
+                <field name="m_company_id" groups="base.group_multi_company"/>
+                <field name="m_user_id" optional="hide"/>
+                <field name="m_retry_number" optional="hide"/>
+                <field name="m_resolved"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="m_view_intercompany_event_search" model="ir.ui.view">
+        <field name="name">merucore.intercompany.event.search</field>
+        <field name="model">merucore.intercompany.event</field>
+        <field name="arch" type="xml">
+            <search string="Events">
+                <field name="m_summary"/>
+                <field name="m_company_id"/>
+                <field name="m_transaction_id"/>
+                <filter name="m_filter_error" string="Errors" domain="[('m_event_type', '=', 'error')]"/>
+                <filter name="m_filter_warning" string="Warnings" domain="[('m_event_type', '=', 'warning')]"/>
+                <filter name="m_filter_retry" string="Retries" domain="[('m_event_type', '=', 'retry')]"/>
+                <filter name="m_filter_unresolved" string="Unresolved" domain="[('m_resolved', '=', False), ('m_event_type', 'in', ('warning', 'error'))]"/>
+                <group>
+                    <filter name="m_group_company" string="Company" context="{'group_by': 'm_company_id'}"/>
+                    <filter name="m_group_transaction" string="Transaction" context="{'group_by': 'm_transaction_id'}"/>
+                    <filter name="m_group_event_type" string="Event Type" context="{'group_by': 'm_event_type'}"/>
+                    <filter name="m_group_event_at" string="Date" context="{'group_by': 'm_event_at:day'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="m_view_intercompany_event_form" model="ir.ui.view">
+        <field name="name">merucore.intercompany.event.form</field>
+        <field name="model">merucore.intercompany.event</field>
+        <field name="arch" type="xml">
+            <form string="Intercompany Event" create="0" delete="0">
+                <header>
+                    <button name="m_action_resolve"
+                            string="Resolve"
+                            type="object"
+                            groups="merucore_intercompany_base.m_group_intercompany_manager"
+                            invisible="m_resolved or m_event_type not in ('warning', 'error')"/>
+                    <button name="m_action_reopen"
+                            string="Reopen"
+                            type="object"
+                            groups="merucore_intercompany_base.m_group_intercompany_manager"
+                            invisible="not m_resolved or m_event_type not in ('warning', 'error')"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="m_event_at"/>
+                            <field name="m_event_type"/>
+                            <field name="m_transaction_id"/>
+                            <field name="m_company_id" groups="base.group_multi_company"/>
+                            <field name="m_user_id"/>
+                            <field name="m_retry_number"/>
+                        </group>
+                        <group>
+                            <field name="m_resolved"/>
+                            <field name="m_resolved_at"/>
+                            <field name="m_resolved_by_id"/>
+                            <field name="m_model_name"/>
+                            <field name="m_res_id"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="m_summary"/>
+                        <field name="m_message"/>
+                        <field name="m_old_value"/>
+                        <field name="m_new_value"/>
+                        <field name="m_technical_details"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

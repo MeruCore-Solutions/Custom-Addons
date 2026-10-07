@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="m_view_intercompany_transaction_list_account" model="ir.ui.view">
+        <field name="name">merucore.intercompany.transaction.list.account</field>
+        <field name="model">merucore.intercompany.transaction</field>
+        <field name="inherit_id" ref="merucore_intercompany_base.m_view_intercompany_transaction_list"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='m_retry_count']" position="before">
+                <field name="m_account_sync_state" optional="show"/>
+                <field name="m_account_document_count" optional="show"/>
+                <field name="m_invoice_count" optional="hide"/>
+                <field name="m_bill_count" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="m_view_intercompany_transaction_form_account" model="ir.ui.view">
+        <field name="name">merucore.intercompany.transaction.form.account</field>
+        <field name="model">merucore.intercompany.transaction</field>
+        <field name="inherit_id" ref="merucore_intercompany_base.m_view_intercompany_transaction_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="m_action_open_account_documents" type="object" class="oe_stat_button" icon="fa-file-text-o">
+                    <field name="m_account_document_count" widget="statinfo" string="Accounting Docs"/>
+                </button>
+            </xpath>
+            <xpath expr="//field[@name='m_note']/.." position="before">
+                <group string="Accounting Synchronization">
+                    <group>
+                        <field name="m_account_sync_state"/>
+                        <field name="m_last_account_sync_at"/>
+                        <field name="m_account_sync_version"/>
+                        <field name="m_pending_account_conflict"/>
+                    </group>
+                    <group>
+                        <field name="m_invoice_count"/>
+                        <field name="m_bill_count"/>
+                        <field name="m_customer_refund_count"/>
+                        <field name="m_vendor_refund_count"/>
+                    </group>
+                </group>
+                <group string="Accounting Totals">
+                    <group>
+                        <field name="m_comparison_currency_id" groups="base.group_multi_company"/>
+                        <field name="m_source_total"/>
+                        <field name="m_destination_total"/>
+                        <field name="m_amount_difference"/>
+                    </group>
+                    <group>
+                        <field name="m_source_tax_total"/>
+                        <field name="m_destination_tax_total"/>
+                        <field name="m_tax_difference"/>
+                        <field name="m_currency_mismatch"/>
+                    </group>
+                </group>
+                <group string="Mismatch Overview">
+                    <group>
+                        <field name="m_line_mismatch_count"/>
+                        <field name="m_account_mismatch_count"/>
+                    </group>
+                    <group>
+                        <field name="m_tax_mismatch_count"/>
+                        <field name="m_three_way_mismatch_count"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="m_rule_intercompany_account_mapping_visibility_user" model="ir.rule">
+        <field name="name">Intercompany Account Mappings: dual-company visibility</field>
+        <field name="model_id" ref="model_merucore_intercompany_account_mapping"/>
+        <field name="groups" eval="[(4, ref('merucore_intercompany_base.m_group_intercompany_user'))]"/>
+        <field name="domain_force">[('m_rule_id.m_source_company_id', 'in', company_ids), ('m_rule_id.m_destination_company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="m_rule_intercompany_account_mapping_visibility_manager" model="ir.rule">
+        <field name="name">Intercompany Account Mappings: manager dual-company visibility</field>
+        <field name="model_id" ref="model_merucore_intercompany_account_mapping"/>
+        <field name="groups" eval="[(4, ref('merucore_intercompany_base.m_group_intercompany_manager'))]"/>
+        <field name="domain_force">[('m_rule_id.m_source_company_id', 'in', company_ids), ('m_rule_id.m_destination_company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="m_rule_intercompany_tax_mapping_visibility_user" model="ir.rule">
+        <field name="name">Intercompany Tax Mappings: dual-company visibility</field>
+        <field name="model_id" ref="model_merucore_intercompany_tax_mapping"/>
+        <field name="groups" eval="[(4, ref('merucore_intercompany_base.m_group_intercompany_user'))]"/>
+        <field name="domain_force">[('m_rule_id.m_source_company_id', 'in', company_ids), ('m_rule_id.m_destination_company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="m_rule_intercompany_tax_mapping_visibility_manager" model="ir.rule">
+        <field name="name">Intercompany Tax Mappings: manager dual-company visibility</field>
+        <field name="model_id" ref="model_merucore_intercompany_tax_mapping"/>
+        <field name="groups" eval="[(4, ref('merucore_intercompany_base.m_group_intercompany_manager'))]"/>
+        <field name="domain_force">[('m_rule_id.m_source_company_id', 'in', company_ids), ('m_rule_id.m_destination_company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="m_rule_intercompany_analytic_mapping_visibility_user" model="ir.rule">
+        <field name="name">Intercompany Analytic Mappings: dual-company visibility</field>
+        <field name="model_id" ref="model_merucore_intercompany_analytic_mapping"/>
+        <field name="groups" eval="[(4, ref('merucore_intercompany_base.m_group_intercompany_user'))]"/>
+        <field name="domain_force">[('m_rule_id.m_source_company_id', 'in', company_ids), ('m_rule_id.m_destination_company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="m_rule_intercompany_analytic_mapping_visibility_manager" model="ir.rule">
+        <field name="name">Intercompany Analytic Mappings: manager dual-company visibility</field>
+        <field name="model_id" ref="model_merucore_intercompany_analytic_mapping"/>
+        <field name="groups" eval="[(4, ref('merucore_intercompany_base.m_group_intercompany_manager'))]"/>
+        <field name="domain_force">[('m_rule_id.m_source_company_id', 'in', company_ids), ('m_rule_id.m_destination_company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="m_rule_intercompany_document_mapping_visibility_user" model="ir.rule">
+        <field name="name">Intercompany Accounting Documents: dual-company visibility</field>
+        <field name="model_id" ref="model_merucore_intercompany_document_mapping"/>
+        <field name="groups" eval="[(4, ref('merucore_intercompany_base.m_group_intercompany_user'))]"/>
+        <field name="domain_force">[('m_transaction_id.m_source_company_id', 'in', company_ids), ('m_transaction_id.m_destination_company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="m_rule_intercompany_document_mapping_visibility_manager" model="ir.rule">
+        <field name="name">Intercompany Accounting Documents: manager dual-company visibility</field>
+        <field name="model_id" ref="model_merucore_intercompany_document_mapping"/>
+        <field name="groups" eval="[(4, ref('merucore_intercompany_base.m_group_intercompany_manager'))]"/>
+        <field name="domain_force">[('m_transaction_id.m_source_company_id', 'in', company_ids), ('m_transaction_id.m_destination_company_id', 'in', company_ids)]</field>
+    </record>
+</odoo>

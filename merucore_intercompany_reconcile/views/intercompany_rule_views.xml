@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="m_view_intercompany_rule_list_reconcile" model="ir.ui.view">
+        <field name="name">merucore.intercompany.rule.list.reconcile</field>
+        <field name="model">merucore.intercompany.rule</field>
+        <field name="inherit_id" ref="merucore_intercompany_base.m_view_intercompany_rule_list"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='m_auto_retry']" position="before">
+                <field name="m_reconcile_enabled" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="m_view_intercompany_rule_form_reconcile" model="ir.ui.view">
+        <field name="name">merucore.intercompany.rule.form.reconcile</field>
+        <field name="model">merucore.intercompany.rule</field>
+        <field name="inherit_id" ref="merucore_intercompany_base.m_view_intercompany_rule_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="m_action_open_reconcile_matches" type="object" class="oe_stat_button" icon="fa-link">
+                    <field name="m_reconcile_match_count" widget="statinfo" string="Matches"/>
+                </button>
+                <button name="m_action_open_reconcile_settlements" type="object" class="oe_stat_button" icon="fa-exchange">
+                    <field name="m_reconcile_settlement_count" widget="statinfo" string="Settlements"/>
+                </button>
+            </xpath>
+            <xpath expr="//sheet/group[last()]" position="before">
+                <group string="Reconciliation">
+                    <group>
+                        <field name="m_reconcile_enabled"/>
+                        <field name="m_matching_strategy" invisible="not m_reconcile_enabled"/>
+                        <field name="m_match_date_tolerance_days" invisible="not m_reconcile_enabled"/>
+                        <field name="m_match_amount_tolerance" invisible="not m_reconcile_enabled"/>
+                        <field name="m_match_residual_only" invisible="not m_reconcile_enabled"/>
+                        <field name="m_allow_partial_settlement" invisible="not m_reconcile_enabled"/>
+                        <field name="m_allow_cross_currency_settlement" invisible="not m_reconcile_enabled"/>
+                    </group>
+                    <group>
+                        <field name="m_settlement_strategy" invisible="not m_reconcile_enabled"/>
+                        <field name="m_create_payments" invisible="not m_reconcile_enabled"/>
+                        <field name="m_auto_post_settlement" invisible="not m_reconcile_enabled"/>
+                        <field name="m_auto_reconcile" invisible="not m_reconcile_enabled"/>
+                        <field name="m_exchange_rate_date_strategy" invisible="not m_reconcile_enabled"/>
+                        <field name="m_settlement_currency_strategy" invisible="not m_reconcile_enabled"/>
+                        <field name="m_settlement_currency_id" invisible="not m_reconcile_enabled or m_settlement_currency_strategy != 'configured_settlement_currency'"/>
+                    </group>
+                </group>
+                <group string="Clearing And Payments" invisible="not m_reconcile_enabled">
+                    <group>
+                        <field name="m_source_clearing_journal_id"/>
+                        <field name="m_source_clearing_account_id"/>
+                        <field name="m_source_due_to_account_id"/>
+                        <field name="m_source_due_from_account_id"/>
+                        <field name="m_source_payment_journal_id"/>
+                    </group>
+                    <group>
+                        <field name="m_destination_clearing_journal_id"/>
+                        <field name="m_destination_clearing_account_id"/>
+                        <field name="m_destination_due_to_account_id"/>
+                        <field name="m_destination_due_from_account_id"/>
+                        <field name="m_destination_payment_journal_id"/>
+                    </group>
+                </group>
+                <group string="Write-Off And Approval" invisible="not m_reconcile_enabled">
+                    <group>
+                        <field name="m_writeoff_strategy"/>
+                        <field name="m_writeoff_tolerance" invisible="m_writeoff_strategy == 'no_writeoff'"/>
+                        <field name="m_source_writeoff_account_id" invisible="m_writeoff_strategy == 'no_writeoff'"/>
+                        <field name="m_destination_writeoff_account_id" invisible="m_writeoff_strategy == 'no_writeoff'"/>
+                    </group>
+                    <group>
+                        <field name="m_require_dual_approval"/>
+                        <field name="m_source_approver_ids" widget="many2many_tags"/>
+                        <field name="m_destination_approver_ids" widget="many2many_tags"/>
+                        <field name="m_responsible_treasury_user_id"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

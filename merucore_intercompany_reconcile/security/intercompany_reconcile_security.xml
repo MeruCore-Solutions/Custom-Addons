@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="m_rule_intercompany_match_visibility_user" model="ir.rule">
+        <field name="name">Intercompany Matches: dual-company visibility</field>
+        <field name="model_id" ref="model_merucore_intercompany_match"/>
+        <field name="groups" eval="[(4, ref('merucore_intercompany_base.m_group_intercompany_user'))]"/>
+        <field name="domain_force">[('m_source_company_id', 'in', company_ids), ('m_destination_company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="m_rule_intercompany_match_visibility_manager" model="ir.rule">
+        <field name="name">Intercompany Matches: manager dual-company visibility</field>
+        <field name="model_id" ref="model_merucore_intercompany_match"/>
+        <field name="groups" eval="[(4, ref('merucore_intercompany_base.m_group_intercompany_manager'))]"/>
+        <field name="domain_force">[('m_source_company_id', 'in', company_ids), ('m_destination_company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="m_rule_intercompany_settlement_visibility_user" model="ir.rule">
+        <field name="name">Intercompany Settlements: dual-company visibility</field>
+        <field name="model_id" ref="model_merucore_intercompany_settlement"/>
+        <field name="groups" eval="[(4, ref('merucore_intercompany_base.m_group_intercompany_user'))]"/>
+        <field name="domain_force">[('m_source_company_id', 'in', company_ids), ('m_destination_company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="m_rule_intercompany_settlement_visibility_manager" model="ir.rule">
+        <field name="name">Intercompany Settlements: manager dual-company visibility</field>
+        <field name="model_id" ref="model_merucore_intercompany_settlement"/>
+        <field name="groups" eval="[(4, ref('merucore_intercompany_base.m_group_intercompany_manager'))]"/>
+        <field name="domain_force">[('m_source_company_id', 'in', company_ids), ('m_destination_company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="m_rule_intercompany_settlement_line_visibility_user" model="ir.rule">
+        <field name="name">Intercompany Settlement Lines: dual-company visibility</field>
+        <field name="model_id" ref="model_merucore_intercompany_settlement_line"/>
+        <field name="groups" eval="[(4, ref('merucore_intercompany_base.m_group_intercompany_user'))]"/>
+        <field name="domain_force">[('m_settlement_id.m_source_company_id', 'in', company_ids), ('m_settlement_id.m_destination_company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="m_rule_intercompany_settlement_line_visibility_manager" model="ir.rule">
+        <field name="name">Intercompany Settlement Lines: manager dual-company visibility</field>
+        <field name="model_id" ref="model_merucore_intercompany_settlement_line"/>
+        <field name="groups" eval="[(4, ref('merucore_intercompany_base.m_group_intercompany_manager'))]"/>
+        <field name="domain_force">[('m_settlement_id.m_source_company_id', 'in', company_ids), ('m_settlement_id.m_destination_company_id', 'in', company_ids)]</field>
+    </record>
+</odoo>
